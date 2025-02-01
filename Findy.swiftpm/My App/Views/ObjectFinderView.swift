@@ -74,7 +74,10 @@ struct ObjectFinderView: View {
             
             if !hasObjectBeenDetected{
                 speechSynthesizer.speak(text: "\(appViewModel.targetDetectionObject) detected!")
-                speechSynthesizer.speak(text: "\(appViewModel.targetDetectionObject) is \(String(describing: arCoordinator.currentMeasurement?.formatDistance())) away.")
+                
+                if let distance = arCoordinator.currentMeasurement?.formatDistance(){
+                    speechSynthesizer.speak(text: "\(appViewModel.targetDetectionObject) is \(distance) away.")
+                }
 
                 hasObjectBeenDetected = true
             }
