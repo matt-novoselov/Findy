@@ -28,6 +28,7 @@ struct ARContainer: UIViewRepresentable {
 class ARCoordinator {
     // Weak reference to prevent retain cycle
     private weak var arView: ARView?
+    private var metalDetector: MetalDetector = .init()
     
     // Measurement state
     private(set) var currentMeasurement: Measurement?
@@ -46,6 +47,7 @@ class ARCoordinator {
     
     init(objectDetection: ObjectDetection) {
         self.objectDetection = objectDetection
+        self.metalDetector.arCoordinator = self
     }
     
     deinit {
