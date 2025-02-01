@@ -12,7 +12,10 @@ struct ObjectFinderView: View {
     
     @Environment(AppViewModel.self) private var appViewModel
     @Environment(ARCoordinator.self) private var arCoordinator
+    @Environment(SpeechSynthesizer.self) private var speechSynthesizer
+    
     @State private var geometrySize: CGRect = .zero
+    @State private var hasObjectBeenDetected: Bool = false
     
     var body: some View {
         let arContainer: ARContainer = .init(coordinator: arCoordinator)
@@ -63,6 +66,13 @@ struct ObjectFinderView: View {
             
             if let debugBox = adjustedResults.first?.boundingBox {
                 arCoordinator.handleRaycast(at: .init(x: debugBox.midX, y: debugBox.midY))
+            }
+            
+            if !hasObjectBeenDetected{
+                speechSynthesizer.speak(text: "\(appViewModel.targetDetectionObject) detected!")
+                speechSynthesizer.speak(text: "\(appViewModel.targetDetectionObject) is \(String(describing: arCoordinator.currentMeasurement?.formatDistance())) away.")
+
+                hasObjectBeenDetected = true
             }
         }
     }

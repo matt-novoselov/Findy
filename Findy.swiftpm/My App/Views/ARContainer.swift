@@ -85,7 +85,7 @@ class ARCoordinator {
         
         let distance = simd_distance(cameraPosition, anchorPosition)
         currentMeasurement = Measurement(
-            distance: distance
+            meterDistance: distance
         )
     }
     

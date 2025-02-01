@@ -13,6 +13,7 @@ struct FindyApp: App {
     @State private var objectDetection: ObjectDetection?
     @State private var appViewModel: AppViewModel?
     @State private var arCoordinator: ARCoordinator?
+    @State private var speechSynthesizer: SpeechSynthesizer?
     
     var body: some Scene {
         WindowGroup {
@@ -21,6 +22,7 @@ struct FindyApp: App {
                     ProxyBootstrapView()
                         .environment(appViewModel)
                         .environment(arCoordinator)
+                        .environment(speechSynthesizer)
                 }
             }
             .task{
@@ -28,6 +30,7 @@ struct FindyApp: App {
                 self.objectDetection = .init()
                 self.appViewModel = AppViewModel()
                 self.arCoordinator = ARCoordinator(objectDetection: self.objectDetection!)
+                self.speechSynthesizer = SpeechSynthesizer()
                 
                 // Set weak vars
                 objectDetection?.appViewModel = self.appViewModel

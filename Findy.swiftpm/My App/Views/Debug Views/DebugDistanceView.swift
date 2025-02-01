@@ -13,7 +13,7 @@ struct DebugDistanceView: View {
     
     var body: some View {
         let currentMeasurement = arCoordinator.currentMeasurement
-        Text(String(format: "Distance: %.2f m", currentMeasurement?.distance ?? "N/A"))
+        Text(currentMeasurement?.formatDistance() ?? "N/A")
             .padding()
             .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
