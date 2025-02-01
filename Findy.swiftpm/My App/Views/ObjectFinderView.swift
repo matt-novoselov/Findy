@@ -24,6 +24,18 @@ struct ObjectFinderView: View {
                 DebugObjectDetectionView()
             }
         
+            .overlay{
+                RoundedRectangle(cornerRadius: getCornerRadius())
+                    .stroke(.green, lineWidth: hasObjectBeenDetected ? 10 : 0, antialiased: true)
+                    .animation(.spring, value: hasObjectBeenDetected)
+            }
+        
+            .overlay{
+                Button("Reset Object Detection"){
+                    hasObjectBeenDetected.toggle()
+                }
+            }
+        
             .ignoresSafeArea()
         
             .onChange(of: arCoordinator.detectionResults) {
