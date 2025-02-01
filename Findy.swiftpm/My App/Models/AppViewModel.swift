@@ -12,4 +12,5 @@ class AppViewModel {
     var isDebugMode: Bool = true
     var cameraImageDimensions: CGSize = .init()
     var targetDetectionObject: String = "bottle"
+    var isMetalDetectionSoundEnabled: Bool = true
 }

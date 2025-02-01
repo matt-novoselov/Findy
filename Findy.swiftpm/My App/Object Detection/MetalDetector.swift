@@ -43,6 +43,7 @@ class MetalDetector {
     
     private func checkForBeep() {
         guard let currentDistance = arCoordinator?.currentMeasurement?.meterDistance else { return }
+        guard arCoordinator?.appViewModel?.isMetalDetectionSoundEnabled == true else { return }
         
         let now = Date()
         let elapsed = lastBeepTime.map { now.timeIntervalSince($0) } ?? maxInterval

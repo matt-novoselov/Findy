@@ -13,6 +13,7 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
     private let synthesizer = AVSpeechSynthesizer()
     private var utteranceQueue: [AVSpeechUtterance] = []
     var speechSynthesizerPlaybackSpeed: Float = AVSpeechUtteranceDefaultSpeechRate
+    var isSpeechSynthesizerEnabled: Bool = true
     
     override init() {
         super.init()
@@ -35,14 +36,8 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
     
     private func speakNext() {
         guard !utteranceQueue.isEmpty else { return }
+        guard isSpeechSynthesizerEnabled else { return }
         let nextUtterance = utteranceQueue.removeFirst()
         synthesizer.speak(nextUtterance)
-    }
-    
-    // MARK: - AVSpeechSynthesizerDelegate
-    nonisolated func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        Task { @MainActor in
-            speakNext()
-        }
     }
 }
