@@ -14,12 +14,8 @@ struct DebugView: View {
     var body: some View {
         if appViewModel.isDebugMode {
             Group{
-                DebugObjectDetectionView()
-                    .ignoresSafeArea()
                 DebugDistanceView()
-                    .safeAreaPadding()
                 DebugCaptureView()
-                    .safeAreaPadding()
             }
             .allowsHitTesting(false)
         }

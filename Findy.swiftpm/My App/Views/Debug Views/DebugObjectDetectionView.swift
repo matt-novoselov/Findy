@@ -12,18 +12,23 @@ struct DebugObjectDetectionView: View {
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
-        GeometryReader { geometry in
-            let adjustedResults = adjustObservations(
-                detectionResults: arCoordinator.detectionResults,
-                geometrySize: geometry.size,
-                cameraImageDimensions: appViewModel.cameraImageDimensions
-            )
-            
-            ForEach(adjustedResults, id: \.id) { result in
-                BoundingBox(result: result)
+        
+        if appViewModel.isDebugMode{
+            GeometryReader { geometry in
+                let adjustedResults = adjustObservations(
+                    detectionResults: arCoordinator.detectionResults,
+                    geometrySize: geometry.size,
+                    cameraImageDimensions: appViewModel.cameraImageDimensions
+                )
+                
+                ForEach(adjustedResults, id: \.id) { result in
+                    BoundingBox(result: result)
+                }
             }
+            .aspectRatio(appViewModel.cameraImageDimensions.width / appViewModel.cameraImageDimensions.height, contentMode: .fit)
+            .allowsHitTesting(false)
         }
-        .aspectRatio(appViewModel.cameraImageDimensions.width / appViewModel.cameraImageDimensions.height, contentMode: .fit)
+
     }
 }
 

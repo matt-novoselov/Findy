@@ -19,7 +19,7 @@ struct ObjectFinderView: View {
         
         arContainer
             .overlay {
-                DebugView()
+                DebugObjectDetectionView()
             }
         
             .onGeometryChange(for: CGRect.self) { proxy in
@@ -32,6 +32,10 @@ struct ObjectFinderView: View {
         
             .onChange(of: arCoordinator.detectionResults) {
                 shootRaycastAtDetectedResult()
+            }
+        
+            .overlay{
+                DebugView()
             }
         
             .overlay(alignment: .topLeading){

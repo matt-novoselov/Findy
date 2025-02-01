@@ -18,25 +18,28 @@ class ObjectDetection {
     
     /// Asynchronously initializes the detection model and request
     private func initializeDetection() {
-        do {
-            // Load the Core ML model with safety checks
-            let config = MLModelConfiguration()
-            let model = try yolov8n(configuration: config).model
-            
-            guard let visionModel = try? VNCoreMLModel(for: model) else {
-                throw DetectionError.modelConversionFailed
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                let config = MLModelConfiguration()
+                let model = try yolov8n(configuration: config).model
+
+                guard let visionModel = try? VNCoreMLModel(for: model) else {
+                    throw DetectionError.modelConversionFailed
+                }
+
+                let request = VNCoreMLRequest(model: visionModel)
+                request.imageCropAndScaleOption = .scaleFill
+
+                DispatchQueue.main.async {
+                    self.detectionRequest = request
+                    self.isReady = true
+                    print("Detection model initialized successfully")
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.handleInitializationError(error)
+                }
             }
-            
-            let request = VNCoreMLRequest(model: visionModel)
-            request.imageCropAndScaleOption = .scaleFill
-            
-            DispatchQueue.main.async {
-                self.detectionRequest = request
-                self.isReady = true
-                print("Detection model initialized successfully")
-            }
-        } catch {
-            self.handleInitializationError(error)
         }
     }
     
