@@ -14,16 +14,13 @@ struct DebugObjectDetectionView: View {
     var body: some View {
         
         if appViewModel.isDebugMode{
-            GeometryReader { geometry in
-                let adjustedResults = adjustObservations(
-                    detectionResults: arCoordinator.detectionResults,
-                    geometrySize: geometry.size,
-                    cameraImageDimensions: appViewModel.cameraImageDimensions
-                )
-                
-                ForEach(adjustedResults, id: \.id) { result in
-                    BoundingBox(result: result)
-                }
+            let adjustedResults = adjustObservations(
+                detectionResults: arCoordinator.detectionResults,
+                cameraImageDimensions: appViewModel.cameraImageDimensions
+            )
+            
+            ForEach(adjustedResults, id: \.id) { result in
+                BoundingBox(result: result)
             }
             .aspectRatio(appViewModel.cameraImageDimensions.width / appViewModel.cameraImageDimensions.height, contentMode: .fit)
             .allowsHitTesting(false)

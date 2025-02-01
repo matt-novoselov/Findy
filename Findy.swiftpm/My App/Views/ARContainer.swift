@@ -106,11 +106,7 @@ class ARCoordinator {
         }
 
         // Get viewport size for image transformation
-        guard let viewPortSize = arView?.window?.bounds.size else {
-            detectionResults = []
-            print("[ObjectDetection] Error: Failed to get viewport dimensions")
-            return
-        }
+        let viewPortSize = UIScreen.main.bounds.size
 
         // Create transform to convert from camera buffer to view orientation
         let orientationTransform = currentFrame.displayTransform(

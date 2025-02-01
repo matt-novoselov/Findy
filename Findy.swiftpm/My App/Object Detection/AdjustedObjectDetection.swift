@@ -8,10 +8,8 @@
 import SwiftUI
 
 /// Adjusts observation bounding boxes from camera image coordinates to view coordinates
-func adjustObservations(
-    detectionResults: [ProcessedObservation],
-    geometrySize: CGSize,
-    cameraImageDimensions: CGSize) -> [ProcessedObservation] {
+func adjustObservations(detectionResults: [ProcessedObservation], cameraImageDimensions: CGSize) -> [ProcessedObservation] {
+    let geometrySize = UIScreen.main.bounds.size
     let scaleX = geometrySize.width / cameraImageDimensions.width
     let scaleY = geometrySize.height / cameraImageDimensions.height
     

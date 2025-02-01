@@ -14,7 +14,6 @@ struct ObjectFinderView: View {
     @Environment(ARCoordinator.self) private var arCoordinator
     @Environment(SpeechSynthesizer.self) private var speechSynthesizer
     
-    @State private var geometrySize: CGRect = .zero
     @State private var hasObjectBeenDetected: Bool = false
     
     var body: some View {
@@ -23,12 +22,6 @@ struct ObjectFinderView: View {
         arContainer
             .overlay {
                 DebugObjectDetectionView()
-            }
-        
-            .onGeometryChange(for: CGRect.self) { proxy in
-                proxy.frame(in: .global)
-            } action: { newValue in
-                self.geometrySize = newValue
             }
         
             .ignoresSafeArea()
@@ -60,7 +53,6 @@ struct ObjectFinderView: View {
             
             let adjustedResults = adjustObservations(
                 detectionResults: [result],
-                geometrySize: geometrySize.size,
                 cameraImageDimensions: appViewModel.cameraImageDimensions
             )
             
