@@ -18,7 +18,7 @@ struct ContentView: View {
                 SettingsView()
             }
             Tab(role: .search) {
-                Text("Search")
+                ImagePlaygroundView()
             }
         }
         .tabViewStyle(.tabBarOnly)
