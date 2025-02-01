@@ -11,11 +11,11 @@ struct ContentView: View {
     var body: some View {
         
         TabView {
-            Tab("Watch Now", systemImage: "play") {
+            Tab("Object Detection", systemImage: "xmark") {
                 ObjectFinderView()
             }
-            Tab("Library", systemImage: "books.vertical") {
-                Text("Library")
+            Tab("Settings", systemImage: "xmark") {
+                SettingsView()
             }
             Tab(role: .search) {
                 Text("Search")

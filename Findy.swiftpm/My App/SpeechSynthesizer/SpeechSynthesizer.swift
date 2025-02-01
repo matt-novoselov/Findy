@@ -12,6 +12,7 @@ import AVFoundation
 class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
     private let synthesizer = AVSpeechSynthesizer()
     private var utteranceQueue: [AVSpeechUtterance] = []
+    var speechSynthesizerPlaybackSpeed: Float = AVSpeechUtteranceDefaultSpeechRate
     
     override init() {
         super.init()
@@ -21,7 +22,7 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
     func speak(text: String) {
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(identifier: AppMetrics.speechVoiceIdentifier)
-        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+        utterance.rate = speechSynthesizerPlaybackSpeed
         enqueue(utterance)
     }
     
