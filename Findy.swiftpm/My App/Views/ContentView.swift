@@ -12,7 +12,7 @@ struct ContentView: View {
         
         TabView {
             Tab("Watch Now", systemImage: "play") {
-                Text("Watch Now")
+                ObjectFinderView()
             }
             Tab("Library", systemImage: "books.vertical") {
                 Text("Library")

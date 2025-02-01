@@ -39,7 +39,7 @@ struct FindyApp: App {
 
 struct ProxyBootstrapView: View {    
     var body: some View {
-        ObjectFinderView()
+        ContentView()
             .colorScheme(.dark)
             .persistentSystemOverlays(.hidden)
             .statusBarHidden()
