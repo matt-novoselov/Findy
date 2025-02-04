@@ -72,7 +72,9 @@ class ObjectDetection {
                 normalizedRect: objectObservation.boundingBox
             )
             
-            guard let label = objectObservation.labels.first?.identifier else {
+            // Check label validity and filter against blacklist
+            guard let label = objectObservation.labels.first?.identifier,
+                  !BlacklistObservation.items.contains(label) else {
                 return nil
             }
             
