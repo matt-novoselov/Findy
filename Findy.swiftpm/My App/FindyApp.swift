@@ -17,12 +17,23 @@ struct FindyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Group{
-                if appViewModel != nil, arCoordinator != nil {
-                    ProxyBootstrapView()
-                        .environment(appViewModel)
-                        .environment(arCoordinator)
-                        .environment(speechSynthesizer)
+            ZStack {
+                if isMacOS || isSimulator {
+                    ContentUnavailableView {
+                        Text("Findy App")
+                            .font(.title)
+                    } description: {
+                        Text("This app is unavailable on macOS and simulator. Please use iPad.")
+                    }
+                } else {
+                    if appViewModel != nil, arCoordinator != nil {
+                        ProxyBootstrapView()
+                            .environment(appViewModel)
+                            .environment(arCoordinator)
+                            .environment(speechSynthesizer)
+                    } else {
+                        ProgressView()
+                    }
                 }
             }
             .task{
@@ -37,6 +48,22 @@ struct FindyApp: App {
                 arCoordinator?.appViewModel = self.appViewModel
             }
         }
+    }
+    
+    private var isSimulator: Bool {
+        #if targetEnvironment(simulator)
+        return true
+        #else
+        return false
+        #endif
+    }
+    
+    private var isMacOS: Bool {
+        #if os(macOS)
+        return true
+        #else
+        return false
+        #endif
     }
 }
 
