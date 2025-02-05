@@ -18,7 +18,7 @@ struct FindyApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                if isMacOS || isSimulator {
+                if ProcessInfo.processInfo.isMacCatalystApp || isMacOS || isSimulator {
                     ContentUnavailableView {
                         Text("Findy App")
                             .font(.title)
