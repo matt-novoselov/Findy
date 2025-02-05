@@ -46,6 +46,14 @@ struct ObjectFinderView: View {
                 DebugView()
             }
         
+            .overlay{
+                Text(arCoordinator.currentMeasurement?.rotation.description ?? "N/A")
+            }
+        
+            .overlay{
+                arrowView(degrees: Double(arCoordinator.currentMeasurement?.rotation ?? 0))
+            }
+        
             .overlay(alignment: .topLeading){
                 @Bindable var appViewModel = appViewModel
                 
@@ -84,4 +92,15 @@ struct ObjectFinderView: View {
         }
     }
     
+}
+
+struct arrowView: View {
+    var degrees: Double = 0
+    
+    var body: some View {
+        Image(systemName: "arrow.up")
+            .rotationEffect(.init(degrees: -degrees))
+            .foregroundStyle(.blue)
+            .font(.largeTitle)
+    }
 }

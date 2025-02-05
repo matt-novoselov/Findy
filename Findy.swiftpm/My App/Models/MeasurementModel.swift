@@ -11,6 +11,7 @@ import ARKit
 // MARK: - Measurement Model
 struct Measurement: Equatable {
     let meterDistance: Float
+    let rotation: Float  // in degrees
 
     func formatDistance() -> String {
         if meterDistance >= 1 {

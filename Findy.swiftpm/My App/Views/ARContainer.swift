@@ -77,17 +77,36 @@ class ARCoordinator {
     
     // MARK: - Measurement Handling
     private func updateMeasurements() {
-        guard let arView, let currentFrame = arView.session.currentFrame, let anchor = trackedAnchor else {
+        guard let arView,
+              let currentFrame = arView.session.currentFrame,
+              let anchor = trackedAnchor else {
             currentMeasurement = nil
             return
         }
         
-        let cameraPosition = currentFrame.camera.transform.position
+        let cameraTransform = currentFrame.camera.transform
+        let cameraPosition = cameraTransform.position
         let anchorPosition = anchor.transform.translation
-        
         let distance = simd_distance(cameraPosition, anchorPosition)
+        
+        // Calculate the camera's forward vector (note: -Z is forward in ARKit)
+        let cameraForward = -simd_make_float3(cameraTransform.columns.2)
+        // Project to horizontal plane
+        let cameraForwardProjected = simd_normalize(simd_float3(cameraForward.x, 0, cameraForward.z))
+        
+        // Calculate direction vector from camera to anchor and project it
+        let direction = anchorPosition - cameraPosition
+        let directionProjected = simd_normalize(simd_float3(direction.x, 0, direction.z))
+        
+        // Compute the yaw difference using atan2
+        let cameraYaw = atan2(cameraForwardProjected.x, cameraForwardProjected.z)
+        let targetYaw = atan2(directionProjected.x, directionProjected.z)
+        let angleRadians = targetYaw - cameraYaw
+        let angleDegrees = angleRadians * 180 / .pi
+        
         currentMeasurement = Measurement(
-            meterDistance: distance
+            meterDistance: distance,
+            rotation: angleDegrees
         )
     }
     
