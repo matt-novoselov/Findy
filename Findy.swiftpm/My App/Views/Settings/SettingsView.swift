@@ -21,6 +21,19 @@ struct SettingsView: View {
             Toggle(isOn: $speechSynthesizer.isSpeechSynthesizerEnabled, label: { Text("Enable Speech Synthesizer") })
             
             Toggle(isOn: $appViewModel.isMetalDetectionSoundEnabled, label: { Text("Enable Metal Detection sound") })
+            
+            Button("Reset Object Detection"){
+                appViewModel.hasObjectBeenDetected.toggle()
+            }
+            
+            @Bindable var appViewModel = appViewModel
+            
+            Toggle("Debug", isOn: $appViewModel.isDebugMode)
+                .toggleStyle(.switch)
+                .padding()
+                .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
+                .padding()
+                .frame(width: 200)
         }
         .padding()
         

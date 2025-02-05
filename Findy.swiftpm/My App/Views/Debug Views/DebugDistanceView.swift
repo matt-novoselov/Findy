@@ -16,7 +16,7 @@ struct DebugDistanceView: View {
         Text(currentMeasurement?.formatDistance() ?? "N/A")
             .padding()
             .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
             .padding()
     }
 }

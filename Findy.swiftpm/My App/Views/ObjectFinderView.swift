@@ -14,8 +14,6 @@ struct ObjectFinderView: View {
     @Environment(ARCoordinator.self) private var arCoordinator
     @Environment(SpeechSynthesizer.self) private var speechSynthesizer
     
-    @State private var hasObjectBeenDetected: Bool = false
-    
     var body: some View {
         let arContainer: ARContainer = .init(coordinator: arCoordinator)
         
@@ -26,14 +24,8 @@ struct ObjectFinderView: View {
         
             .overlay{
                 RoundedRectangle(cornerRadius: getCornerRadius())
-                    .stroke(.green, lineWidth: hasObjectBeenDetected ? 10 : 0, antialiased: true)
-                    .animation(.spring, value: hasObjectBeenDetected)
-            }
-        
-            .overlay{
-                Button("Reset Object Detection"){
-                    hasObjectBeenDetected.toggle()
-                }
+                    .stroke(.green, lineWidth: appViewModel.hasObjectBeenDetected ? 10 : 0, antialiased: true)
+                    .animation(.spring, value: appViewModel.hasObjectBeenDetected)
             }
         
             .ignoresSafeArea()
@@ -47,24 +39,8 @@ struct ObjectFinderView: View {
             }
         
             .overlay{
-                Text(arCoordinator.currentMeasurement?.rotation.description ?? "N/A")
-            }
-        
-            .overlay{
                 arrowView(degrees: Double(arCoordinator.currentMeasurement?.rotation ?? 0))
             }
-        
-            .overlay(alignment: .topLeading){
-                @Bindable var appViewModel = appViewModel
-                
-                Toggle("Debug", isOn: $appViewModel.isDebugMode)
-                    .toggleStyle(.switch)
-                    .padding()
-                    .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
-                    .padding()
-                    .frame(width: 200)
-            }
-        
     }
     
     func shootRaycastAtDetectedResult() {
@@ -80,14 +56,14 @@ struct ObjectFinderView: View {
                 arCoordinator.handleRaycast(at: .init(x: debugBox.midX, y: debugBox.midY))
             }
             
-            if !hasObjectBeenDetected{
+            if !appViewModel.hasObjectBeenDetected{
                 speechSynthesizer.speak(text: "\(appViewModel.targetDetectionObject) detected!")
                 
                 if let distance = arCoordinator.currentMeasurement?.formatDistance(){
                     speechSynthesizer.speak(text: "\(appViewModel.targetDetectionObject) is \(distance) away.")
                 }
 
-                hasObjectBeenDetected = true
+                appViewModel.hasObjectBeenDetected = true
             }
         }
     }

@@ -13,4 +13,5 @@ class AppViewModel {
     var cameraImageDimensions: CGSize = .init()
     var targetDetectionObject: String = "bottle"
     var isMetalDetectionSoundEnabled: Bool = true
+    var hasObjectBeenDetected: Bool = false
 }
