@@ -39,7 +39,15 @@ struct ObjectFinderView: View {
             }
         
             .overlay{
-                arrowView(degrees: Double(arCoordinator.currentMeasurement?.rotation ?? 0))
+                if let degrees = arCoordinator.currentMeasurement?.rotation {
+                    VStack{
+                        ArrowView(degrees: Double(degrees))
+
+                        Text("Pointing: \(getDirection(degrees: Double(degrees)))")
+                            .padding()
+                            .font(.title)
+                    }
+                }
             }
     }
     
@@ -70,13 +78,3 @@ struct ObjectFinderView: View {
     
 }
 
-struct arrowView: View {
-    var degrees: Double = 0
-    
-    var body: some View {
-        Image(systemName: "arrow.up")
-            .rotationEffect(.init(degrees: -degrees))
-            .foregroundStyle(.blue)
-            .font(.largeTitle)
-    }
-}
