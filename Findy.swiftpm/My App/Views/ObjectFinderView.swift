@@ -80,7 +80,7 @@ struct ObjectFinderView: View {
         }
 
         // Perform raycast and handle detection announcement
-        let raycastPoint = CGPoint(x: selectedObservation.boundingBox.midX, y: selectedObservation.boundingBox.midY)
+        let raycastPoint = CGPoint(x: selectedObservation.boundingBox.midX, y: selectedObservation.boundingBox.minY)
         arCoordinator.handleRaycast(at: raycastPoint)
 
         if !appViewModel.hasObjectBeenDetected {
