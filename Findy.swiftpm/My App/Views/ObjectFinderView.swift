@@ -43,6 +43,14 @@ struct ObjectFinderView: View {
             }
         
             .overlay{
+                CameraShutterButton(action: {
+                    print("Photo taken!")
+                })
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+            }
+        
+            .overlay{
                 if let degrees = arCoordinator.currentMeasurement?.rotation {
                     VStack{
                         ArrowView(degrees: Double(degrees))
