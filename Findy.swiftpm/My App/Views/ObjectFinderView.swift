@@ -52,25 +52,42 @@ struct ObjectFinderView: View {
     }
     
     func shootRaycastAtDetectedResult() {
-        for result in arCoordinator.detectionResults {
-            guard result.label == appViewModel.targetDetectionObject else { return }
-            
+        let targetObject = appViewModel.targetDetectionObject
+        let matchingResults = arCoordinator.detectionResults.filter { $0.label == targetObject }
+        
+        guard !matchingResults.isEmpty else { return }
+        
+        var maxArea: CGFloat = 0
+        var selectedAdjustedObservation: ProcessedObservation?
+        
+        // Process each matching result to find the one with the largest adjusted bounding box
+        for result in matchingResults {
             let adjustedResults = adjustObservations(
                 detectionResults: [result],
                 cameraImageDimensions: appViewModel.cameraImageDimensions
             )
             
-            if let debugBox = adjustedResults.first?.boundingBox {
-                arCoordinator.handleRaycast(at: .init(x: debugBox.midX, y: debugBox.midY))
-            }
+            guard let adjustedResult = adjustedResults.first else { continue }
             
-            if !appViewModel.hasObjectBeenDetected{
-                speechSynthesizer.speak(text: "\(appViewModel.targetDetectionObject) detected!")
+            let currentArea = adjustedResult.boundingBox.width * adjustedResult.boundingBox.height
+            if currentArea > maxArea {
+                maxArea = currentArea
+                selectedAdjustedObservation = adjustedResult
+            }
+        }
+        
+        // Perform raycast and handle detection announcement
+        if let selected = selectedAdjustedObservation {
+            let raycastPoint = CGPoint(x: selected.boundingBox.midX, y: selected.boundingBox.midY)
+            arCoordinator.handleRaycast(at: raycastPoint)
+            
+            if !appViewModel.hasObjectBeenDetected {
+                speechSynthesizer.speak(text: "\(targetObject) detected!")
                 
-                if let distance = arCoordinator.currentMeasurement?.formatDistance(){
-                    speechSynthesizer.speak(text: "\(appViewModel.targetDetectionObject) is \(distance) away.")
+                if let distance = arCoordinator.currentMeasurement?.formatDistance() {
+                    speechSynthesizer.speak(text: "\(targetObject) is \(distance) away.")
                 }
-
+                
                 appViewModel.hasObjectBeenDetected = true
             }
         }
