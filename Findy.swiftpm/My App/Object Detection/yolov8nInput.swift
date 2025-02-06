@@ -114,7 +114,7 @@ class yolov8n {
     
     /// URL of model assuming it was installed in the same bundle as this class
     class var urlOfModelInThisBundle : URL {
-        let resPath = Bundle(for: self).url(forResource: "YOLO8", withExtension: "zip")!
+        let resPath = Bundle(for: self).url(forResource: "YOLO8", withExtension: nil)!
         return try! MLModel.compileModel(at: resPath)
     }
     
