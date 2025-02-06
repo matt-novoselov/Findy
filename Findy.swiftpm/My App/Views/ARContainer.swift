@@ -179,28 +179,53 @@ class ARCoordinator {
         setupNewTracking(with: query)
     }
     
+    private func addFloatingAnimation(to entity: Entity, offset: Float = 0.05, duration: TimeInterval = 3.0) {
+        let originalTransform = entity.transform
+        var upTransform = originalTransform
+        upTransform.translation.y += offset
+
+        // Move entity upward
+        _ = entity.move(to: upTransform, relativeTo: entity.parent, duration: duration, timingFunction: .easeInOut)
+        
+        // After the upward animation, move back down
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) { [weak self, weak entity] in
+            guard let self = self, let entity = entity else { return }
+            _ = entity.move(to: originalTransform, relativeTo: entity.parent, duration: duration, timingFunction: .easeInOut)
+            
+            // Loop the animation after moving back down
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+                self.addFloatingAnimation(to: entity, offset: offset, duration: duration)
+            }
+        }
+    }
+
+    // In your setupNewTracking function, right after adding the arrowEntity:
     private func setupNewTracking(with query: ARRaycastQuery) {
         guard let arView else { return }
         
         // Create visual indicator
-        let sphereEntity = debugSphere(color: .red)
+        let arrow = arrowEntity()
         let newAnchor = AnchorEntity()
-        newAnchor.addChild(sphereEntity)
+        newAnchor.addChild(arrow)
         arView.scene.addAnchor(newAnchor)
         trackedAnchor = newAnchor
         
+        // Start floating animation on the arrow
+        addFloatingAnimation(to: arrow)
+        
         // Start continuous tracking
-        activeRaycast = arView.session.trackedRaycast(query) {
-            [weak self, weak newAnchor] results in
+        activeRaycast = arView.session.trackedRaycast(query) { [weak self, weak newAnchor] results in
             guard let self, let newAnchor else { return }
             
             if let result = results.first {
                 newAnchor.transform = Transform(matrix: result.worldTransform)
+                newAnchor.transform.rotation = .init()
             } else {
                 self.cleanupPreviousTracking()
             }
         }
     }
+
     
     // MARK: - Cleanup
     private func cleanupPreviousTracking() {
