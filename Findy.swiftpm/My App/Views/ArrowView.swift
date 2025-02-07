@@ -13,38 +13,17 @@ struct ArrowView: View {
     var body: some View {
         Image(systemName: "arrow.up")
             .font(.system(size: 180, weight: .heavy))
-            .overlay{
-                Image(systemName: "circle.fill")
-                    .font(.title)
-                    .offset(y: -160)
-            }
             .rotationEffect(.init(degrees: -degrees))
-            .background{
-                Image(systemName: "circle.fill")
-                    .font(.title)
-                    .offset(y: -160)
-            }
             .background{
                 CircularProgressView(degrees: -degrees)
                     .padding(-65)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .overlay{
+                LiquidCirclesView(offset: degrees)
+            }
+
     }
-}
-
-extension View {
-    @inlinable func reverseMask<Mask: View>(
-        alignment: Alignment = .center,
-        @ViewBuilder _ mask: () -> Mask
-    ) -> some View {
-            self.mask(
-                ZStack {
-                    Rectangle()
-
-                    mask()
-                        .blendMode(.destinationOut)
-                }
-            )
-        }
 }
 
 #Preview{
@@ -101,7 +80,7 @@ struct CircularProgressView: View {
             endAngle: endAngle,
             clockwise: isClockwise
         )
-        .stroke(Color.black.tertiary, style: StrokeStyle(lineWidth: 20, lineCap: .round))
+        .stroke(.white.secondary, style: StrokeStyle(lineWidth: 20, lineCap: .round))
         .animation(.easeOut, value: degrees)
         .rotationEffect(.degrees(-90))
         .opacity(abs(degrees) < adjustment*2 ? 0 : 1)
