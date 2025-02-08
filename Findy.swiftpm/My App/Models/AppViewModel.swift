@@ -14,4 +14,6 @@ class AppViewModel {
     var targetDetectionObject: String = "bottle"
     var isMetalDetectionSoundEnabled: Bool = true
     var hasObjectBeenDetected: Bool = false
+    var isAnyObjectDetected: Bool = false
+    var takenPhotos: [CGImage] = []
 }

@@ -7,12 +7,15 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ObjectFinderView: View {
     
     @Environment(AppViewModel.self) private var appViewModel
     @Environment(ARCoordinator.self) private var arCoordinator
     @Environment(SpeechSynthesizer.self) private var speechSynthesizer
+    
+    @State private var cameraShutterToggle: Bool = false
     
     var body: some View {
         let arContainer: ARContainer = .init(coordinator: arCoordinator)
@@ -32,6 +35,10 @@ struct ObjectFinderView: View {
                     .animation(.spring, value: appViewModel.hasObjectBeenDetected)
             }
         
+            .overlay{
+                CameraShutterView(isShutterActive: $cameraShutterToggle)
+            }
+        
             .ignoresSafeArea()
         
             .onChange(of: arCoordinator.detectionResults) {
@@ -43,9 +50,15 @@ struct ObjectFinderView: View {
             }
         
             .overlay{
+                PhotoCollectionView()
+            }
+        
+            .overlay{
                 CameraShutterButton(action: {
-                    print("Photo taken!")
+                    takePhoto()
                 })
+                .disabled(appViewModel.isAnyObjectDetected ? false : true)
+                .opacity(appViewModel.isAnyObjectDetected ? 1 : 0.2)
                 .padding()
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
             }
@@ -59,8 +72,23 @@ struct ObjectFinderView: View {
                             .padding()
                             .font(.title)
                     }
+                    .allowsHitTesting(false)
                 }
             }
+    }
+    
+    func takePhoto(){
+        // Play shutter animation
+        cameraShutterToggle.toggle()
+        
+        // Play shutter sound
+        AudioServicesPlaySystemSound(1108)
+        
+        if appViewModel.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity {
+            if let capturedImage = arCoordinator.normalizedCaptureImage?.toCGImage() {
+                appViewModel.takenPhotos.append(capturedImage)
+            }
+        }
     }
     
     func shootRaycastAtDetectedResult() {
@@ -102,14 +130,21 @@ struct ObjectFinderView: View {
 ///   - observations: Array of ProcessedObservation to filter
 ///   - targetObject: The target object name to filter by
 /// - Returns: The ProcessedObservation with the largest bounding box area for the target object
-func selectMostProminentObservation(from observations: [ProcessedObservation], targetObject: String) -> ProcessedObservation? {
-    // Filter observations by target object
-    let filteredObservations = observations.filter { $0.label == targetObject }
+func selectMostProminentObservation(from observations: [ProcessedObservation], targetObject: String? = nil) -> ProcessedObservation? {
     
-    guard !filteredObservations.isEmpty else {
-        return nil
+    let filteredObservations: [ProcessedObservation]
+    
+    if (targetObject != nil){
+        // Filter observations by target object
+        filteredObservations = observations.filter { $0.label == targetObject }
+        
+        guard !filteredObservations.isEmpty else {
+            return nil
+        }
+    } else {
+        filteredObservations = observations
     }
-    
+
     // If only one observation, return it immediately
     guard filteredObservations.count > 1 else {
         return filteredObservations.first

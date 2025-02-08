@@ -18,8 +18,7 @@ struct FocusBoxParentView: View {
         )
         
         let mostProminentResult = selectMostProminentObservation(
-            from: adjustedResults,
-            targetObject: appViewModel.targetDetectionObject
+            from: adjustedResults
         )
         
         if let selectedResult = mostProminentResult {
@@ -30,6 +29,12 @@ struct FocusBoxParentView: View {
                     appViewModel.cameraImageDimensions.height,
                     contentMode: .fit
                 )
+                .onAppear{
+                    appViewModel.isAnyObjectDetected = true
+                }
+                .onDisappear{
+                    appViewModel.isAnyObjectDetected = false
+                }
         }
     }
 }
