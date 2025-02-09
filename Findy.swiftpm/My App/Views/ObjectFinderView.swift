@@ -79,16 +79,7 @@ struct ObjectFinderView: View {
             }
         
             .overlay{
-                if let degrees = arCoordinator.currentMeasurement?.rotation {
-                    VStack{
-                        ArrowView(degrees: Double(degrees))
-
-                        Text("Pointing: \(getDirection(degrees: Double(degrees)))")
-                            .padding()
-                            .font(.title)
-                    }
-                    .allowsHitTesting(false)
-                }
+                DynamicFontMeasurementsView(numberValue: 0.0, measurementString: "m")
             }
     }
     

@@ -68,11 +68,13 @@ struct GenerationAnimationView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
+#if canImport(CreateML)
             do {
                 imageClassifierModel = try await trainModel()
             } catch {
                 print(error)
             }
+#endif
         }
         .onAppear {
             withAnimation{
