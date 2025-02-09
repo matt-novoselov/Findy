@@ -36,26 +36,16 @@ struct ObjectFinderView: View {
 //            )
 //            .blur(radius: 20)
         
-//            .overlay {
-//                DebugObjectDetectionView()
-//            }
-//        
-//            .overlay{
-//                FocusBoxParentView()
-//            }
+            .overlay {
+                DebugObjectDetectionView()
+            }
+       
+            .overlay{
+                FocusBoxParentView()
+            }
         
             .overlay{
-                ZStack{
-                    RoundedRectangle(cornerRadius: getCornerRadius())
-                        .stroke(.red, lineWidth: appViewModel.hasObjectBeenDetected ? 10 : 0, antialiased: true)
-                        .animation(.spring, value: appViewModel.hasObjectBeenDetected)
-                        .blur(radius: 10)
-
-                    RoundedRectangle(cornerRadius: getCornerRadius())
-                        .stroke(.green, lineWidth: appViewModel.hasObjectBeenDetected ? 10 : 0, antialiased: true)
-                        .animation(.spring, value: appViewModel.hasObjectBeenDetected)
-                }
-
+                GlowingEdgesView()
             }
         
             .overlay{
