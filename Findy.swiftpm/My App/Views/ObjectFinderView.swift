@@ -36,18 +36,32 @@ struct ObjectFinderView: View {
 //            )
 //            .blur(radius: 20)
         
-            .overlay {
-                DebugObjectDetectionView()
+//            .overlay {
+//                DebugObjectDetectionView()
+//            }
+//        
+//            .overlay{
+//                FocusBoxParentView()
+//            }
+        
+            .overlay{
+                ZStack{
+                    RoundedRectangle(cornerRadius: getCornerRadius())
+                        .stroke(.red, lineWidth: appViewModel.hasObjectBeenDetected ? 10 : 0, antialiased: true)
+                        .animation(.spring, value: appViewModel.hasObjectBeenDetected)
+                        .blur(radius: 10)
+
+                    RoundedRectangle(cornerRadius: getCornerRadius())
+                        .stroke(.green, lineWidth: appViewModel.hasObjectBeenDetected ? 10 : 0, antialiased: true)
+                        .animation(.spring, value: appViewModel.hasObjectBeenDetected)
+                }
+
             }
         
             .overlay{
-                FocusBoxParentView()
-            }
-        
-            .overlay{
-                RoundedRectangle(cornerRadius: getCornerRadius())
-                    .stroke(.green, lineWidth: appViewModel.hasObjectBeenDetected ? 10 : 0, antialiased: true)
-                    .animation(.spring, value: appViewModel.hasObjectBeenDetected)
+                if let currentMeasurement = arContainer.coordinator.currentMeasurement{
+                    ArrowView(degrees: Double(currentMeasurement.rotation))
+                }
             }
         
             .overlay{
@@ -61,7 +75,10 @@ struct ObjectFinderView: View {
             }
         
             .overlay{
-                DebugView()
+                if appViewModel.isDebugMode {
+                    DebugCaptureView()
+                        .allowsHitTesting(false)
+                }
             }
         
             .overlay{
@@ -79,7 +96,11 @@ struct ObjectFinderView: View {
             }
         
             .overlay{
-                DynamicFontMeasurementsView(numberValue: 0.0, measurementString: "m")
+                if let currentMeasurement = arContainer.coordinator.currentMeasurement{
+                    DynamicFontMeasurementsView(numberValue: currentMeasurement.numericValue, measurementString: currentMeasurement.unitSymbol, text2: getDirection(degrees: Double(currentMeasurement.rotation)))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                        .padding()
+                }
             }
     }
     
@@ -120,7 +141,7 @@ struct ObjectFinderView: View {
         if !appViewModel.hasObjectBeenDetected {
             speechSynthesizer.speak(text: "\(targetObject) detected!")
             
-            if let distance = arCoordinator.currentMeasurement?.formatDistance() {
+            if let distance = arCoordinator.currentMeasurement?.formattedValue {
                 speechSynthesizer.speak(text: "\(targetObject) is \(distance) away.")
             }
             

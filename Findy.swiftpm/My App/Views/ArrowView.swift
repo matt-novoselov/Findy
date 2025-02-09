@@ -95,11 +95,11 @@ func getDirection(degrees: Double) -> String {
     if (0...45).contains(angle) || (315...360).contains(angle) {
         return "Ahead"
     } else if (225...315).contains(angle) {
-        return "Right"
+        return "To the right"
     } else if (135...225).contains(angle) {
         return "Behind"
     } else {
-        return "Left"
+        return "To the left"
     }
 }
 

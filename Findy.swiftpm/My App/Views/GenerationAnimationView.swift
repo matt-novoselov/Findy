@@ -60,7 +60,7 @@ struct GenerationAnimationView: View {
             if (imageClassifierModel != nil) {
                 Button("Predict"){
                     let prediction = try! imageClassifierModel?.prediction(from: appViewModel.lastCroppedImage!)
-                    print(prediction?.description)
+                    print(prediction?.debugDescription)
                 }
             }
 #endif

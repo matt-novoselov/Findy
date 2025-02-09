@@ -31,7 +31,7 @@ class ARCoordinator {
     private var metalDetector: MetalDetector = .init()
     
     // Measurement state
-    private(set) var currentMeasurement: Measurement?
+    private(set) var currentMeasurement: SceneMeasurement?
     
     // Object Detection
     private(set) var detectionResults: [ProcessedObservation] = []
@@ -104,7 +104,7 @@ class ARCoordinator {
         let angleRadians = targetYaw - cameraYaw
         let angleDegrees = angleRadians * 180 / .pi
         
-        currentMeasurement = Measurement(
+        currentMeasurement = SceneMeasurement(
             meterDistance: distance,
             rotation: angleDegrees
         )

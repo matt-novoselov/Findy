@@ -13,34 +13,37 @@ struct DynamicFontMeasurementsView: View {
     
     var numberValue: Double
     var measurementString: String
+    var text2: String
 
     var body: some View {
-        HStack(spacing: 0){
-            let formattedText = String(format: "%.2f", numberValue)
-            let fullText = "\(formattedText) \(measurementString)"
-            Text(formattedText)
-                .font(text2Width > 0 ? Font(customFont(targetWidth: text2Width, text: fullText)) : .largeTitle)
-                .contentTransition(.numericText(value: numberValue))
-                .animation(.spring, value: numberValue)
-            
-            Text(" \(measurementString)")
-                .font(text2Width > 0 ? Font(customFont(targetWidth: text2Width, text: fullText)) : .largeTitle)
-                .foregroundStyle(.secondary)
-        }
-        .onGeometryChange(for: CGSize.self) { proxy in
-             proxy.size
-         } action: {
-             self.text1Width = $0.width
-         }
-
-        Text("to your right")
-            .font(.title)
-            .fontWeight(.bold)
+        VStack{
+            HStack(spacing: 0){
+                let formattedText = String(format: "%.2f", numberValue)
+                let fullText = "\(formattedText) \(measurementString)"
+                Text(formattedText)
+                    .font(text2Width > 0 ? Font(customFont(targetWidth: text2Width, text: fullText)) : .largeTitle)
+                    .contentTransition(.numericText(value: numberValue))
+                    .animation(.spring, value: numberValue)
+                
+                Text(" \(measurementString)")
+                    .font(text2Width > 0 ? Font(customFont(targetWidth: text2Width, text: fullText)) : .largeTitle)
+                    .foregroundStyle(.secondary)
+            }
             .onGeometryChange(for: CGSize.self) { proxy in
                  proxy.size
              } action: {
-                 self.text2Width = $0.width
+                 self.text1Width = $0.width
              }
+
+            Text(text2.lowercased())
+                .font(.title)
+                .fontWeight(.bold)
+                .onGeometryChange(for: CGSize.self) { proxy in
+                     proxy.size
+                 } action: {
+                     self.text2Width = $0.width
+                 }
+        }
     }
 
     // Compute a UIFont with a width parameter that makes "4.2 m" roughly match the target width.
@@ -48,7 +51,6 @@ struct DynamicFontMeasurementsView: View {
         let fontSize = UIFont.preferredFont(forTextStyle: .largeTitle).pointSize
         let weight = UIFont.Weight.black
         let adjustedWidth = findWidthParameter(for: text, targetWidth: targetWidth, fontSize: fontSize, weight: weight)
-        print(adjustedWidth)
         return UIFont.systemFont(ofSize: fontSize, weight: weight, width: adjustedWidth)
     }
 
