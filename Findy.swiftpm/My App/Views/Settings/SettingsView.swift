@@ -10,7 +10,9 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(SpeechSynthesizer.self) private var speechSynthesizer
     @Environment(AppViewModel.self) private var appViewModel
+#if canImport(CreateML)
     @State private var imageClassifierModel: MLImageClassifier?
+#endif
     var body: some View {
         @Bindable var speechSynthesizer = speechSynthesizer
         @Bindable var appViewModel = appViewModel

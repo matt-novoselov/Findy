@@ -17,6 +17,9 @@ struct ContentView: View {
             Tab("Settings", systemImage: "xmark") {
                 SettingsView()
             }
+            Tab("Settings2", systemImage: "xmark") {
+                GenerationAnimationView()
+            }
             Tab(role: .search) {
                 ImagePlaygroundView()
             }

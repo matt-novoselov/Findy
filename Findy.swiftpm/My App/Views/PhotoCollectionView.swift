@@ -29,9 +29,9 @@ struct ImageCollectionView: View {
     var body: some View {
         Image(decorative: photo, scale: 20)
             .resizable()
-            .aspectRatio(1, contentMode: .fill)
+            .scaledToFill()
             .frame(width: 100, height: 100)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .clipShape(.rect(cornerRadius: 10))
             .rotationEffect(.degrees(index % 2 == 0 ? 5 : -5))
             .offset(x: CGFloat(index) * 8, y: CGFloat(index) * 8)
             .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
