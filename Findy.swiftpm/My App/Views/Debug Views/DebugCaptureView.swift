@@ -44,6 +44,7 @@ struct DebugCaptureView: View {
 struct CroppedImage: View {
     let cgImage: CGImage
     let cropRect: CGRect
+    @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
         Image(uiImage: UIImage(cgImage: cropImage(cgImage, to: cropRect)!))
@@ -53,6 +54,7 @@ struct CroppedImage: View {
     
     func cropImage(_ image: CGImage, to rect: CGRect) -> CGImage? {
         guard rect.size.width > 0, rect.size.height > 0 else { return nil }
+        appViewModel.lastCroppedImage = image.cropping(to: rect)
         return image.cropping(to: rect)
     }
 }

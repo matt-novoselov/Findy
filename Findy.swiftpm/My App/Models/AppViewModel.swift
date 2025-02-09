@@ -16,4 +16,5 @@ class AppViewModel {
     var hasObjectBeenDetected: Bool = false
     var isAnyObjectDetected: Bool = false
     var takenPhotos: [CGImage] = []
+    var lastCroppedImage: CGImage?
 }
