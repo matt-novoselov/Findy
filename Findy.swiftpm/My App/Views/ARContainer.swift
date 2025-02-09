@@ -122,7 +122,7 @@ class ARCoordinator {
         // Get interface orientation for image transformation
         guard let interfaceOrientation = arView?.window?.windowScene?.interfaceOrientation else {
             detectionResults = []
-            print("[ObjectDetection] Error: Failed to get interface orientation")
+//            print("[ObjectDetection] Error: Failed to get interface orientation")
             return
         }
 

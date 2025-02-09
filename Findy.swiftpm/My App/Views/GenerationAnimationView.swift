@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GenerationAnimationView: View {
-//    @State private var arrayOfImages: [CGImage] = []
+
     @State private var shouldAnimate: Bool = false
     let columns = Array(repeating: GridItem(.fixed(100)), count: 3)
     @State private var ScaleOverTime: Bool = false
@@ -17,6 +17,11 @@ struct GenerationAnimationView: View {
     @State private var transition2: Bool = false
     
     @Environment(AppViewModel.self) private var appViewModel
+    
+#if canImport(CreateML)
+    @State private var imageClassifierModel: MLImageClassifier?
+#endif
+    
     
     var body: some View {
         VStack {
@@ -51,8 +56,24 @@ struct GenerationAnimationView: View {
                 .opacity(transition ? 0 : 1)
             }
             
+#if canImport(CreateML)
+            if (imageClassifierModel != nil) {
+                Button("Predict"){
+                    let prediction = try! imageClassifierModel?.prediction(from: appViewModel.lastCroppedImage!)
+                    print(prediction?.description)
+                }
+            }
+#endif
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .task {
+            do {
+                imageClassifierModel = try await trainModel()
+            } catch {
+                print(error)
+            }
+        }
         .onAppear {
             withAnimation{
                 shouldAnimate.toggle()
@@ -79,22 +100,6 @@ struct GenerationAnimationView: View {
             }
         }
     }
-    
-//    func loadImageAsync() {
-//        let arrayOfImages: [ImageResource] = [.im1, .im2, .im3, .im4, .im5]
-//        for image in arrayOfImages {
-//            loadImage(from: image)
-//        }
-//    }
-//    
-//    func loadImage(from imageResource: ImageResource) {
-//        let inputImage = UIImage(resource: imageResource)
-//        if
-//            let beginImage = CIImage(image: inputImage),
-//            let finalImage = beginImage.toCGImage() {
-//            arrayOfImages.append(finalImage)
-//        }
-//    }
 }
 
 struct ImageCollectionView2: View {
@@ -181,7 +186,58 @@ struct ImageCollectionView2: View {
     }
 }
 
-//
-//#Preview {
-//    GenerationAnimationView()
-//}
+#if canImport(CreateML)
+import CreateML
+import CoreML
+func trainModel() async throws -> MLImageClassifier {
+    // 1. Get all jpg file URLs from the main bundle.
+    guard let jpgURLs = Bundle.main.urls(forResourcesWithExtension: "jpg", subdirectory: nil) else {
+        throw NSError(
+            domain: "ModelTraining",
+            code: 1,
+            userInfo: [NSLocalizedDescriptionKey: "No jpg files found in the bundle"]
+        )
+    }
+
+    // 2. Filter to files whose name starts with "GeneralObject".
+    let generalObjectURLs = jpgURLs.filter { $0.lastPathComponent.hasPrefix("GeneralObject") }
+    
+    // 1. Get all png file URLs from the main bundle.
+    guard let pngURLs = Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: nil) else {
+        throw NSError(
+            domain: "ModelTraining",
+            code: 2,
+            userInfo: [NSLocalizedDescriptionKey: "No png files found in the bundle"]
+        )
+    }
+
+    // 2. Filter to files whose name starts with "myObject".
+    let myObjectURLs = pngURLs.filter { $0.lastPathComponent.hasPrefix("myObject") }
+
+    // 3. Create the dictionary
+    let generalObjectsDict: [String: [URL]] = [
+        "GeneralObject": generalObjectURLs,
+        "myObject": myObjectURLs
+    ]
+
+    let dataset: MLImageClassifier.DataSource = .filesByLabel(generalObjectsDict)
+
+    let trainParameters: MLImageClassifier.ModelParameters = .init(
+        validation: .split(strategy: .automatic),
+        maxIterations: 100,
+        augmentation: [.blur, .exposure, .flip, .noise, .rotation]
+    )
+    
+    // Use Task to perform the heavy computation
+    return try await Task.detached(priority: .userInitiated) {
+        let imageClassifierModel = try MLImageClassifier(
+            trainingData: dataset,
+            parameters: trainParameters
+        )
+        
+        print("Model training done")
+        return imageClassifierModel
+    }.value
+}
+
+#endif
