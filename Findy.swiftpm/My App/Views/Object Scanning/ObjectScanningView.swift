@@ -51,7 +51,7 @@ struct ObjectScanningView: View {
         
             // MARK: Model Training View
             .fullScreenCover(isPresented: $isTrainingCoverPresented){
-                ModelTrainingView()
+                ModelTrainingView(isTrainingCoverPresented: $isTrainingCoverPresented)
             }
     }
 }

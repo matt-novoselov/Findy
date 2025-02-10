@@ -4,13 +4,19 @@ import CreateML
 #endif
 
 struct ModelTrainingView: View {
+    @Binding var isTrainingCoverPresented: Bool
+    
+    init(isTrainingCoverPresented: Binding<Bool>) {
+        self._isTrainingCoverPresented = isTrainingCoverPresented
+    }
+    
     @Environment(AppViewModel.self) private var appViewModel
     @State private var shouldAnimate = false
     @State private var scaleOverTime = false
     @State private var isProcessingComplete = false
     @State private var showCheckmark = false
     @State private var animateCheckmark = false
-    
+
     // MARK: Meet requirement
     @State private var hasBaseAnimationFinished = false
     @State private var hasModelTrainingFinished = false
@@ -31,7 +37,10 @@ struct ModelTrainingView: View {
                 imageGridView
             }
             
-            predictionButton
+            Button("Try to find an item"){
+                isTrainingCoverPresented = false
+                appViewModel.state = .searching
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task {
@@ -83,15 +92,15 @@ struct ModelTrainingView: View {
         .opacity(showCheckmark ? 0 : 1)
     }
     
-    private var predictionButton: some View {
-        Button("Predict") {
-            #if canImport(CreateML)
-            guard let image = appViewModel.lastCroppedImage else { return }
-            let prediction = try? appViewModel.imageClassifier?.prediction(from: image)
-            print(prediction?.debugDescription ?? "N/A predicton")
-            #endif
-        }
-    }
+//    private var predictionButton: some View {
+//        Button("Predict") {
+//            #if canImport(CreateML)
+//            guard let image = appViewModel.lastCroppedImage else { return }
+//            let prediction = try? appViewModel.imageClassifier?.prediction(from: image)
+//            print(prediction?.debugDescription ?? "N/A predicton")
+//            #endif
+//        }
+//    }
     
     // MARK: - Actions
     private func startAnimations() {
