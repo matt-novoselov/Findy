@@ -1,10 +1,3 @@
-//
-//  TestRealityKitApp.swift
-//  TestRealityKit
-//
-//  Created by Matt Novoselov on 24/01/25.
-//
-
 import SwiftUI
 
 @main
@@ -23,7 +16,7 @@ struct FindyApp: App {
                         Text("Findy App")
                             .font(.title)
                     } description: {
-                        Text("This app is unavailable on macOS and simulator. Please use iPad.")
+                        Text("This app isn't available on macOS or the simulator.\nFor the best experience, please use **Swift Playground 4.6 on iPad.**")
                     }
                 } else {
                     if appViewModel != nil, arCoordinator != nil {
@@ -46,6 +39,7 @@ struct FindyApp: App {
                 // Set weak vars
                 objectDetection?.appViewModel = self.appViewModel
                 arCoordinator?.appViewModel = self.appViewModel
+                arCoordinator?.speechSynthesizer = self.speechSynthesizer
             }
         }
     }

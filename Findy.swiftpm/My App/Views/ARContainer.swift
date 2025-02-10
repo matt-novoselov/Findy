@@ -1,15 +1,47 @@
-//
-//  ARContainer.swift
-//  TestRealityKit
-//
-//  Created by Matt Novoselov on 25/01/25.
-//
-
 import ARKit
 import RealityKit
 import SwiftUI
 import Combine
 
+/// Filters and selects the most prominent ProcessedObservation based on target object and bounding box area
+/// - Parameters:
+///   - observations: Array of ProcessedObservation to filter
+///   - targetObject: The target object name to filter by
+/// - Returns: The ProcessedObservation with the largest bounding box area for the target object
+func selectMostProminentObservation(from observations: [ProcessedObservation], targetObject: String? = nil) -> ProcessedObservation? {
+    
+    let filteredObservations: [ProcessedObservation]
+    
+    if (targetObject != nil){
+        // Filter observations by target object
+        filteredObservations = observations.filter { $0.label == targetObject }
+        
+        guard !filteredObservations.isEmpty else {
+            return nil
+        }
+    } else {
+        filteredObservations = observations
+    }
+
+    // If only one observation, return it immediately
+    guard filteredObservations.count > 1 else {
+        return filteredObservations.first
+    }
+    
+    var maxArea: CGFloat = 0
+    var mostProminentObservation: ProcessedObservation?
+    
+    // Find observation with largest bounding box area
+    for observation in filteredObservations {
+        let area = observation.boundingBox.width * observation.boundingBox.height
+        if area > maxArea {
+            maxArea = area
+            mostProminentObservation = observation
+        }
+    }
+    
+    return mostProminentObservation
+}
 
 func checkLightingLevel(frame: ARFrame) {
     let lowThreshold: CGFloat = 500
@@ -62,6 +94,7 @@ class ARCoordinator {
     public var normalizedCaptureImage: CIImage?
     
     weak var appViewModel: AppViewModel?
+    weak var speechSynthesizer: SpeechSynthesizer?
     
     init(objectDetection: ObjectDetection) {
         self.objectDetection = objectDetection
@@ -70,6 +103,41 @@ class ARCoordinator {
     
     deinit {
         cleanUpResources()
+    }
+    
+    @MainActor
+    func shootRaycastAtDetectedResult() {
+        guard let appViewModel = objectDetection.appViewModel else { return }
+        
+        let targetObject = appViewModel.targetDetectionObject
+        let matchingResults = self.detectionResults.filter { $0.label == targetObject }
+
+        guard !matchingResults.isEmpty else { return }
+
+        // Process and select the most prominent observation
+        let adjustedResults = adjustObservations(
+            detectionResults: matchingResults,
+            cameraImageDimensions: appViewModel.cameraImageDimensions
+        )
+
+        guard let selectedObservation = selectMostProminentObservation(from: adjustedResults, targetObject: targetObject) else {
+            return
+        }
+
+        // Perform raycast and handle detection announcement
+        let raycastPoint = CGPoint(x: selectedObservation.boundingBox.midX, y: selectedObservation.boundingBox.minY)
+        self.handleRaycast(at: raycastPoint)
+
+        if !appViewModel.hasObjectBeenDetected {
+            speechSynthesizer?.speak(text: "\(targetObject) detected!")
+            
+            if let distance = self.currentMeasurement?.formattedValue {
+                speechSynthesizer?.speak(text: "\(targetObject) is \(distance) away.")
+            }
+            
+            appViewModel.hasObjectBeenDetected = true
+        }
+
     }
     
     // MARK: - Configuration
@@ -134,7 +202,7 @@ class ARCoordinator {
         
         currentMeasurement = SceneMeasurement(
             meterDistance: distance,
-            rotation: angleDegrees
+            rotationDegrees: angleDegrees
         )
     }
     

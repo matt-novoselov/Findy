@@ -1,16 +1,8 @@
-
-//
-//  Measurement.swift
-//  TestRealityKit
-//
-//  Created by Matt Novoselov on 26/01/25.
-//
-
 import Foundation
 
 struct SceneMeasurement: Equatable {
     let meterDistance: Float
-    let rotation: Float  // In degrees
+    let rotationDegrees: Float
     
     private var baseMeasurement: Measurement<UnitLength> {
         Measurement(value: Double(meterDistance), unit: .meters)
@@ -45,6 +37,6 @@ struct SceneMeasurement: Equatable {
     
     static func == (lhs: SceneMeasurement, rhs: SceneMeasurement) -> Bool {
         abs(lhs.meterDistance - rhs.meterDistance) < 0.001 &&
-        abs(lhs.rotation - rhs.rotation) < 0.1
+        abs(lhs.rotationDegrees - rhs.rotationDegrees) < 0.1
     }
 }

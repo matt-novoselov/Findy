@@ -1,10 +1,3 @@
-//
-//  Simd+Extension.swift
-//  TestRealityKit
-//
-//  Created by Matt Novoselov on 26/01/25.
-//
-
 import simd
 
 extension float4x4 {

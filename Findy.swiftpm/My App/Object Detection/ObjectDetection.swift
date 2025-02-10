@@ -1,8 +1,3 @@
-//  NQ Detect
-//
-//  Created by NULL on 10/9/22.
-//
-
 import Vision
 import CoreImage
 
@@ -66,7 +61,7 @@ class ObjectDetection {
         observations.compactMap { observation in
             // Only process recognized objects with certain detection threshold
             guard let objectObservation = observation as? VNRecognizedObjectObservation,
-                  objectObservation.confidence > AppMetrics.detectionThreshold else { return nil }
+                  objectObservation.confidence > AppMetrics.objectDetectionThreshold else { return nil }
             
             let convertedRect = convertedBoundingRect(
                 normalizedRect: objectObservation.boundingBox

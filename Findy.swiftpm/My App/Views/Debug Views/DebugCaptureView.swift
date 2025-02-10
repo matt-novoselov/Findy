@@ -1,10 +1,3 @@
-//
-//  DebugCaptureView.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 27/01/25.
-//
-
 import SwiftUI
 
 struct DebugCaptureView: View {

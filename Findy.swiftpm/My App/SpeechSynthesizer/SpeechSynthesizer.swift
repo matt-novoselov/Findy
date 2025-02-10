@@ -1,10 +1,3 @@
-//
-//  SpeechSynthesizer.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 01/02/25.
-//
-
 import AVFoundation
 
 @MainActor

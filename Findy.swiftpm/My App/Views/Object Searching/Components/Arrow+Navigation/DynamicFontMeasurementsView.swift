@@ -1,10 +1,3 @@
-//
-//  SwiftUIView.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 09/02/25.
-//
-
 import SwiftUI
 
 struct DynamicFontMeasurementsView: View {

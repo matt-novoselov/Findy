@@ -1,10 +1,3 @@
-//
-//  SwiftUIView.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 01/02/25.
-//
-
 import SwiftUI
 
 struct SettingsView: View {
@@ -36,7 +29,13 @@ struct SettingsView: View {
                 .padding()
                 .frame(width: 200)
             
-
+            Picker("App State", selection: $appViewModel.state) {
+                ForEach(AppState.allCases, id: \.self) { state in
+                    Text(state.rawValue).tag(state)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding()
         }
         .padding()
         

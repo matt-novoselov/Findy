@@ -1,11 +1,3 @@
-//
-//  ArrowEntity.swift
-//  TestRealityKit
-//
-//  Created by Matt Novoselov on 25/01/25.
-//
-
-
 import SwiftUI
 import RealityKit
 

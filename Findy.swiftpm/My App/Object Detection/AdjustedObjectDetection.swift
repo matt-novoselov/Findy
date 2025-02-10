@@ -1,10 +1,3 @@
-//
-//  AdjustedObjectDetection.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 27/01/25.
-//
-
 import SwiftUI
 
 /// Adjusts observation bounding boxes from camera image coordinates to view coordinates

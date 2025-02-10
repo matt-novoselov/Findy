@@ -1,10 +1,3 @@
-//
-//  DetectionError.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 26/01/25.
-//
-
 import Foundation
 
 /// Custom error types for detection initialization

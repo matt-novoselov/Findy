@@ -1,11 +1,3 @@
-//
-//  DebugSphere.swift
-//  Multiplayer Topple Tower
-//
-//  Created by Matt Novoselov on 09/12/24.
-//
-
-
 import SwiftUI
 import RealityKit
 

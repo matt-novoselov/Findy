@@ -1,17 +1,13 @@
-//
-//  CameraShutterButton.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 06/02/25.
-//
-
 import SwiftUI
+import AVFoundation
 
 struct CameraShutterButton: View {
-    let action: () -> Void
+    @Environment(AppViewModel.self) private var appViewModel
+    @Environment(ARCoordinator.self) private var arCoordinator
+    @Binding var cameraShutterToggle: Bool
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {takePhoto()}) {
             Circle()
                 .fill(.white)
                 .frame(width: 55, height: 55)
@@ -23,6 +19,20 @@ struct CameraShutterButton: View {
             Circle()
                 .stroke(.white, lineWidth: 5)
                 .frame(width: 70, height: 70)
+        }
+    }
+    
+    func takePhoto(){
+        // Play shutter animation
+        cameraShutterToggle.toggle()
+        
+        // Play shutter sound
+        AudioServicesPlaySystemSound(1108)
+        
+        if appViewModel.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity {
+            if let capturedImage = arCoordinator.normalizedCaptureImage?.toCGImage() {
+                appViewModel.takenPhotos.append(capturedImage)
+            }
         }
     }
 }
@@ -38,8 +48,4 @@ struct ShutterButtonStyle: ButtonStyle {
             .scaleEffect(configuration.isPressed ? 0.9 : 1)
             .animation(.easeInOut(duration: 0.2), value: configuration.isPressed)
     }
-}
-
-#Preview {
-    CameraShutterButton(action: {})
 }

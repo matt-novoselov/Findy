@@ -1,10 +1,3 @@
-//
-//  SwiftUIView.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 01/02/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -12,15 +5,12 @@ struct ContentView: View {
         
         TabView {
             Tab("Object Detection", systemImage: "xmark") {
-                ObjectFinderView()
+                ARControllerView()
             }
             Tab("Settings", systemImage: "xmark") {
                 SettingsView()
             }
-            Tab("Settings2", systemImage: "xmark") {
-                GenerationAnimationView()
-            }
-            Tab(role: .search) {
+            Tab("Image Playground", systemImage: "xmark") {
                 ImagePlaygroundView()
             }
         }

@@ -1,13 +1,6 @@
-//
-//  SwiftUIView.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 09/02/25.
-//
-
 import SwiftUI
 
-struct GenerationAnimationView: View {
+struct ModelTrainingView: View {
 
     @State private var shouldAnimate: Bool = false
     let columns = Array(repeating: GridItem(.fixed(100)), count: 3)

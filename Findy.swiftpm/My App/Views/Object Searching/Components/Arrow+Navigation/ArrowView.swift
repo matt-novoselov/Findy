@@ -1,10 +1,3 @@
-//
-//  ArrowView.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 06/02/25.
-//
-
 import SwiftUI
 
 struct ArrowView: View {

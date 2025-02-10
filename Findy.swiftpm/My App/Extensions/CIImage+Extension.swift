@@ -1,10 +1,3 @@
-//
-//  CiImage+Extension.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 27/01/25.
-//
-
 import CoreImage
 
 extension CIImage {

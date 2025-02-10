@@ -1,10 +1,3 @@
-//
-//  SwiftUIView.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 07/02/25.
-//
-
 import SwiftUI
 
 struct CameraShutterView: View {
