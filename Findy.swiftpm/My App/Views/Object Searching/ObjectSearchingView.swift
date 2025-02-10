@@ -2,12 +2,13 @@ import SwiftUI
 
 struct ObjectSearchingView: View {
     @Environment(ARSceneCoordinator.self) private var arCoordinator
+    @State private var hasTargetObjectBeenDetected: Bool = false
     
     var body: some View {
         Color.clear
             // MARK: Glowing effect
             .background{
-                GlowingEdgesView()
+                GlowingEdgesView(objectDetected: hasTargetObjectBeenDetected)
                     .ignoresSafeArea()
             }
         
@@ -23,5 +24,10 @@ struct ObjectSearchingView: View {
             }
         
             .allowsHitTesting(false)
+        
+            .onAppear{
+                arCoordinator.hasTargetObjectBeenDetected = $hasTargetObjectBeenDetected
+            }
+
     }
 }

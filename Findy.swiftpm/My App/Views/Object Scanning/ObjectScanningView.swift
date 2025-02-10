@@ -4,6 +4,7 @@ struct ObjectScanningView: View {
     @Environment(AppViewModel.self) private var appViewModel
     @State private var cameraShutterToggle: Bool = false
     @State private var isTrainingCoverPresented: Bool = false
+    @State private var isAnyObjectDetected: Bool = false
     
     var body: some View {
         let isCameraButtonActive: Bool = appViewModel.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity
@@ -11,7 +12,7 @@ struct ObjectScanningView: View {
         Color.clear
             // MARK: Focus box
             .background{
-                FocusBoxParentView()
+                FocusBoxParentView(isAnyObjectDetected: $isAnyObjectDetected)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .ignoresSafeArea()
             }
@@ -28,8 +29,8 @@ struct ObjectScanningView: View {
                 Group{
                     if isCameraButtonActive {
                         CameraShutterButton(cameraShutterToggle: $cameraShutterToggle)
-                            .disabled(appViewModel.isAnyObjectDetected ? false : true)
-                            .opacity(appViewModel.isAnyObjectDetected ? 1 : 0.2)
+                            .disabled(isAnyObjectDetected ? false : true)
+                            .opacity(isAnyObjectDetected ? 1 : 0.2)
                     } else {
                         Button("Start Training"){
                             self.isTrainingCoverPresented = true

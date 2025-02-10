@@ -2,11 +2,9 @@ import SwiftUI
 import UIKit
 
 struct GlowingEdgesView: View {
-    @Environment(AppViewModel.self) private var appViewModel
+    var objectDetected: Bool
     
     var body: some View {
-        let objectDetected: Bool = appViewModel.hasObjectBeenDetected
-        
         ZStack{
             let greenRectangleValue: CGFloat = 5
             RoundedRectangle(cornerRadius: getCornerRadius())
@@ -46,11 +44,8 @@ func getCornerRadius() -> CGFloat {
 
 #Preview {
     @Previewable @State var appViewModel = AppViewModel()
-    GlowingEdgesView()
+    GlowingEdgesView(objectDetected: true)
         .environment(appViewModel)
-        .onAppear{
-            appViewModel.hasObjectBeenDetected = true
-        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea()
         .background(.black)

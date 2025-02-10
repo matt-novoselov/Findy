@@ -10,12 +10,8 @@ class AppViewModel {
     var cameraImageDimensions: CGSize = .init()
     var state: AppState = .scanning
     var isMetalDetectionSoundEnabled: Bool = true
-
-    #warning("")
-    var hasObjectBeenDetected: Bool = false
-    var isAnyObjectDetected: Bool = false
     
-    #warning("")
+    #warning("Move to equitable storage")
     var takenPhotos: [CGImage] = []
     var lastCroppedImage: CGImage?
     var targetDetectionObject: String = "mouse"

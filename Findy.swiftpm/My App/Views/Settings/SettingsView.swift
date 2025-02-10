@@ -15,10 +15,6 @@ struct SettingsView: View {
             
             Toggle(isOn: $appViewModel.isMetalDetectionSoundEnabled, label: { Text("Enable Metal Detection sound") })
             
-            Button("Reset Object Detection"){
-                appViewModel.hasObjectBeenDetected.toggle()
-            }
-            
             Toggle("Debug", isOn: $appViewModel.isDebugMode)
                 .toggleStyle(.switch)
             

@@ -3,6 +3,7 @@ import SwiftUI
 struct FocusBoxParentView: View {
     @Environment(ARSceneCoordinator.self) private var arCoordinator
     @Environment(AppViewModel.self) private var appViewModel
+    @Binding var isAnyObjectDetected: Bool
     
     var body: some View {
         let adjustedResults = adjustObservations(
@@ -23,10 +24,10 @@ struct FocusBoxParentView: View {
                     contentMode: .fit
                 )
                 .onAppear{
-                    appViewModel.isAnyObjectDetected = true
+                    isAnyObjectDetected = true
                 }
                 .onDisappear{
-                    appViewModel.isAnyObjectDetected = false
+                    isAnyObjectDetected = false
                 }
         }
     }

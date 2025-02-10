@@ -28,6 +28,8 @@ class ARSceneCoordinator {
     weak var appViewModel: AppViewModel?
     weak var speechSynthesizer: SpeechSynthesizer?
     
+    var hasTargetObjectBeenDetected: Binding<Bool>?
+    
     init(objectDetection: ObjectDetection) {
         self.objectDetector = objectDetection
         self.metalDetector.arCoordinator = self
@@ -176,7 +178,7 @@ extension ARSceneCoordinator {
     
     @MainActor
     private func provideDetectionFeedback(for object: String) {
-        guard let appViewModel, !appViewModel.hasObjectBeenDetected else { return }
+        guard hasTargetObjectBeenDetected?.wrappedValue == false else { return }
         
         speechSynthesizer?.speak(text: "\(object) detected!")
         
@@ -184,7 +186,7 @@ extension ARSceneCoordinator {
             speechSynthesizer?.speak(text: "\(object) is \(distance) away.")
         }
         
-        appViewModel.hasObjectBeenDetected = true
+        hasTargetObjectBeenDetected?.wrappedValue = true
     }
 }
 
