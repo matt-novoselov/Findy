@@ -1,5 +1,9 @@
 import SwiftUI
 
+#if canImport(CreateML)
+import CreateML
+#endif
+
 @Observable
 class AppViewModel {
     var isDebugMode: Bool = false
@@ -15,6 +19,9 @@ class AppViewModel {
     var takenPhotos: [CGImage] = []
     var lastCroppedImage: CGImage?
     var targetDetectionObject: String = "mouse"
+    #if canImport(CreateML)
+    var imageClassifier: MLImageClassifier?
+    #endif
 }
 
 enum AppState: String, CaseIterable {
