@@ -4,13 +4,9 @@ struct PhotoCollectionView: View {
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
-        GeometryReader { proxy in
-            ForEach(Array(appViewModel.takenPhotos.enumerated()), id: \.offset) { index, photo in
-                ImageCollectionView(photo: photo, index: index)
-            }
+        ForEach(Array(appViewModel.takenPhotos.enumerated()), id: \.offset) { index, photo in
+            ImageCollectionView(photo: photo, index: index)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding()
     }
 }
 

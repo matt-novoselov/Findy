@@ -20,7 +20,13 @@ struct ObjectScanningView: View {
             // MARK: Visual effects
             .overlay{
                 CameraShutterView(isShutterActive: $cameraShutterToggle)
+                ProgressBarView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .padding(.horizontal)
                 PhotoCollectionView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                    .padding()
+                    .padding(.bottom)
             }
             .allowsHitTesting(false)
         
