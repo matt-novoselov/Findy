@@ -7,7 +7,7 @@ struct ProgressBarView: View {
     var body: some View {
         HStack{
             // Photo count display
-            Text("\(appViewModel.takenPhotos.count) / \(maxCapacity)")
+            Text("\(appViewModel.takenPhotos.count)/\(maxCapacity)")
                 .contentTransition(.numericText(value: Double(appViewModel.takenPhotos.count)))
                 .animation(.spring, value: appViewModel.takenPhotos.count)
             
