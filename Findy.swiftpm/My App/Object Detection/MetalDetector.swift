@@ -12,7 +12,7 @@ class MetalDetector {
     
     private var timer: Timer?
     private var lastBeepTime: Date?
-    weak var arCoordinator: ARCoordinator?
+    weak var arCoordinator: ARSceneCoordinator?
     
     init() {
         startDetection()

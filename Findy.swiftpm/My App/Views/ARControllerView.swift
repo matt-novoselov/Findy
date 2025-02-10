@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct ARControllerView: View {
-    @Environment(ARCoordinator.self) private var arCoordinator
+    @Environment(ARSceneCoordinator.self) private var arCoordinator
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
-        let arContainer = ARContainer(coordinator: arCoordinator)
+        let arContainer = ARViewContainer(coordinator: arCoordinator)
         
         return arContainer
             .blurredOverlay(isEnabled: appViewModel.state == .onboarding)

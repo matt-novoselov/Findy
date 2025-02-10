@@ -2,14 +2,14 @@ import SwiftUI
 
 struct DebugObjectDetectionView: View {
     
-    @Environment(ARCoordinator.self) private var arCoordinator
+    @Environment(ARSceneCoordinator.self) private var arCoordinator
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
         
         if appViewModel.isDebugMode{
             let adjustedResults = adjustObservations(
-                detectionResults: arCoordinator.detectionResults,
+                detectionResults: arCoordinator.detectedObjects,
                 cameraImageDimensions: appViewModel.cameraImageDimensions
             )
             let imageDimensions = appViewModel.cameraImageDimensions

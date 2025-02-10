@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ObjectSearchingView: View {
-    @Environment(ARCoordinator.self) private var arCoordinator
+    @Environment(ARSceneCoordinator.self) private var arCoordinator
     
     var body: some View {
         Color.clear

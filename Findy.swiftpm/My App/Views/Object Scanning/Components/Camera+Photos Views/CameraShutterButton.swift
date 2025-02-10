@@ -3,7 +3,7 @@ import AVFoundation
 
 struct CameraShutterButton: View {
     @Environment(AppViewModel.self) private var appViewModel
-    @Environment(ARCoordinator.self) private var arCoordinator
+    @Environment(ARSceneCoordinator.self) private var arCoordinator
     @Binding var cameraShutterToggle: Bool
     
     var body: some View {
@@ -31,7 +31,7 @@ struct CameraShutterButton: View {
         AudioServicesPlaySystemSound(shutterSoundID)
         
         if appViewModel.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity {
-            if let capturedImage = arCoordinator.normalizedCaptureImage?.toCGImage() {
+            if let capturedImage = arCoordinator.processedFrameImage?.toCGImage() {
                 appViewModel.takenPhotos.append(capturedImage)
             }
         }

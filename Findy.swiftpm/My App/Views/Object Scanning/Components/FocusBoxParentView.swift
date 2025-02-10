@@ -1,16 +1,16 @@
 import SwiftUI
 
 struct FocusBoxParentView: View {
-    @Environment(ARCoordinator.self) private var arCoordinator
+    @Environment(ARSceneCoordinator.self) private var arCoordinator
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
         let adjustedResults = adjustObservations(
-            detectionResults: arCoordinator.detectionResults,
+            detectionResults: arCoordinator.detectedObjects,
             cameraImageDimensions: appViewModel.cameraImageDimensions
         )
         
-        let mostProminentResult = selectMostProminentObservation(
+        let mostProminentResult = selectDominantObservation(
             from: adjustedResults
         )
         

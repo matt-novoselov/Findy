@@ -5,7 +5,7 @@ struct FindyApp: App {
     
     @State private var objectDetection: ObjectDetection?
     @State private var appViewModel: AppViewModel?
-    @State private var arCoordinator: ARCoordinator?
+    @State private var arCoordinator: ARSceneCoordinator?
     @State private var speechSynthesizer: SpeechSynthesizer?
     
     var body: some Scene {
@@ -33,7 +33,7 @@ struct FindyApp: App {
                 // Initialize classes
                 self.objectDetection = .init()
                 self.appViewModel = AppViewModel()
-                self.arCoordinator = ARCoordinator(objectDetection: self.objectDetection!)
+                self.arCoordinator = ARSceneCoordinator(objectDetection: self.objectDetection!)
                 self.speechSynthesizer = SpeechSynthesizer()
                 
                 // Set weak vars

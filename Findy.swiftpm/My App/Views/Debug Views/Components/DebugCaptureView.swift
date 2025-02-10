@@ -2,17 +2,17 @@ import SwiftUI
 
 struct DebugCaptureView: View {
     
-    @Environment(ARCoordinator.self) private var arCoordinator
+    @Environment(ARSceneCoordinator.self) private var arCoordinator
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
-        let mostProminentResult = selectMostProminentObservation(
-            from: arCoordinator.detectionResults,
+        let mostProminentResult = selectDominantObservation(
+            from: arCoordinator.detectedObjects,
             targetObject: appViewModel.targetDetectionObject
         )
         
         HStack {
-            if let captureImage = arCoordinator.normalizedCaptureImage,
+            if let captureImage = arCoordinator.processedFrameImage,
                let cgImage = captureImage.toCGImage()
             {
                 Image(decorative: cgImage, scale: 7)
