@@ -6,7 +6,6 @@
 //  Created by Matt Novoselov on 26/01/25.
 //
 
-import ARKit
 import Foundation
 
 struct SceneMeasurement: Equatable {

@@ -10,6 +10,24 @@ import RealityKit
 import SwiftUI
 import Combine
 
+
+func checkLightingLevel(frame: ARFrame) {
+    let lowThreshold: CGFloat = 500
+    // Check if light estimate is available
+    guard let lightEstimate = frame.lightEstimate else {
+        print("Light estimation not available")
+        return
+    }
+    
+    // Get ambient intensity in lumens
+    let ambientIntensity = lightEstimate.ambientIntensity
+    
+    // Check against threshold and print warning
+    if ambientIntensity < lowThreshold {
+        print("⚠️ Lighting is too low: \(String(format: "%.0f", ambientIntensity)) lumens")
+    }
+}
+
 // MARK: - AR View Container
 struct ARContainer: UIViewRepresentable {
     var coordinator: ARCoordinator
@@ -57,6 +75,12 @@ class ARCoordinator {
     // MARK: - Configuration
     func setup(arView: ARView) {
         self.arView = arView
+        
+        // Configure AR session with light estimation
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.isLightEstimationEnabled = true // Enable light estimation
+        arView.session.run(configuration)
+        
         setupSceneUpdates()
     }
     
@@ -73,6 +97,10 @@ class ARCoordinator {
     private func processFrameUpdates() {
         updateMeasurements()
         performObjectDetection()
+        
+        if let currentFrame = arView?.session.currentFrame {
+            checkLightingLevel(frame: currentFrame)
+        }
     }
     
     // MARK: - Measurement Handling
