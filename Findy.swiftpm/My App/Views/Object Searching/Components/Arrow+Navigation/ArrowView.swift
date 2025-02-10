@@ -7,13 +7,9 @@ struct ArrowView: View {
         Image(systemName: "arrow.up")
             .font(.system(size: 180, weight: .heavy))
             .rotationEffect(.init(degrees: -degrees))
-            .background{
-                CircularProgressView(degrees: -degrees)
-                    .padding(-65)
-            }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay{
-                LiquidCirclesView(offset: degrees)
+                LiquidCirclesView(degrees: degrees)
             }
     }
 }
@@ -40,24 +36,18 @@ struct CircularArc: Shape {
 
 struct CircularProgressView: View {
     let degrees: Double
-    private let adjustment: Double = 5
     
     var body: some View {
         let normalizedDegrees = degrees.remainder(dividingBy: 360)
         let isClockwise = normalizedDegrees < 0
-        let startAngle = isClockwise ? -adjustment : adjustment
-        let endAngle = normalizedDegrees + (isClockwise ? adjustment : -adjustment)
         
         return CircularArc(
-            startAngle: startAngle,
-            endAngle: endAngle,
+            startAngle: 0,
+            endAngle: normalizedDegrees,
             clockwise: isClockwise
         )
-        .stroke(.white.secondary, style: StrokeStyle(lineWidth: 20, lineCap: .round, dash: [0.1, 50], dashPhase: 15))
-        .animation(.easeOut, value: degrees)
+        .stroke(.white, style: StrokeStyle(lineWidth: 40, lineCap: .round, dash: [0.1, 50]))
         .rotationEffect(.degrees(-90))
-        .opacity(abs(degrees) < adjustment*2 ? 0 : 1)
-        .opacity(abs(degrees) > 360-adjustment*2 ? 0 : 1)
     }
 }
 
@@ -66,7 +56,7 @@ func getDirection(degrees: Double) -> String {
     let normalizedDegrees = normalizedDegrees(degrees)
     let angle = normalizedDegrees
     if (0...25).contains(angle) || (335...360).contains(angle) {
-        return "Ahead"
+        return "In front"
     } else if (225...335).contains(angle) {
         return "To the right"
     } else if (135...225).contains(angle) {
@@ -80,8 +70,6 @@ func getDirection(degrees: Double) -> String {
         return modDegrees >= 0 ? modDegrees : modDegrees + 360
     }
 }
-
-
 
 #Preview{
     @Previewable @State var degrees: Double = 0

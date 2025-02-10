@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LiquidCirclesView: View {
-    var offset: Double
+    var degrees: Double
     
     var body: some View {
         Color.white
@@ -17,13 +17,16 @@ struct LiquidCirclesView: View {
                         if let resolvedTwo = context.resolveSymbol(id: 2) {
                             ctx.draw(resolvedTwo, at: CGPoint(x: size.width/2, y: size.height/2))
                         }
+                        if let resolvedThree = context.resolveSymbol(id: 3) {
+                            ctx.draw(resolvedThree, at: CGPoint(x: size.width/2, y: size.height/2))
+                        }
                     }
                 } symbols: {
                     Circle()
                         .frame(height: 50)
                         .offset(y: -160)
                         .aspectRatio(1, contentMode: .fit)
-                        .rotationEffect(.init(degrees: -offset))
+                        .rotationEffect(.init(degrees: -degrees))
                         .tag(1)
                     
                     Circle()
@@ -31,6 +34,10 @@ struct LiquidCirclesView: View {
                         .offset(y: -160)
                         .aspectRatio(1, contentMode: .fit)
                         .tag(2)
+                    
+                    CircularProgressView(degrees: -degrees)
+                        .frame(width: 320, height: 320)
+                        .tag(3)
                 }
             }
     }
