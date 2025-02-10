@@ -3,6 +3,8 @@ import RealityKit
 import SwiftUI
 import Combine
 
+#warning("")
+
 /// Filters and selects the most prominent ProcessedObservation based on target object and bounding box area
 /// - Parameters:
 ///   - observations: Array of ProcessedObservation to filter
@@ -84,7 +86,13 @@ class ARCoordinator {
     private(set) var currentMeasurement: SceneMeasurement?
     
     // Object Detection
-    private(set) var detectionResults: [ProcessedObservation] = []
+    private(set) var detectionResults: [ProcessedObservation] = [] {
+        didSet {
+            Task{
+                await shootRaycastAtDetectedResult()
+            }
+        }
+    }
     private let objectDetection: ObjectDetection
     
     // AR tracking properties

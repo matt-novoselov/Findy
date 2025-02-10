@@ -12,11 +12,12 @@ struct DebugObjectDetectionView: View {
                 detectionResults: arCoordinator.detectionResults,
                 cameraImageDimensions: appViewModel.cameraImageDimensions
             )
+            let imageDimensions = appViewModel.cameraImageDimensions
             
             ForEach(adjustedResults, id: \.id) { result in
                 BoundingBox(result: result)
             }
-            .aspectRatio(appViewModel.cameraImageDimensions.width / appViewModel.cameraImageDimensions.height, contentMode: .fit)
+            .aspectRatio(imageDimensions.width / imageDimensions.height, contentMode: .fit)
             .allowsHitTesting(false)
         }
 
@@ -45,7 +46,7 @@ struct BoundingBox: View {
                 .padding(4)
                 .background(.black.opacity(0.7))
                 .cornerRadius(4)
-                .offset(y: -20) // Position above the bounding box
+                .offset(y: -20)
         }
         .frame(width: rect.width, height: rect.height)
         .position(x: rect.midX, y: rect.midY)

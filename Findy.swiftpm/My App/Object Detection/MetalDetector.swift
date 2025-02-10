@@ -7,8 +7,8 @@ class MetalDetector {
     private let maxDistance: Double = 10.0
     private let minTimeInterval: TimeInterval = 0.05
     private let maxTimeInterval: TimeInterval = 2.0
-    private let beepSoundID: SystemSoundID = 1052
     private let checkTimeInterval: TimeInterval = 0.05
+    private let beepSoundID: SystemSoundID = 1052
     
     private var timer: Timer?
     private var lastBeepTime: Date?

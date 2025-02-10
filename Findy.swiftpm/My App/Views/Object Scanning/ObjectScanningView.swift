@@ -9,8 +9,15 @@ struct ObjectScanningView: View {
         let isCameraButtonActive: Bool = appViewModel.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity
         
         Color.clear
-            .overlay{
+            // MARK: Focus box
+            .background{
                 FocusBoxParentView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea()
+            }
+        
+            // MARK: Visual effects
+            .overlay{
                 CameraShutterView(isShutterActive: $cameraShutterToggle)
                 PhotoCollectionView()
             }

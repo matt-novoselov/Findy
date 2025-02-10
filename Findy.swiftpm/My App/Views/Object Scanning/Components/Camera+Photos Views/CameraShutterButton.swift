@@ -27,7 +27,8 @@ struct CameraShutterButton: View {
         cameraShutterToggle.toggle()
         
         // Play shutter sound
-        AudioServicesPlaySystemSound(1108)
+        let shutterSoundID: SystemSoundID = 1108
+        AudioServicesPlaySystemSound(shutterSoundID)
         
         if appViewModel.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity {
             if let capturedImage = arCoordinator.normalizedCaptureImage?.toCGImage() {
@@ -42,7 +43,7 @@ struct ShutterButtonStyle: ButtonStyle {
         configuration.label
             .overlay(
                 Circle()
-                    .fill(Color.white.opacity(configuration.isPressed ? 0.2 : 0))
+                    .fill(.white.opacity(configuration.isPressed ? 0.2 : 0))
                     .frame(width: 65, height: 65)
             )
             .scaleEffect(configuration.isPressed ? 0.9 : 1)

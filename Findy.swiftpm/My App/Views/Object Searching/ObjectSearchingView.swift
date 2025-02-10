@@ -21,10 +21,7 @@ struct ObjectSearchingView: View {
                         .padding()
                 }
             }
+        
             .allowsHitTesting(false)
-            
-            .onChange(of: arCoordinator.detectionResults) {
-                arCoordinator.shootRaycastAtDetectedResult()
-            }
     }
 }

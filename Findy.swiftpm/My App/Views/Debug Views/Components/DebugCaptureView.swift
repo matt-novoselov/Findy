@@ -11,12 +11,14 @@ struct DebugCaptureView: View {
             targetObject: appViewModel.targetDetectionObject
         )
         
-        ZStack {
-            if let captureImage = arCoordinator.normalizedCaptureImage, let cgImage = captureImage.toCGImage() {
+        HStack {
+            if let captureImage = arCoordinator.normalizedCaptureImage,
+               let cgImage = captureImage.toCGImage()
+            {
                 Image(decorative: cgImage, scale: 7)
                     .clipShape(.rect(cornerRadius: 4))
                 
-                if let mostProminentResult {
+                if let mostProminentResult = mostProminentResult {
                     CroppedImage(cgImage: cgImage, cropRect: mostProminentResult.boundingBox)
                         .frame(height: 100)
                 } else {
@@ -27,8 +29,6 @@ struct DebugCaptureView: View {
             }
         }
         .padding(4)
-        .background(.ultraThinMaterial)
-        .clipShape(.rect(cornerRadius: 8))
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
         .padding()
     }

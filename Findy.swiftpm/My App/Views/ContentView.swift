@@ -4,7 +4,7 @@ struct ContentView: View {
     var body: some View {
         
         TabView {
-            Tab("Object Detection", systemImage: "xmark") {
+            Tab("Camera", systemImage: "xmark") {
                 ARControllerView()
             }
             Tab("Settings", systemImage: "xmark") {

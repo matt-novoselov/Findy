@@ -2,18 +2,19 @@ import SwiftUI
 
 @Observable
 class AppViewModel {
-    var isDebugMode: Bool = true
+    var isDebugMode: Bool = false
     var cameraImageDimensions: CGSize = .init()
+    var state: AppState = .scanning
     var isMetalDetectionSoundEnabled: Bool = true
+
+    #warning("")
     var hasObjectBeenDetected: Bool = false
     var isAnyObjectDetected: Bool = false
-    var state: AppState = .scanning
-    
     
     #warning("")
     var takenPhotos: [CGImage] = []
     var lastCroppedImage: CGImage?
-    var targetDetectionObject: String = "bottle"
+    var targetDetectionObject: String = "mouse"
 }
 
 enum AppState: String, CaseIterable {

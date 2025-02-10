@@ -1,26 +1,28 @@
 import SwiftUI
+import UIKit
 
 struct GlowingEdgesView: View {
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
+        let objectDetected: Bool = appViewModel.hasObjectBeenDetected
+        
         ZStack{
+            let greenRectangleValue: CGFloat = 5
             RoundedRectangle(cornerRadius: getCornerRadius())
-                .stroke(Color.green, lineWidth: appViewModel.hasObjectBeenDetected ? 5 : 0, antialiased: true)
-                .animation(.spring, value: appViewModel.hasObjectBeenDetected)
-                .blur(radius: 5)
+                .stroke(.green, lineWidth: objectDetected ? greenRectangleValue : 0, antialiased: true)
+                .animation(.spring, value: objectDetected)
+                .blur(radius: greenRectangleValue)
             
+            let whiteRectangleValue: CGFloat = 3
             RoundedRectangle(cornerRadius: getCornerRadius())
-                .stroke(Color.white, lineWidth: appViewModel.hasObjectBeenDetected ? 3 : 0, antialiased: true)
-                .animation(.spring, value: appViewModel.hasObjectBeenDetected)
-                .blur(radius: 3)
+                .stroke(.white, lineWidth: objectDetected ? whiteRectangleValue : 0, antialiased: true)
+                .animation(.spring, value: objectDetected)
+                .blur(radius: whiteRectangleValue)
                 .blendMode(.plusLighter)
         }
     }
 }
-
-import SwiftUI
-import UIKit
 
 func getCornerRadius() -> CGFloat {
     let screenSize = UIScreen.main.bounds.size

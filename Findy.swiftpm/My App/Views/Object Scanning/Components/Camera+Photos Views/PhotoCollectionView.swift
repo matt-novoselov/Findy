@@ -5,10 +5,8 @@ struct PhotoCollectionView: View {
     
     var body: some View {
         GeometryReader { proxy in
-            ZStack{
-                ForEach(Array(appViewModel.takenPhotos.enumerated()), id: \.offset) { index, photo in
-                    ImageCollectionView(photo: photo, index: index)
-                }
+            ForEach(Array(appViewModel.takenPhotos.enumerated()), id: \.offset) { index, photo in
+                ImageCollectionView(photo: photo, index: index)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -25,8 +23,8 @@ struct ImageCollectionView: View {
             .scaledToFill()
             .frame(width: 100, height: 100)
             .clipShape(.rect(cornerRadius: 10))
-            .rotationEffect(.degrees(index % 2 == 0 ? 5 : -5))
-            .offset(x: CGFloat(index) * 8, y: CGFloat(index) * 8)
+            .rotationEffect(.degrees(index % 2 == 0 ? 5 : -5), anchor: .bottom)
+//            .offset(x: CGFloat(index) * 8, y: CGFloat(index) * 8)
             .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
     }
 }

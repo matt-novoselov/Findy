@@ -34,9 +34,4 @@ struct SceneMeasurement: Equatable {
         formatter.unitStyle = .short
         return formatter.string(from: convertedMeasurement)
     }
-    
-    static func == (lhs: SceneMeasurement, rhs: SceneMeasurement) -> Bool {
-        abs(lhs.meterDistance - rhs.meterDistance) < 0.001 &&
-        abs(lhs.rotationDegrees - rhs.rotationDegrees) < 0.1
-    }
 }

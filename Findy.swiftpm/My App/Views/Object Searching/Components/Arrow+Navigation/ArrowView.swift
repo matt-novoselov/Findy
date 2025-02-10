@@ -15,32 +15,12 @@ struct ArrowView: View {
             .overlay{
                 LiquidCirclesView(offset: degrees)
             }
-
     }
-}
-
-#Preview{
-    @Previewable @State var degrees: Double = 0
-    VStack{
-        ArrowView(degrees: degrees)
-
-        Slider(value: $degrees, in: -360...360)
-            .padding()
-        
-        Text(normalizedDegrees(degrees).description)
-        
-        // Add the direction text
-        Text("Pointing: \(getDirection(degrees: degrees))")
-            .padding()
-            .font(.title)
-    }
-    .padding()
 }
 
 struct CircularArc: Shape {
     let startAngle: Double
     let endAngle: Double
-    // When drawing with addArc, “clockwise” means “drawing in the decreasing angle direction”
     let clockwise: Bool
 
     func path(in rect: CGRect) -> Path {
@@ -60,7 +40,7 @@ struct CircularArc: Shape {
 
 struct CircularProgressView: View {
     let degrees: Double
-    private let adjustment: Double = 15
+    private let adjustment: Double = 5
     
     var body: some View {
         let normalizedDegrees = degrees.remainder(dividingBy: 360)
@@ -73,7 +53,7 @@ struct CircularProgressView: View {
             endAngle: endAngle,
             clockwise: isClockwise
         )
-        .stroke(.white.secondary, style: StrokeStyle(lineWidth: 20, lineCap: .round))
+        .stroke(.white.secondary, style: StrokeStyle(lineWidth: 20, lineCap: .round, dash: [0.1, 50], dashPhase: 15))
         .animation(.easeOut, value: degrees)
         .rotationEffect(.degrees(-90))
         .opacity(abs(degrees) < adjustment*2 ? 0 : 1)
@@ -85,18 +65,36 @@ struct CircularProgressView: View {
 func getDirection(degrees: Double) -> String {
     let normalizedDegrees = normalizedDegrees(degrees)
     let angle = normalizedDegrees
-    if (0...45).contains(angle) || (315...360).contains(angle) {
+    if (0...25).contains(angle) || (335...360).contains(angle) {
         return "Ahead"
-    } else if (225...315).contains(angle) {
+    } else if (225...335).contains(angle) {
         return "To the right"
     } else if (135...225).contains(angle) {
         return "Behind"
     } else {
         return "To the left"
     }
+    
+    func normalizedDegrees(_ degrees: Double) -> Double {
+        let modDegrees = degrees.truncatingRemainder(dividingBy: 360)
+        return modDegrees >= 0 ? modDegrees : modDegrees + 360
+    }
 }
 
-func normalizedDegrees(_ degrees: Double) -> Double {
-    let modDegrees = degrees.truncatingRemainder(dividingBy: 360)
-    return modDegrees >= 0 ? modDegrees : modDegrees + 360
+
+
+#Preview{
+    @Previewable @State var degrees: Double = 0
+    VStack{
+        ArrowView(degrees: degrees)
+
+        Slider(value: $degrees, in: -360...360)
+            .padding()
+
+        // Add the direction text
+        Text("Pointing: \(getDirection(degrees: degrees))")
+            .padding()
+            .font(.title)
+    }
+    .padding()
 }

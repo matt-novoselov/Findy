@@ -3,14 +3,13 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(SpeechSynthesizer.self) private var speechSynthesizer
     @Environment(AppViewModel.self) private var appViewModel
-
+    
     var body: some View {
         @Bindable var speechSynthesizer = speechSynthesizer
         @Bindable var appViewModel = appViewModel
         
-        VStack{
+        Group{
             SpeechSpeedSliderView()
-                .padding()
             
             Toggle(isOn: $speechSynthesizer.isSpeechSynthesizerEnabled, label: { Text("Enable Speech Synthesizer") })
             
@@ -20,14 +19,8 @@ struct SettingsView: View {
                 appViewModel.hasObjectBeenDetected.toggle()
             }
             
-            @Bindable var appViewModel = appViewModel
-            
             Toggle("Debug", isOn: $appViewModel.isDebugMode)
                 .toggleStyle(.switch)
-                .padding()
-                .background(.ultraThinMaterial, in: .rect(cornerRadius: 8))
-                .padding()
-                .frame(width: 200)
             
             Picker("App State", selection: $appViewModel.state) {
                 ForEach(AppState.allCases, id: \.self) { state in
@@ -35,7 +28,6 @@ struct SettingsView: View {
                 }
             }
             .pickerStyle(.segmented)
-            .padding()
         }
         .padding()
         

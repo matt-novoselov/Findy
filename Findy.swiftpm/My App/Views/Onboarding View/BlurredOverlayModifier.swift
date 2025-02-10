@@ -12,7 +12,7 @@ struct BlurredOverlayModifier: ViewModifier {
                 .overlay(
                     GeometryReader { geometry in
                         RadialGradient(
-                            gradient: Gradient(colors: [.clear, .black]),
+                            gradient: Gradient(colors: [.clear, .black.opacity(0.8)]),
                             center: .center,
                             startRadius: 0,
                             endRadius: max(geometry.size.width, geometry.size.height) / 2
