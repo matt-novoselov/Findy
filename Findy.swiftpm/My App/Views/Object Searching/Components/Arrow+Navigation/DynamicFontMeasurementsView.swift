@@ -1,73 +1,108 @@
 import SwiftUI
 
-#warning("")
 struct DynamicFontMeasurementsView: View {
-    @State private var text2Width: CGFloat = 0
-    @State private var text1Width: CGFloat = 0
+    @State private var secondaryTextWidth: CGFloat = 0
+    @State private var primaryTextWidth: CGFloat = 0
     
-    var numberValue: Double
-    var measurementString: String
-    var text2: String
-
+    let numericValue: Double
+    let unitSymbol: String
+    let referenceText: String
+    
     var body: some View {
-        VStack{
-            HStack(spacing: 0){
-                let formattedText = String(format: "%.2f", numberValue)
-                let fullText = "\(formattedText) \(measurementString)"
-                Text(formattedText)
-                    .font(text2Width > 0 ? Font(customFont(targetWidth: text2Width, text: fullText)) : .largeTitle)
-                    .contentTransition(.numericText(value: numberValue))
-                    .animation(.spring, value: numberValue)
-                
-                Text(" \(measurementString)")
-                    .font(text2Width > 0 ? Font(customFont(targetWidth: text2Width, text: fullText)) : .largeTitle)
-                    .foregroundStyle(.secondary)
-            }
-            .onGeometryChange(for: CGSize.self) { proxy in
-                 proxy.size
-             } action: {
-                 self.text1Width = $0.width
-             }
-
-            Text(text2.lowercased())
-                .font(.title)
-                .fontWeight(.bold)
-                .onGeometryChange(for: CGSize.self) { proxy in
-                     proxy.size
-                 } action: {
-                     self.text2Width = $0.width
-                 }
+        VStack {
+            valueAndUnitDisplay
+            referenceTextDisplay
         }
     }
-
-    // Compute a UIFont with a width parameter that makes "4.2 m" roughly match the target width.
-    func customFont(targetWidth: CGFloat, text: String) -> UIFont {
-        let fontSize = UIFont.preferredFont(forTextStyle: .largeTitle).pointSize
-        let weight = UIFont.Weight.black
-        let adjustedWidth = findWidthParameter(for: text, targetWidth: targetWidth, fontSize: fontSize, weight: weight)
-        return UIFont.systemFont(ofSize: fontSize, weight: weight, width: adjustedWidth)
-    }
-
-    // Measures the width of a given text with the provided font.
-    func measureTextWidth(_ text: String, font: UIFont) -> CGFloat {
-        let attributes = [NSAttributedString.Key.font: font]
-        return (text as NSString).size(withAttributes: attributes).width
+    
+    private var valueAndUnitDisplay: some View {
+        HStack(spacing: 0) {
+            let formattedValue = String(format: "%.2f", numericValue)
+            let combinedText = "\(formattedValue) \(unitSymbol)"
+            
+            Text(formattedValue)
+                .font(resolvedValueFont(combinedText: combinedText))
+                .contentTransition(.numericText(value: numericValue))
+                .animation(.spring, value: numericValue)
+            
+            Text(" \(unitSymbol)")
+                .font(resolvedUnitFont(combinedText: combinedText))
+                .foregroundStyle(.secondary)
+        }
+        .onGeometryChange(for: CGSize.self) { proxy in
+            proxy.size
+        } action: {
+            self.primaryTextWidth = $0.width
+        }
     }
     
-    // Use binary search to find a UIFont.Width value that brings the measured width close to targetWidth.
-    func findWidthParameter(for text: String, targetWidth: CGFloat, fontSize: CGFloat, weight: UIFont.Weight) -> UIFont.Width {
-        var lower: CGFloat = -1.0
-        var upper: CGFloat = 1.0
-        var mid: CGFloat = 0.0
-        let tolerance: CGFloat = 0.2  // Adjust tolerance as needed
+    private var referenceTextDisplay: some View {
+        Text(referenceText.lowercased())
+            .font(.title)
+            .fontWeight(.bold)
+            .onGeometryChange(for: CGSize.self) { proxy in
+                proxy.size
+            } action: {
+                self.secondaryTextWidth = $0.width
+            }
+    }
+    
+    private func resolvedValueFont(combinedText: String) -> Font {
+        fontForTargetWidth(targetWidth: secondaryTextWidth, text: combinedText)
+    }
+    
+    private func resolvedUnitFont(combinedText: String) -> Font {
+        fontForTargetWidth(targetWidth: secondaryTextWidth, text: combinedText)
+    }
+    
+    private func fontForTargetWidth(targetWidth: CGFloat, text: String) -> Font {
+        let baseFont = UIFont.preferredFont(forTextStyle: .largeTitle)
+        let optimalWidth = calculateOptimalFontWidth(
+            for: text,
+            targetWidth: targetWidth,
+            baseSize: baseFont.pointSize,
+            weight: .black
+        )
+        return Font(UIFont.systemFont(
+            ofSize: baseFont.pointSize,
+            weight: .black,
+            width: optimalWidth
+        ))
+    }
+    
+    private func calculateOptimalFontWidth(
+        for text: String,
+        targetWidth: CGFloat,
+        baseSize: CGFloat,
+        weight: UIFont.Weight
+    ) -> UIFont.Width {
+        var lowerBound: CGFloat = -1.0
+        var upperBound: CGFloat = 1.0
+        var currentWidth: CGFloat = 0.0
+        let precisionThreshold: CGFloat = 0.2
         
         for _ in 0..<20 {
-            mid = (lower + upper) / 2
-            let font = UIFont.systemFont(ofSize: fontSize, weight: weight, width: UIFont.Width(mid))
-            let measured = measureTextWidth(text, font: font)
-            if abs(measured - targetWidth) < tolerance { break }
-            if measured < targetWidth { lower = mid } else { upper = mid }
+            currentWidth = (lowerBound + upperBound) / 2
+            let testFont = UIFont.systemFont(
+                ofSize: baseSize,
+                weight: weight,
+                width: UIFont.Width(currentWidth)
+            )
+            let measuredWidth = textWidth(for: text, font: testFont)
+            
+            if abs(measuredWidth - targetWidth) < precisionThreshold { break }
+            
+            if measuredWidth < targetWidth {
+                lowerBound = currentWidth
+            } else {
+                upperBound = currentWidth
+            }
         }
-        return UIFont.Width(mid)
+        return UIFont.Width(currentWidth)
+    }
+    
+    private func textWidth(for text: String, font: UIFont) -> CGFloat {
+        let attributes = [NSAttributedString.Key.font: font]
+        return (text as NSString).size(withAttributes: attributes).width
     }
 }

@@ -16,7 +16,7 @@ struct ObjectSearchingView: View {
                 if let currentMeasurement = arCoordinator.currentMeasurement {
                     ArrowView(degrees: Double(currentMeasurement.rotationDegrees))
                     
-                    DynamicFontMeasurementsView(numberValue: currentMeasurement.numericValue, measurementString: currentMeasurement.unitSymbol, text2: getDirection(degrees: Double(currentMeasurement.rotationDegrees)))
+                    DynamicFontMeasurementsView(numericValue: currentMeasurement.numericValue, unitSymbol: currentMeasurement.unitSymbol, referenceText: getDirection(degrees: Double(currentMeasurement.rotationDegrees)))
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                         .padding()
                 }
