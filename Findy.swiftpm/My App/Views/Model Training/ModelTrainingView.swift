@@ -43,6 +43,9 @@ struct ModelTrainingView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background{
+            AnimatedBackgroundView()
+        }
         .task {
             loadImageClassifier()
         }
