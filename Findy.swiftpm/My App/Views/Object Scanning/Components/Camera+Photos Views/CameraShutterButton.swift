@@ -30,9 +30,10 @@ struct CameraShutterButton: View {
         let shutterSoundID: SystemSoundID = 1108
         AudioServicesPlaySystemSound(shutterSoundID)
         
-        if appViewModel.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity {
+        let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
+        if amountOfPhotos < AppMetrics.maxPhotoArrayCapacity {
             if let capturedImage = arCoordinator.processedFrameImage?.toCGImage() {
-                appViewModel.takenPhotos.append(capturedImage)
+                appViewModel.savedObject.takenPhotos.append(capturedImage)
             }
         }
     }

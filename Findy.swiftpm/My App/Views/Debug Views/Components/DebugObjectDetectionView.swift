@@ -31,7 +31,7 @@ struct BoundingBox: View {
     
     var body: some View {
         let rect = result.boundingBox
-        let boxColor: Color = (result.label == appViewModel.targetDetectionObject) ? Color.green : .red
+        let boxColor: Color = (result.label == appViewModel.savedObject.targetDetectionObject) ? Color.green : .red
         
         ZStack(alignment: .topLeading) {
             // Draw bounding box

@@ -10,7 +10,7 @@ struct AnimatedImageCell: View {
     @State private var hasGradientOverlay = false
     @State private var animationTask: Task<Void, Never>?
     
-    private var images: [CGImage] { appViewModel.takenPhotos }
+    private var images: [CGImage] { appViewModel.savedObject.takenPhotos }
     
     var body: some View {
         Image(decorative: images[currentImageIndex ?? randomImageIndex], scale: 20)

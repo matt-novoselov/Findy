@@ -81,7 +81,7 @@ struct ModelTrainingView: View {
     private var imageGridView: some View {
         LazyVGrid(columns: gridColumns, spacing: 5) {
             ForEach(0..<9, id: \.self) { _ in
-                if shouldAnimate && !appViewModel.takenPhotos.isEmpty {
+                if shouldAnimate && !appViewModel.savedObject.takenPhotos.isEmpty {
                     AnimatedImageCell()
                         .blur(radius: isProcessingComplete ? 20 : 0)
                 }
@@ -136,7 +136,7 @@ struct ModelTrainingView: View {
         Task {
             do {
                 #if canImport(CreateML)
-                appViewModel.imageClassifier = try await imageClassifierTrainer.train()
+                appViewModel.savedObject.imageClassifier = try await imageClassifierTrainer.train()
                 self.hasModelTrainingFinished = true
                 #endif
             } catch {

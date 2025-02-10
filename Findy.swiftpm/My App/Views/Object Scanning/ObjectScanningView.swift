@@ -7,7 +7,7 @@ struct ObjectScanningView: View {
     @State private var isAnyObjectDetected: Bool = false
     
     var body: some View {
-        let isCameraButtonActive: Bool = appViewModel.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity
+        let isCameraButtonActive: Bool = appViewModel.savedObject.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity
         
         Color.clear
             // MARK: Focus box

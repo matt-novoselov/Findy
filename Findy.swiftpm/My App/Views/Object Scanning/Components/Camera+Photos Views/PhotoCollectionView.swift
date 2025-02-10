@@ -4,7 +4,7 @@ struct PhotoCollectionView: View {
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
-        ForEach(Array(appViewModel.takenPhotos.enumerated()), id: \.offset) { index, photo in
+        ForEach(Array(appViewModel.savedObject.takenPhotos.enumerated()), id: \.offset) { index, photo in
             ImageCollectionView(photo: photo, index: index)
         }
     }

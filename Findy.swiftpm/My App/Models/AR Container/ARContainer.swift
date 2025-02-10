@@ -156,7 +156,7 @@ extension ARSceneCoordinator {
     
     @MainActor
     private func processDetectionResults() {
-        guard let targetObject = appViewModel?.targetDetectionObject else { return }
+        guard let targetObject = appViewModel?.savedObject.targetDetectionObject else { return }
         
         let matchingDetections = detectedObjects.filter { $0.label == targetObject }
         guard !matchingDetections.isEmpty else { return }

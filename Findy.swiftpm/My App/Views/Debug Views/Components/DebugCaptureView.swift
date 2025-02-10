@@ -8,7 +8,7 @@ struct DebugCaptureView: View {
     var body: some View {
         let mostProminentResult = selectDominantObservation(
             from: arCoordinator.detectedObjects,
-            targetObject: appViewModel.targetDetectionObject
+            targetObject: appViewModel.savedObject.targetDetectionObject
         )
         
         HStack {
@@ -47,7 +47,7 @@ struct CroppedImage: View {
     
     func cropImage(_ image: CGImage, to rect: CGRect) -> CGImage? {
         guard rect.size.width > 0, rect.size.height > 0 else { return nil }
-        appViewModel.lastCroppedImage = image.cropping(to: rect)
+        appViewModel.savedObject.lastCroppedImage = image.cropping(to: rect)
         return image.cropping(to: rect)
     }
 }

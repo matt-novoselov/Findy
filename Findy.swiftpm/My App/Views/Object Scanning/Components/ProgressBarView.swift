@@ -7,9 +7,10 @@ struct ProgressBarView: View {
     var body: some View {
         HStack{
             // Photo count display
-            Text("\(appViewModel.takenPhotos.count)/\(maxCapacity)")
-                .contentTransition(.numericText(value: Double(appViewModel.takenPhotos.count)))
-                .animation(.spring, value: appViewModel.takenPhotos.count)
+            let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
+            Text("\(amountOfPhotos)/\(maxCapacity)")
+                .contentTransition(.numericText(value: Double(amountOfPhotos)))
+                .animation(.spring, value: amountOfPhotos)
             
             // Progress capsules
             HStack(spacing: 4) {
@@ -18,7 +19,7 @@ struct ProgressBarView: View {
                         .frame(height: 6)
                         .foregroundStyle(Material.thin)
                         .overlay{
-                            if index < appViewModel.takenPhotos.count {
+                            if index < amountOfPhotos {
                                 Color.primary.opacity(0.6)
                                     .clipShape(.capsule)
                                     .transition(.scale(scale: 0, anchor: .leading))
@@ -27,7 +28,7 @@ struct ProgressBarView: View {
                         .clipped()
                         .animation(
                             .easeInOut(duration: 0.2).delay(Double(index) * 0.05),
-                            value: appViewModel.takenPhotos.count
+                            value: amountOfPhotos
                         )
                 }
             }
