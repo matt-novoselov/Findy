@@ -10,10 +10,10 @@ struct AnimatedImageCell: View {
     @State private var hasGradientOverlay = false
     @State private var animationTask: Task<Void, Never>?
     
-    private var images: [CGImage] { appViewModel.savedObject.takenPhotos }
+    private var capturedPhotos: [CapturedPhoto] { appViewModel.savedObject.takenPhotos }
     
     var body: some View {
-        Image(decorative: images[currentImageIndex ?? randomImageIndex], scale: 20)
+        Image(decorative: capturedPhotos[currentImageIndex ?? randomImageIndex].photo, scale: 20)
             .resizable()
             .brightness(isScaled ? 0.5 : 0)
             .scaleEffect(isScaled ? 1.2 : 1.0)
@@ -37,7 +37,7 @@ struct AnimatedImageCell: View {
         .opacity(hasGradientOverlay ? 0 : 1)
     }
     
-    private var randomImageIndex: Int { Int.random(in: 0..<images.count) }
+    private var randomImageIndex: Int { Int.random(in: 0..<capturedPhotos.count) }
     
     private func setupInitialAnimation() {
         initialOffsetX *= Bool.random() ? -1 : 1
@@ -72,7 +72,7 @@ struct AnimatedImageCell: View {
         withAnimation(.spring) {
             isScaled = true
         } completion: {
-            currentImageIndex = Int.random(in: 0..<images.count)
+            currentImageIndex = Int.random(in: 0..<capturedPhotos.count)
             withAnimation(.spring) {
                 isScaled = false
             }

@@ -41,6 +41,13 @@ struct ModelTrainingView: View {
                 isTrainingCoverPresented = false
                 appViewModel.state = .searching
             }
+            
+            VStack {
+                ForEach(appViewModel.savedObject.takenPhotos, id: \.photo) { takenPhoto in
+                    Text(takenPhoto.processedObservation.label) // Assuming 'label' is the correct property
+                }
+            }
+
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background{

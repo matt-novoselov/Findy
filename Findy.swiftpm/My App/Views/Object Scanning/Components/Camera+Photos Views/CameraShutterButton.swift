@@ -5,6 +5,7 @@ struct CameraShutterButton: View {
     @Environment(AppViewModel.self) private var appViewModel
     @Environment(ARSceneCoordinator.self) private var arCoordinator
     @Binding var cameraShutterToggle: Bool
+    @Binding var objectFocus: ProcessedObservation?
     
     var body: some View {
         Button(action: {takePhoto()}) {
@@ -32,8 +33,12 @@ struct CameraShutterButton: View {
         
         let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
         if amountOfPhotos < AppMetrics.maxPhotoArrayCapacity {
-            if let capturedImage = arCoordinator.processedFrameImage?.toCGImage() {
-                appViewModel.savedObject.takenPhotos.append(capturedImage)
+            if let capturedImage = arCoordinator.processedFrameImage?.toCGImage(), let objectFocus = objectFocus {
+                let capturedPhoto = CapturedPhoto(
+                    photo: capturedImage,
+                    processedObservation: objectFocus
+                )
+                appViewModel.savedObject.takenPhotos.append(capturedPhoto)
             }
         }
     }
