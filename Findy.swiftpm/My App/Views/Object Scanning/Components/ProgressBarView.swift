@@ -37,14 +37,3 @@ struct ProgressBarView: View {
         .fontWeight(.medium)
     }
 }
-
-
-//#Preview {
-//    @Previewable @State var appViewModel: AppViewModel = .init()
-//    ProgressBarView()
-//        .environment(appViewModel)
-//    
-//    Button("Click"){
-//        appViewModel.takenPhotos.append((CIImage(image: UIImage(named: "screenshot")!)?.toCGImage())!)
-//    }
-//}

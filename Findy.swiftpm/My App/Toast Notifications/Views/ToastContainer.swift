@@ -13,9 +13,9 @@ struct ToastContainer<Content: View>: View {
             .overlay(alignment: .top){
                 let isVisible: Bool = toastManager.currentNotification != nil
                 
-                Group{
-                    if isVisible, (displayedNotification != nil){
-                        ToastView(notification: displayedNotification!, onDismiss: {
+                Group {
+                    if isVisible, let notification = displayedNotification {
+                        ToastView(notification: notification, onDismiss: {
                             toastManager.hideToast()
                         })
                         .zIndex(1)

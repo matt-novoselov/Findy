@@ -92,10 +92,13 @@ struct ModelTrainingView: View {
                         let photo: CGImage = takenPhoto.photo
                         let observation = takenPhoto.processedObservation
                         let boundingBox = observation.boundingBox
-                        return UIImage(cgImage: cropImage(photo, to: boundingBox)!)
+                        guard let croppedCGImage = cropImage(photo, to: boundingBox) else {
+                            return nil
+                        }
+                        return UIImage(cgImage: croppedCGImage)
                     }
                 }
-                
+
                 var results = [UIImage]()
                 for await cropped in group {
                     if let cropped {
