@@ -12,7 +12,7 @@ extension ARSceneCoordinator{
         
         let ambientLumens = lightEstimate.ambientIntensity
         if ambientLumens < lowLightThreshold {
-            print("⚠️ Low light condition detected: \(String(format: "%.0f", ambientLumens)) lumens")
+            self.toastManager?.showToast(ToastTemplates.lowLightDetected)
         }
     }
 }

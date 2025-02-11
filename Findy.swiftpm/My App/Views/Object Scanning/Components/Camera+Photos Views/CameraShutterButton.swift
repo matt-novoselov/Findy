@@ -4,6 +4,7 @@ import AVFoundation
 struct CameraShutterButton: View {
     @Environment(AppViewModel.self) private var appViewModel
     @Environment(ARSceneCoordinator.self) private var arCoordinator
+    @Environment(ToastManager.self) var toastManager
     @Binding var cameraShutterToggle: Bool
     var isObjectFocused: Bool
     
@@ -12,7 +13,7 @@ struct CameraShutterButton: View {
             if isObjectFocused{
                 takePhoto()
             } else {
-                print("Object is not detected")
+                toastManager.showToast(ToastTemplates.objectNotDetected)
             }
         }) {
             Circle()

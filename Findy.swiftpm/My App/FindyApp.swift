@@ -7,6 +7,7 @@ struct FindyApp: App {
     @State private var appViewModel: AppViewModel?
     @State private var arCoordinator: ARSceneCoordinator?
     @State private var speechSynthesizer: SpeechSynthesizer?
+    @State private var toastManager: ToastManager?
     
     var body: some Scene {
         WindowGroup {
@@ -24,6 +25,7 @@ struct FindyApp: App {
                             .environment(appViewModel)
                             .environment(arCoordinator)
                             .environment(speechSynthesizer)
+                            .environment(toastManager)
                     } else {
                         ProgressView()
                     }
@@ -35,11 +37,13 @@ struct FindyApp: App {
                 self.appViewModel = AppViewModel()
                 self.arCoordinator = ARSceneCoordinator(objectDetection: self.objectDetection!)
                 self.speechSynthesizer = SpeechSynthesizer()
+                self.toastManager = ToastManager()
                 
                 // Set weak vars
                 objectDetection?.appViewModel = self.appViewModel
                 arCoordinator?.appViewModel = self.appViewModel
                 arCoordinator?.speechSynthesizer = self.speechSynthesizer
+                arCoordinator?.toastManager = self.toastManager
             }
         }
     }
@@ -63,8 +67,10 @@ struct FindyApp: App {
 
 struct ProxyBootstrapView: View {    
     var body: some View {
-        ContentView()
-            .colorScheme(.dark)
-            .persistentSystemOverlays(.hidden)
+        ToastContainer{
+            ContentView()
+                .colorScheme(.dark)
+                .persistentSystemOverlays(.hidden)
+        }
     }
 }

@@ -27,6 +27,7 @@ class ARSceneCoordinator {
     
     weak var appViewModel: AppViewModel?
     weak var speechSynthesizer: SpeechSynthesizer?
+    weak var toastManager: ToastManager?
     
     var hasTargetObjectBeenDetected: Binding<Bool>?
     
