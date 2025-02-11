@@ -29,9 +29,27 @@ struct ToastView: View {
         .padding(.all, 20)
         .background(Material.thin, in: .capsule)
         .clipShape(.capsule)
+        
+        .gesture(
+            // Combine tap and swipe gestures
+            SimultaneousGesture(
+                TapGesture()
+                    .onEnded {
+                        toastManager.hideToast()
+                    },
+                DragGesture()
+                    .onEnded { gesture in
+                        if gesture.translation.height < 0 {
+                            toastManager.hideToast()
+                        }
+                    }
+            )
+        )
+        
         .onAppear {
             withAnimation(.spring(duration: 0.4)) { }
         }
+        
         .onChange(of: notification.id){
             withAnimation{
                 self.isBlurred = true
