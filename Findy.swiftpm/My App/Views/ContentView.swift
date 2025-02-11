@@ -2,23 +2,15 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        
         TabView {
-            Tab("Camera", systemImage: "xmark") {
+            Tab("Viewfinder", systemImage: "camera.viewfinder") {
                 ARControllerView()
             }
-            Tab("Settings", systemImage: "xmark") {
+
+            Tab("Settings", systemImage: "gearshape.2.fill") {
                 SettingsView()
-            }
-            Tab("Image Playground", systemImage: "xmark") {
-                ImagePlaygroundView()
             }
         }
         .tabViewStyle(.tabBarOnly)
-        
     }
-}
-
-#Preview {
-    ContentView()
 }

@@ -66,6 +66,5 @@ struct ProxyBootstrapView: View {
         ContentView()
             .colorScheme(.dark)
             .persistentSystemOverlays(.hidden)
-            .statusBarHidden()
     }
 }
