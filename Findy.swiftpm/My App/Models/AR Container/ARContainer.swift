@@ -4,8 +4,6 @@ import SwiftUI
 import Combine
 
 
-
-
 // MARK: - AR Scene Coordinator
 @Observable
 class ARSceneCoordinator {
@@ -30,6 +28,7 @@ class ARSceneCoordinator {
     weak var toastManager: ToastManager?
     
     var hasTargetObjectBeenDetected: Binding<Bool>?
+    var objectDetectedAtPosition: CGPoint?
     
     init(objectDetection: ObjectDetection) {
         self.objectDetector = objectDetection
@@ -174,13 +173,14 @@ extension ARSceneCoordinator {
         let detectionPoint = dominantObservation.boundingBox.midPoint
         
         initiateRaycast(at: detectionPoint)
-        provideDetectionFeedback(for: targetObject)
+        provideDetectionFeedback(for: targetObject, at: detectionPoint)
     }
     
     @MainActor
-    private func provideDetectionFeedback(for object: String) {
+    private func provideDetectionFeedback(for object: String, at position: CGPoint) {
         guard hasTargetObjectBeenDetected?.wrappedValue == false else { return }
         
+        self.objectDetectedAtPosition = position
         speechSynthesizer?.speak(text: "\(object) detected!")
         
         if let distance = currentMeasurement?.formattedValue {

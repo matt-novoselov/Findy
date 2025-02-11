@@ -6,6 +6,13 @@ struct ObjectSearchingView: View {
     
     var body: some View {
         Color.clear
+            // MARK: Ripple View
+            .background{
+                RippleEffectView(objectDetected: hasTargetObjectBeenDetected)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea()
+            }
+        
             // MARK: Glowing effect
             .background{
                 GlowingEdgesView(objectDetected: hasTargetObjectBeenDetected)
