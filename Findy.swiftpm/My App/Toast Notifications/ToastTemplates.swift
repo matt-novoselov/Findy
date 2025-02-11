@@ -3,8 +3,8 @@ import SwiftUI
 // MARK: - Toast Templates
 enum ToastTemplates {
     static let objectNotDetected = ToastNotification(
-        title: "Couldn't detect the object",
-        message: "Try adjusting it or picking another one!",
+        title: "Couldn't take a photo",
+        message: "Try adjusting the object's position.",
         iconName: "viewfinder.trianglebadge.exclamationmark"
     )
     
