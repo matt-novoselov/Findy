@@ -5,12 +5,18 @@ struct CameraShutterButton: View {
     @Environment(AppViewModel.self) private var appViewModel
     @Environment(ARSceneCoordinator.self) private var arCoordinator
     @Binding var cameraShutterToggle: Bool
-    @Binding var objectFocus: ProcessedObservation?
+    var isObjectFocused: Bool
     
     var body: some View {
-        Button(action: {takePhoto()}) {
+        Button(action: {
+            if isObjectFocused{
+                takePhoto()
+            } else {
+                print("Object is not detected")
+            }
+        }) {
             Circle()
-                .fill(.white)
+                .fill(.white.opacity(isObjectFocused ? 1 : 0.2))
                 .frame(width: 55, height: 55)
         }
         .buttonStyle(ShutterButtonStyle())
@@ -18,7 +24,7 @@ struct CameraShutterButton: View {
         // Outer ring
         .overlay{
             Circle()
-                .stroke(.white, lineWidth: 5)
+                .stroke(.white.opacity(isObjectFocused ? 1 : 0.2), lineWidth: 5)
                 .frame(width: 70, height: 70)
         }
     }
@@ -33,10 +39,14 @@ struct CameraShutterButton: View {
         
         let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
         if amountOfPhotos < AppMetrics.maxPhotoArrayCapacity {
-            if let capturedImage = arCoordinator.processedFrameImage?.toCGImage(), let objectFocus = objectFocus {
+            if let capturedImage = arCoordinator.processedFrameImage?.toCGImage() {
+                let detectedObjects = arCoordinator.detectedObjects
+                
+                guard let mostProminentResult = selectDominantObservation(from: detectedObjects) else {return}
+                
                 let capturedPhoto = CapturedPhoto(
                     photo: capturedImage,
-                    processedObservation: objectFocus
+                    processedObservation: mostProminentResult
                 )
                 appViewModel.savedObject.takenPhotos.append(capturedPhoto)
             }

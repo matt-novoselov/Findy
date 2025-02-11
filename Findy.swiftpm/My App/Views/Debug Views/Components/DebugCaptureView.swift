@@ -47,7 +47,6 @@ struct CroppedImage: View {
     
     func cropImage(_ image: CGImage, to rect: CGRect) -> CGImage? {
         guard rect.size.width > 0, rect.size.height > 0 else { return nil }
-        appViewModel.savedObject.lastCroppedImage = image.cropping(to: rect)
         return image.cropping(to: rect)
     }
 }

@@ -3,13 +3,13 @@ import CreateML
 import Foundation
 
 final class ImageClassifierTrainer {
-    public func train() async throws -> MLImageClassifier {
+    public func train(on customImages: [UIImage]) async throws -> MLImageClassifier {
         let generalObjects = try ImageClassifierTrainer.loadImageURLs(
             extension: "jpg",
             prefix: "GeneralObject"
         )
         
-        let customObjects: [URL] = generalObjects
+        let customObjects: [URL] = getImageURLs(from: customImages)
         
         let trainingData: [String: [URL]] = [
             "GeneralObject": generalObjects,
@@ -31,3 +31,25 @@ final class ImageClassifierTrainer {
     }
 }
 #endif
+
+import UIKit
+
+func getImageURLs(from images: [UIImage]) -> [URL] {
+    var urls = [URL]()
+    let tempDirectory = FileManager.default.temporaryDirectory
+    
+    for (index, image) in images.enumerated() {
+        let fileName = "croppedImage_\(index).jpg"
+        let fileURL = tempDirectory.appendingPathComponent(fileName)
+        
+        if let data = image.jpegData(compressionQuality: 0.8) {
+            do {
+                try data.write(to: fileURL)
+                urls.append(fileURL)
+            } catch {
+                print("Error saving image \(index): \(error)")
+            }
+        }
+    }
+    return urls
+}

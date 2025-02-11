@@ -5,8 +5,8 @@ import CoreGraphics
 
 struct SavedObject {
     var takenPhotos: [CapturedPhoto] = []
-    var lastCroppedImage: CGImage?
-    var targetDetectionObject: String = "mouse"
+    var targetDetectionObject: String?
+    var visionClassification: [String]?
     #if canImport(CreateML)
     var imageClassifier: MLImageClassifier?
     #endif

@@ -43,7 +43,7 @@ struct AnimatedImageCell: View {
         initialOffsetX *= Bool.random() ? -1 : 1
         initialOffsetY *= Bool.random() ? -1 : 1
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + Double.random(in: 0...5)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Double.random(in: 0...3)) {
             withAnimation(.spring(duration: 1)) {
                 initialOffsetX = 0
                 initialOffsetY = 0
