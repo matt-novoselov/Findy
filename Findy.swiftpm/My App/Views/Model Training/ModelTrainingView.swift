@@ -31,12 +31,6 @@ struct ModelTrainingView: View {
     private var imageClassifierTrainer = ImageClassifierTrainer()
 #endif
     
-    //////////
-    @State private var croppedPhotos: [URL]?
-    @State private var mostBeautifulPhoto: UIImage?
-    @State private var mostBeautifulPhotoCutout: UIImage?
-    //////////
-    
     var body: some View {
         VStack {
             ZStack {
@@ -53,63 +47,6 @@ struct ModelTrainingView: View {
             
             Button("Train AI Model"){
                 startModelTraining()
-            }
-            
-            HStack{
-                VStack {
-                    ForEach(appViewModel.savedObject.takenPhotos, id: \.photo) { takenPhoto in
-                        Text(takenPhoto.processedObservation.label)
-                    }
-                }
-                
-                if let croppedPhotos = self.croppedPhotos {
-                    VStack {
-                        ForEach(
-                            croppedPhotos.enumerated().map { ($0.offset, $0.element) },
-                            id: \.0
-                        ) { _, croppedPhoto in
-                            AsyncImage(url: croppedPhoto) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                case .success(let image):
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                case .failure:
-                                    Text("No image")
-                                @unknown default:
-                                    EmptyView()
-                                }
-                            }
-                            .frame(width: 100)
-                        }
-                    }
-                }
-                
-                
-                if let mostBeautifulPhoto = self.mostBeautifulPhoto {
-                    Image(uiImage: mostBeautifulPhoto)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100)
-                }
-                
-                if let mostBeautifulPhotoCutout = self.mostBeautifulPhotoCutout {
-                    Image(uiImage: mostBeautifulPhotoCutout)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100)
-                }
-                
-                if let classifications = appViewModel.savedObject.visionClassification {
-                    VStack {
-                        ForEach(classifications, id: \.self) { classification in
-                            Text(classification)
-                        }
-                    }
-                }
-                
             }
             
         }
@@ -163,9 +100,7 @@ struct ModelTrainingView: View {
             Task {
                 loadImageClassifier(with: croppedPhotos)
             }
-            
-            self.croppedPhotos = getImageURLs(from: croppedPhotos)
-            
+
             // Parallel aesthetic scoring
             let aestheticScores = await withTaskGroup(of: (UIImage, ImageAestheticsScoresObservation?).self) { group in
                 for photo in croppedPhotos {
@@ -188,14 +123,13 @@ struct ModelTrainingView: View {
             })?.0 else { return }
             
             print("✅ most beautiful photo selected")
-            self.mostBeautifulPhoto = mostBeautiful
-            
+
             // In an async context
             do {
-                let resultImage = try await removeBackground(from: mostBeautiful)
+                let resultImage: UIImage = try await removeBackground(from: mostBeautiful)
                 // Use the resulting image with transparent background
-                self.mostBeautifulPhotoCutout = resultImage
-                print("✅ backgropund removed")
+                appViewModel.savedObject.objectCutOutImage = resultImage
+                print("✅ background removed")
             } catch {
                 print("Background removal failed: \(error)")
             }
@@ -261,8 +195,8 @@ struct ModelTrainingView: View {
     // MARK: - Subviews
     private var checkmarkView: some View {
         Group {
-            if showCheckmark, let mostBeautifulPhotoCutout {
-                Image(uiImage: mostBeautifulPhotoCutout)
+            if showCheckmark, let photoCutout = appViewModel.savedObject.objectCutOutImage {
+                Image(uiImage: photoCutout)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 150)
