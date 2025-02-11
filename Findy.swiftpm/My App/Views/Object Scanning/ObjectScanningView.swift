@@ -20,18 +20,20 @@ struct ObjectScanningView: View {
             // MARK: Visual effects
             .overlay{
                 CameraShutterView(isShutterActive: $cameraShutterToggle)
+            }
+            .overlay(alignment: .bottom){
                 ProgressBarView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
                     .padding(.horizontal)
+            }
+            .overlay(alignment: .bottomLeading){
                 PhotoCollectionView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
                     .padding()
                     .padding(.bottom)
             }
             .allowsHitTesting(false)
-        
+
             // MARK: Camera shutter button
-            .overlay{
+            .overlay(alignment: .trailing){
                 Group{
                     if isCameraButtonActive {
                         CameraShutterButton(cameraShutterToggle: $cameraShutterToggle, isObjectFocused: isObjectFocused)
@@ -44,7 +46,6 @@ struct ObjectScanningView: View {
                 .padding()
                 .transition(.move(edge: .trailing))
                 .animation(.spring, value: isCameraButtonActive)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
             }
         
             // MARK: Model Training View

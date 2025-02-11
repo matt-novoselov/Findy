@@ -24,6 +24,8 @@ struct SettingsView: View {
                 }
             }
             .pickerStyle(.segmented)
+            
+            ImagePlaygroundView()
         }
         .padding()
         

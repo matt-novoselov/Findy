@@ -17,6 +17,7 @@ struct ModelTrainingView: View {
     @State private var isProcessingComplete = false
     @State private var showCheckmark = false
     @State private var animateCheckmark = false
+    @State private var isAnimationFinishedFinal: Bool = false
     
     // MARK: Meet requirement
     @State private var hasBaseAnimationFinished = false
@@ -32,30 +33,41 @@ struct ModelTrainingView: View {
 #endif
     
     var body: some View {
-        VStack {
-            ZStack {
-                checkmarkView
-                imageGridView
-            }
-            
-            #if canImport(CreateML)
-            if appViewModel.savedObject.imageClassifier != nil {
-                Button("Search for item"){
-                    isTrainingCoverPresented = false
-                    appViewModel.state = .searching
-                }
-            }
-            #endif
-            
-            Button("Train AI Model"){
-                startModelTraining()
-            }
-            
+        ZStack {
+            checkmarkView
+            imageGridView
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background{
             AnimatedBackgroundView()
         }
+        
+
+        .overlay(alignment: .bottom){
+            Group{
+                #if canImport(CreateML)
+                if isAnimationFinishedFinal  {
+                    Button("Search for item"){
+                        isTrainingCoverPresented = false
+                        appViewModel.state = .searching
+                    }
+                    .animation(.spring, value: isAnimationFinishedFinal)
+                }
+                #endif
+                
+                if !shouldAnimate {
+                    Button("Train AI Model"){
+                        startModelTraining()
+                    }
+                    .animation(.spring, value: shouldAnimate)
+                }
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
+            .foregroundStyle(.white)
+            .transition(.move(edge: .bottom).combined(with: .blurReplace).combined(with: .scale(0.5, anchor: .bottom)))
+        }
+        
         .onChange(of: isWrappingUpAnimations){
             wrapUpAnimations()
         }
@@ -64,13 +76,11 @@ struct ModelTrainingView: View {
     private func startModelTraining() {
         startAnimations()
         
-        
-        
         Task {
             let takenPhotos = appViewModel.savedObject.takenPhotos
             // Calculate average label (sync operation)
             let averageLabel = average(of: takenPhotos.compactMap { $0.processedObservation.label })
-            print("✅ Average label: \(averageLabel)")
+            
             await MainActor.run {
                 appViewModel.savedObject.targetDetectionObject = averageLabel
             }
@@ -78,7 +88,7 @@ struct ModelTrainingView: View {
             // Crop photos in parallel
             let croppedPhotos = await withTaskGroup(of: UIImage?.self) { group in
                 for takenPhoto in takenPhotos {
-                    group.addTask{
+                    group.addTask {
                         let photo: CGImage = takenPhoto.photo
                         let observation = takenPhoto.processedObservation
                         let boundingBox = observation.boundingBox
@@ -86,9 +96,13 @@ struct ModelTrainingView: View {
                     }
                 }
                 
-                return await group.reduce(into: [UIImage]()) { partialResult, cropped in
-                    if let cropped { partialResult.append(cropped) }
+                var results = [UIImage]()
+                for await cropped in group {
+                    if let cropped {
+                        results.append(cropped)
+                    }
                 }
+                return results
             }
             
             func cropImage(_ image: CGImage, to rect: CGRect) -> CGImage? {
@@ -96,13 +110,11 @@ struct ModelTrainingView: View {
                 return image.cropping(to: rect)
             }
             
-            print("✅ Cropped photos in parallel")
-            
             // Start model loading in parallel with other tasks
             Task {
                 loadImageClassifier(with: croppedPhotos)
             }
-
+            
             // Parallel aesthetic scoring
             let aestheticScores = await withTaskGroup(of: (UIImage, ImageAestheticsScoresObservation?).self) { group in
                 for photo in croppedPhotos {
@@ -112,37 +124,33 @@ struct ModelTrainingView: View {
                     }
                 }
                 
-                return await group.reduce(into: [(UIImage, ImageAestheticsScoresObservation?)]()) { partialResult, result in
-                    partialResult.append(result)
+                // Collect results using async sequence instead of reduce
+                var results = [(UIImage, ImageAestheticsScoresObservation?)]()
+                for await result in group {
+                    results.append(result)
                 }
+                return results
             }
-            
-            print("✅ aesthetic scored")
             
             // Find most beautiful photo
             guard let mostBeautiful = aestheticScores.max(by: {
                 ($0.1?.overallScore ?? 0) < ($1.1?.overallScore ?? 0)
             })?.0 else { return }
             
-            print("✅ most beautiful photo selected")
-
             // In an async context
             do {
                 let resultImage: UIImage = try await removeBackground(from: mostBeautiful)
                 // Use the resulting image with transparent background
                 appViewModel.savedObject.objectCutOutImage = resultImage
-                print("✅ background removed")
             } catch {
                 print("Background removal failed: \(error)")
             }
-
+            
             
             // Parallel classification and filtering
             async let classifications = try? classify(mostBeautiful)
             let filtered = await filterIdentifiers(from: classifications ?? [])
             
-            print("✅ most beautiful photo classified")
-            print(dump(filtered))
             appViewModel.savedObject.visionClassification = filtered
         }
         
@@ -191,6 +199,8 @@ struct ModelTrainingView: View {
         withAnimation(.easeOut(duration: 3)) {
             isProcessingComplete = true
             scheduleCheckmarkAnimation()
+        } completion: {
+            isAnimationFinishedFinal = true
         }
     }
     
@@ -208,7 +218,6 @@ struct ModelTrainingView: View {
                     .brightness(animateCheckmark ? 0 : 1)
                     .contrast(animateCheckmark ? 1 : 10)
                     .shadow(color: .white.opacity(0.8), radius: animateCheckmark ? 0 : 30)
-
             }
         }
     }

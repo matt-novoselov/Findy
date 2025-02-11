@@ -28,8 +28,6 @@ struct DebugCaptureView: View {
                 Text("No capture")
             }
         }
-        .padding(4)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
         .padding()
     }
 }

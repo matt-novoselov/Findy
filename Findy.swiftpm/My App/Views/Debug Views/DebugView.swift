@@ -4,12 +4,12 @@ struct DebugView: View {
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
-        Group{
-            if appViewModel.isDebugMode {
-                DebugObjectDetectionView()
-                DebugCaptureView()
-            }
+        if appViewModel.isDebugMode {
+            DebugObjectDetectionView()
+                .overlay(alignment: .bottomLeading){
+                    DebugCaptureView()
+                }
+                .allowsHitTesting(false)
         }
-        .allowsHitTesting(false)
     }
 }
