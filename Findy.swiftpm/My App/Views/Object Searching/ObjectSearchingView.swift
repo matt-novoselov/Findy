@@ -13,10 +13,14 @@ struct ObjectSearchingView: View {
             }
         
             // MARK: Arrow & Measurements
-            .overlay(alignment: .bottom){
+            .overlay{
                 if let currentMeasurement = arCoordinator.currentMeasurement {
                     ArrowView(degrees: Double(currentMeasurement.rotationDegrees))
-                    
+                }
+            }
+        
+            .overlay(alignment: .bottom){
+                if let currentMeasurement = arCoordinator.currentMeasurement {
                     DynamicFontMeasurementsView(numericValue: currentMeasurement.numericValue, unitSymbol: currentMeasurement.unitSymbol, referenceText: getDirection(degrees: Double(currentMeasurement.rotationDegrees)))
                         .padding()
                 }
