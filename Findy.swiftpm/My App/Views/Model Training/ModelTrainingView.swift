@@ -38,12 +38,14 @@ struct ModelTrainingView: View {
                 imageGridView
             }
             
+            #if canImport(CreateML)
             if appViewModel.savedObject.imageClassifier != nil {
                 Button("Search for item"){
                     isTrainingCoverPresented = false
                     appViewModel.state = .searching
                 }
             }
+            #endif
             
             Button("Train AI Model"){
                 startModelTraining()

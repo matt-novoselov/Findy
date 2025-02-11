@@ -7,9 +7,9 @@ struct AnimatedBackgroundView: View {
     var body: some View {
         CanvasRenderer(
             colorSequence: [
-                .black, .black, .black,
-                .orange, .red, .orange,
-                .indigo, .black, .green
+                Color(hex: 0x17153B), Color(hex: 0x17153B), Color(hex: 0x17153B),
+                Color(hex: 0x2E236C), Color(hex: 0xC8ACD6), Color(hex: 0x2E236C),
+                Color(hex: 0x433D8B), Color(hex: 0x17153B), Color(hex: 0x433D8B)
             ],
             timeParameter: timeValue
         )
@@ -147,4 +147,16 @@ struct CanvasRenderer: View {
 
 #Preview {
     AnimatedBackgroundView()
+}
+
+extension Color {
+    init(hex: UInt, alpha: Double = 1) {
+        self.init(
+            .sRGB,
+            red: Double((hex >> 16) & 0xff) / 255,
+            green: Double((hex >> 08) & 0xff) / 255,
+            blue: Double((hex >> 00) & 0xff) / 255,
+            opacity: alpha
+        )
+    }
 }
