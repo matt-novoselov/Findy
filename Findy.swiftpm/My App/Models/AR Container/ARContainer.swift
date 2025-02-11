@@ -1,4 +1,5 @@
 import ARKit
+import CreateML
 import RealityKit
 import SwiftUI
 import Combine
@@ -18,10 +19,51 @@ class ARSceneCoordinator {
     private(set) var currentMeasurement: SceneMeasurement?
     
     // Detection properties
-    private(set) var detectedObjects: [ProcessedObservation] = [] {
-        didSet { handleNewDetectionResults() }
-    }
+    private(set) var detectedObjects: [ProcessedObservation] = []
     public var processedFrameImage: CIImage?
+    
+    private func analyzeImageWithML() {
+        // Ensure we have the necessary appViewModel.
+        guard let appViewModel = self.appViewModel else {
+            return
+        }
+        
+        // Select the dominant observation using the target detection object.
+        guard let mostProminentResult = selectDominantObservation(
+            from: self.detectedObjects,
+            targetObject: appViewModel.savedObject.targetDetectionObject
+        ) else {
+            return
+        }
+        
+        // Convert the processed frame image to CGImage.
+        guard let cgImage = self.processedFrameImage?.toCGImage() else {
+            return
+        }
+        
+        // Crop the CGImage based on the detected bounding box.
+        let cropRect = mostProminentResult.boundingBox
+        guard let cgImageCropped = cgImage.cropping(to: cropRect) else {
+            // Log error if needed: cropping failed.
+            return
+        }
+        
+        // Ensure the image classifier is available.
+        guard let imageClassifier = appViewModel.savedObject.imageClassifier else {
+            return
+        }
+        
+        // Attempt prediction and handle possible errors.
+        do {
+            let prediction = try imageClassifier.prediction(from: cgImageCropped)
+            if prediction == "myObject" {
+                self.handleNewDetectionResults()
+            }
+        } catch {
+            // Optionally log the error.
+            return
+        }
+    }
     
     weak var appViewModel: AppViewModel?
     weak var speechSynthesizer: SpeechSynthesizer?
@@ -137,6 +179,7 @@ extension ARSceneCoordinator {
         
         let frameImage = CIImage(cvPixelBuffer: frame.capturedImage)
         processedFrameImage = frameImage.transformed(by: orientationTransform)
+        analyzeImageWithML()
         
         guard let processedImage = processedFrameImage else {
             detectedObjects = []
@@ -150,16 +193,23 @@ extension ARSceneCoordinator {
 
 // MARK: - Raycast Management
 extension ARSceneCoordinator {
-    private func handleNewDetectionResults() {
+    public func handleNewDetectionResults() {
         Task { await processDetectionResults() }
     }
     
     @MainActor
     private func processDetectionResults() {
-        guard let targetObject = appViewModel?.savedObject.targetDetectionObject else { return }
+        if let dominantObservation = getDominantObservation() {
+            let detectionPoint = dominantObservation.boundingBox.midPoint
+            initiateRaycast(at: detectionPoint)
+        }
+    }
+    
+    private func getDominantObservation() -> ProcessedObservation? {
+        guard let targetObject = appViewModel?.savedObject.targetDetectionObject else { return nil }
         
         let matchingDetections = detectedObjects.filter { $0.label == targetObject }
-        guard !matchingDetections.isEmpty else { return }
+        guard !matchingDetections.isEmpty else { return nil }
         
         let adjustedResults = adjustObservations(
             detectionResults: matchingDetections,
@@ -167,13 +217,10 @@ extension ARSceneCoordinator {
         )
         
         guard let dominantObservation = selectDominantObservation(from: adjustedResults, targetObject: targetObject) else {
-            return
+            return nil
         }
         
-        let detectionPoint = dominantObservation.boundingBox.midPoint
-        
-        initiateRaycast(at: detectionPoint)
-        provideDetectionFeedback(for: targetObject, at: detectionPoint)
+        return dominantObservation
     }
     
     @MainActor
@@ -225,6 +272,13 @@ extension ARSceneCoordinator {
 extension ARSceneCoordinator {
     private func establishNewTracking(with query: ARRaycastQuery) {
         guard let arView else { return }
+        
+        if let dominantObservation = getDominantObservation(), let targetObject = appViewModel?.savedObject.targetDetectionObject {
+            let detectionPoint = dominantObservation.boundingBox.midPoint
+            Task{
+                await provideDetectionFeedback(for: targetObject, at: detectionPoint)
+            }
+        }
         
         let indicatorAnchor = createVisualIndicator()
         arView.scene.addAnchor(indicatorAnchor)
