@@ -28,9 +28,9 @@ struct ModelTrainingView: View {
     
     private let gridColumns = Array(repeating: GridItem(.fixed(100)), count: 3)
     
-#if canImport(CreateML)
+    #if canImport(CreateML)
     private var imageClassifierTrainer = ImageClassifierTrainer()
-#endif
+    #endif
     
     var body: some View {
         ZStack {
@@ -47,11 +47,15 @@ struct ModelTrainingView: View {
             Group{
                 #if canImport(CreateML)
                 if isAnimationFinishedFinal  {
-                    Button("Search for item"){
-                        isTrainingCoverPresented = false
-                        appViewModel.state = .searching
+                    VStack{
+                        AINameSelectionView()
+                        
+                        Button("Search for item"){
+                            isTrainingCoverPresented = false
+                            appViewModel.state = .searching
+                        }
+                        .animation(.spring, value: isAnimationFinishedFinal)
                     }
-                    .animation(.spring, value: isAnimationFinishedFinal)
                 }
                 #endif
                 
@@ -272,10 +276,10 @@ struct ModelTrainingView: View {
     private func loadImageClassifier(with customImages: [UIImage] ) {
         Task {
             do {
-#if canImport(CreateML)
+                #if canImport(CreateML)
                 appViewModel.savedObject.imageClassifier = try await imageClassifierTrainer.train(on: customImages)
                 print("✅ Model training done")
-#endif
+                #endif
             } catch {
                 print("Classifier training failed: \(error)")
             }
