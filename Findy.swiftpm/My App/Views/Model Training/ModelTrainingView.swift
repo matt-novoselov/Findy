@@ -28,9 +28,9 @@ struct ModelTrainingView: View {
     
     private let gridColumns = Array(repeating: GridItem(.fixed(100)), count: 3)
     
-    #if canImport(CreateML)
+#if canImport(CreateML)
     private var imageClassifierTrainer = ImageClassifierTrainer()
-    #endif
+#endif
     
     var body: some View {
         ZStack {
@@ -42,10 +42,10 @@ struct ModelTrainingView: View {
             AnimatedBackgroundView()
         }
         
-
+        
         .overlay(alignment: .bottom){
             Group{
-                #if canImport(CreateML)
+#if canImport(CreateML)
                 if isAnimationFinishedFinal  {
                     VStack{
                         AINameSelectionView()
@@ -57,13 +57,11 @@ struct ModelTrainingView: View {
                         .animation(.spring, value: isAnimationFinishedFinal)
                     }
                 }
-                #endif
+#endif
                 
                 if !shouldAnimate {
-                    Button("Train AI Model"){
-                        startModelTraining()
-                    }
-                    .animation(.spring, value: shouldAnimate)
+                    ClayStyledButton(action: startModelTraining())
+                        .animation(.spring, value: shouldAnimate)
                 }
             }
             .buttonStyle(.bordered)
@@ -102,7 +100,7 @@ struct ModelTrainingView: View {
                         return UIImage(cgImage: croppedCGImage)
                     }
                 }
-
+                
                 var results = [UIImage]()
                 for await cropped in group {
                     if let cropped {
@@ -276,10 +274,10 @@ struct ModelTrainingView: View {
     private func loadImageClassifier(with customImages: [UIImage] ) {
         Task {
             do {
-                #if canImport(CreateML)
+#if canImport(CreateML)
                 appViewModel.savedObject.imageClassifier = try await imageClassifierTrainer.train(on: customImages)
                 print("✅ Model training done")
-                #endif
+#endif
             } catch {
                 print("Classifier training failed: \(error)")
             }
