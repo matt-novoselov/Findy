@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ClayStyledButton: View {
+struct CandyStyledButton: View {
     var action: () -> Void = {}
     var body: some View {
         Button(action: {action()}){
@@ -43,7 +43,7 @@ struct ClayStyledButton: View {
 }
 
 #Preview {
-    ClayStyledButton()
+    CandyStyledButton()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding()
 }

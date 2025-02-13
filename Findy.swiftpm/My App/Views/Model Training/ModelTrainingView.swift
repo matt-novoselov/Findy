@@ -55,10 +55,10 @@ struct ModelTrainingView: View {
             AnimatedBackgroundView()
         }
         
-        .overlay(alignment: .bottom){
+        .overlay{
             Group{
                 if !shouldAnimate {
-                    ClayStyledButton(action: {startModelTraining()})
+                    CandyStyledButton(action: {startModelTraining()})
                         .animation(.spring, value: shouldAnimate)
                 }
             }
