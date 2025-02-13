@@ -6,7 +6,7 @@ import UIKit
 struct SavedObject {
     var takenPhotos: [CapturedPhoto] = []
     var targetDetectionObject: String?
-    var visionClassifications: [String]?
+    var visionClassifications: [String] = []
     var userPickedClassifications: Set<String> = []
     var objectCutOutImage: UIImage?
     var appleIntelligencePreviewImage: URL?
