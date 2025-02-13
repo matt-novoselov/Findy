@@ -9,6 +9,7 @@ struct SavedObject {
     var visionClassifications: [String]?
     var userPickedClassifications: Set<String> = []
     var objectCutOutImage: UIImage?
+    var appleIntelligencePreviewImage: URL?
     #if canImport(CreateML)
     var imageClassifier: MLImageClassifier?
     #endif

@@ -5,7 +5,6 @@ struct ImagePlaygroundView: View {
     @Environment(AppViewModel.self) private var appViewModel
     @Environment(\.supportsImagePlayground) private var supportsImagePlayground
     @State private var showImagePlayground = false
-    @State private var createdImageURL: URL?
     
     @State private var concepts: [ImagePlaygroundConcept] = []
     @State private var sourceImage: Image?
@@ -13,7 +12,7 @@ struct ImagePlaygroundView: View {
     
     var body: some View {
         VStack {
-            if let url = createdImageURL {
+            if let url = appViewModel.savedObject.appleIntelligencePreviewImage {
                 AsyncImage(url: url) { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fit)
@@ -40,7 +39,7 @@ struct ImagePlaygroundView: View {
                     showImagePlayground = true
                 }
                 .imagePlaygroundSheet(isPresented: $showImagePlayground, concepts: concepts, sourceImage: sourceImage) { url in
-                    createdImageURL = url
+                    appViewModel.savedObject.appleIntelligencePreviewImage = url
                 }
             } else {
                 ContentUnavailableView(
