@@ -23,8 +23,8 @@ struct ObjectScanningView: View {
                 CameraShutterView(isShutterActive: $cameraShutterToggle)
             }
             .overlay(alignment: .bottom){
-                ProgressBarView()
-                    .padding(.horizontal)
+//                ProgressBarView()
+//                    .padding(.horizontal)
             }
             .overlay(alignment: .bottomLeading){
                 PhotoCollectionView()

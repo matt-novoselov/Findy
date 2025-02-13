@@ -3,11 +3,12 @@ import SwiftUI
 struct ProgressBarView: View {
     @Environment(AppViewModel.self) private var appViewModel
     private let maxCapacity = AppMetrics.maxPhotoArrayCapacity
+    @Binding var amountOfPhotos: Int
     
     var body: some View {
         HStack{
             // Photo count display
-            let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
+//            let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
             Text("\(amountOfPhotos)/\(maxCapacity)")
                 .contentTransition(.numericText(value: Double(amountOfPhotos)))
                 .animation(.spring, value: amountOfPhotos)
@@ -20,12 +21,17 @@ struct ProgressBarView: View {
                         .foregroundStyle(Material.thin)
                         .overlay{
                             if index < amountOfPhotos {
-                                Color.primary.opacity(0.6)
-                                    .clipShape(.capsule)
+                                Color.clear
+                                    .frame(maxHeight: .infinity)
                                     .transition(.scale(scale: 0, anchor: .leading))
+                                    .overlay{
+                                        Color.primary.opacity(0.6)
+                                            .padding(-100)
+                                    }
+                                
                             }
                         }
-                        .clipped()
+                        .clipShape(.capsule)
                         .animation(
                             .easeInOut(duration: 0.2).delay(Double(index) * 0.05),
                             value: amountOfPhotos
@@ -35,5 +41,15 @@ struct ProgressBarView: View {
         }
         .fontDesign(.monospaced)
         .fontWeight(.medium)
+    }
+}
+
+#Preview {
+    @Previewable @State var appViewModel = AppViewModel()
+    @Previewable @State var amountOfPhotos: Int = 0
+    ProgressBarView(amountOfPhotos: $amountOfPhotos)
+        .environment(appViewModel)
+    Button("amountOfPhotos"){
+        amountOfPhotos += 1
     }
 }
