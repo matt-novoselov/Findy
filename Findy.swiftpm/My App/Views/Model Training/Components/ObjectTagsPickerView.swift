@@ -19,6 +19,13 @@ struct ObjectTagsPickerView: View {
                     }
                 }
             }
+            
+            CapsuleButton(
+                title: "Add Tag",
+                customSFSymbolName: "plus"
+            ) {
+                print("open keybord")
+            }
         }
         .padding()
         .animation(.spring, value: appViewModel.savedObject.userPickedClassifications.count)
@@ -54,13 +61,22 @@ struct ObjectTagsPickerView: View {
 // Custom capsule button component
 struct CapsuleButton: View {
     let title: String
-    let isSelected: Bool
-    let action: () -> Void
+    var isSelected: Bool = false
     let buttonAccentColor: Color = .purple.mix(with: .white, by: 0.5)
+    var customSFSymbolName: String? = nil
+    let action: () -> Void
     
     var body: some View {
         Button(action: action) {
             HStack{
+                if let customSFSymbolName {
+                    Image(systemName: customSFSymbolName)
+                        .fontDesign(.rounded)
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.primary)
+                }
+                
                 Text(title)
                     .fontDesign(.rounded)
                     .font(.subheadline)
