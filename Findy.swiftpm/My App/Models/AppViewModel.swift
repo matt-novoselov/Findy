@@ -7,6 +7,7 @@ class AppViewModel {
     var state: AppState = .scanning
     var isMetalDetectionSoundEnabled: Bool = true
     var savedObject: SavedObject = .init()
+    var isTrainingCoverPresented: Bool = false
 }
 
 enum AppState: String, CaseIterable {

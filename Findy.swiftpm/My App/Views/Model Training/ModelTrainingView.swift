@@ -6,13 +6,7 @@ import CreateML
 
 #warning("Refactor this shit")
 
-struct ModelTrainingView: View {
-    @Binding var isTrainingCoverPresented: Bool
-    
-    init(isTrainingCoverPresented: Binding<Bool>) {
-        self._isTrainingCoverPresented = isTrainingCoverPresented
-    }
-    
+struct ModelTrainingView: View {    
     @Environment(AppViewModel.self) private var appViewModel
     @State private var shouldAnimate = false
     @State private var scaleOverTime = false
@@ -46,7 +40,7 @@ struct ModelTrainingView: View {
                         ImagePlaygroundView()
                         
                         Button("Search for item"){
-                            isTrainingCoverPresented = false
+                            appViewModel.isTrainingCoverPresented = false
                             appViewModel.state = .searching
                         }
                         .animation(.spring, value: isAnimationFinishedFinal)

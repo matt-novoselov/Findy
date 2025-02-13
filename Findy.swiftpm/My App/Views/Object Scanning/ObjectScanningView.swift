@@ -6,7 +6,6 @@ struct ObjectScanningView: View {
     
     @State private var cameraShutterToggle: Bool = false
     @State private var isObjectFocused: Bool = false
-    @State private var isTrainingCoverPresented: Bool = false
     
     var body: some View {
         let isCameraButtonActive: Bool = appViewModel.savedObject.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity
@@ -47,21 +46,9 @@ struct ObjectScanningView: View {
                 
                 .onChange(of: isCameraButtonActive){
                     if isCameraButtonActive == false{
-                        isTrainingCoverPresented = true
+                        appViewModel.isTrainingCoverPresented = true
                     }
                 }
-            }
-        
-            // MARK: Training cover
-            .overlay{
-                Group{
-                    if isTrainingCoverPresented{
-                        ModelTrainingView(isTrainingCoverPresented: $isTrainingCoverPresented)
-                            .onAppear{ arCoordinator.isARContainerVisible = false }
-                            .onDisappear{ arCoordinator.isARContainerVisible = true }
-                    }
-                }
-                .animation(.spring, value: isTrainingCoverPresented)
             }
     }
 }

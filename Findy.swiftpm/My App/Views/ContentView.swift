@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(ARSceneCoordinator.self) private var arCoordinator
+    @Environment(AppViewModel.self) private var appViewModel
+    
     var body: some View {
         TabView {
             Tab("Viewfinder", systemImage: "camera.viewfinder") {
@@ -12,5 +15,19 @@ struct ContentView: View {
             }
         }
         .tabViewStyle(.tabBarOnly)
+        
+        // MARK: Training cover
+        .overlay{
+            Group{
+                if appViewModel.isTrainingCoverPresented{
+                    ModelTrainingView()
+                        .onAppear{ arCoordinator.isARContainerVisible = false }
+                        .onDisappear{ arCoordinator.isARContainerVisible = true }
+                        .transition(.move(edge: .bottom))
+                }
+            }
+            .animation(.spring, value: appViewModel.isTrainingCoverPresented)
+        }
+        
     }
 }
