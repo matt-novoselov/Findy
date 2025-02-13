@@ -8,6 +8,10 @@ struct ARControllerView: View {
         let arContainer = ARViewContainer(coordinator: arCoordinator)
         
         return arContainer
+        
+            .onAppear{ arCoordinator.isARContainerVisible = true }
+            .onDisappear{ arCoordinator.isARContainerVisible = false }
+        
             .blurredOverlay(isEnabled: appViewModel.state == .onboarding)
             .overlay{ DebugView() }
             .ignoresSafeArea()

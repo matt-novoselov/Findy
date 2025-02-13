@@ -28,6 +28,8 @@ class ARSceneCoordinator {
     var hasTargetObjectBeenDetected: Binding<Bool>?
     var objectDetectedAtPosition: CGPoint?
     
+    var isARContainerVisible: Bool = false
+    
     init(objectDetection: ObjectDetection) {
         self.objectDetector = objectDetection
         self.metalDetector.arCoordinator = self
@@ -61,6 +63,8 @@ extension ARSceneCoordinator {
     }
     
     private func processFrame() {
+        guard isARContainerVisible else { print("No update"); return }
+        
         updateDistanceMeasurement()
         performFrameAnalysis()
         

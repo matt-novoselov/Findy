@@ -4,6 +4,8 @@ import Vision
 import CreateML
 #endif
 
+#warning("Refactor this shit")
+
 struct ModelTrainingView: View {
     @Binding var isTrainingCoverPresented: Bool
     
@@ -34,21 +36,14 @@ struct ModelTrainingView: View {
     
     var body: some View {
         ZStack {
-            checkmarkView
-            imageGridView
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background{
-            AnimatedBackgroundView()
-        }
-        
-        
-        .overlay(alignment: .bottom){
-            Group{
+            VStack{
+                cutOutObjectView
 #if canImport(CreateML)
                 if isAnimationFinishedFinal  {
                     VStack{
-                        AINameSelectionView()
+                        ObjectTagsPickerView()
+                        
+                        ImagePlaygroundView()
                         
                         Button("Search for item"){
                             isTrainingCoverPresented = false
@@ -58,9 +53,18 @@ struct ModelTrainingView: View {
                     }
                 }
 #endif
-                
+            }
+            imageGridView
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background{
+            AnimatedBackgroundView()
+        }
+        
+        .overlay(alignment: .bottom){
+            Group{
                 if !shouldAnimate {
-                    ClayStyledButton(action: startModelTraining())
+                    ClayStyledButton(action: {startModelTraining()})
                         .animation(.spring, value: shouldAnimate)
                 }
             }
@@ -144,19 +148,41 @@ struct ModelTrainingView: View {
             
             // In an async context
             do {
+                // Remove the background from the original image.
                 let resultImage: UIImage = try await removeBackground(from: mostBeautiful)
-                // Use the resulting image with transparent background
+
+                // Save the resulting images.
                 appViewModel.savedObject.objectCutOutImage = resultImage
+
+                // MARK: Classify the cutOutImage
+                if let classifications = try await classify(resultImage){
+                    // Filter the identifiers
+                    let filtered = filterIdentifiers(from: classifications)
+
+                    // Process each element with .processedMLTag
+                    let processed = filtered.map { $0.processedMLTag }
+
+                    // Save the classification results
+                    appViewModel.savedObject.visionClassifications = processed
+                    
+                    if let averageLabel = appViewModel.savedObject.targetDetectionObject?.processedMLTag {
+                        // Ensure we have an array (or create one if nil)
+                        var classifications = appViewModel.savedObject.visionClassifications ?? []
+
+                        // Append averageLabel if it is not already in the array
+                        if !classifications.contains(averageLabel) {
+                            classifications.append(averageLabel)
+                        }
+                        
+                        // Update the saved visionClassification with the new array
+                        appViewModel.savedObject.visionClassifications = classifications
+                    }
+                }
+
             } catch {
-                print("Background removal failed: \(error)")
+                print("Operation failed: \(error)")
             }
-            
-            
-            // Parallel classification and filtering
-            async let classifications = try? classify(mostBeautiful)
-            let filtered = await filterIdentifiers(from: classifications ?? [])
-            
-            appViewModel.savedObject.visionClassification = filtered
+
         }
         
         self.hasModelTrainingFinished = true
@@ -210,9 +236,9 @@ struct ModelTrainingView: View {
     }
     
     // MARK: - Subviews
-    private var checkmarkView: some View {
+    private var cutOutObjectView: some View {
         Group {
-            if showCheckmark, let photoCutout = appViewModel.savedObject.objectCutOutImage {
+            if showCheckmark, let photoCutout = appViewModel.savedObject.objectCutOutImage{
                 Image(uiImage: photoCutout)
                     .resizable()
                     .scaledToFit()
@@ -285,58 +311,3 @@ struct ModelTrainingView: View {
     }
 }
 
-
-import Vision
-import CoreImage
-import UIKit
-import CoreImage.CIFilterBuiltins
-
-enum BackgroundRemovalError: Error {
-    case ciImageConversionFailed
-    case maskGenerationFailed
-    case maskApplicationFailed
-    case cgImageConversionFailed
-}
-
-func removeBackground(from image: UIImage) async throws -> UIImage {
-    try await Task.detached(priority: .userInitiated) {
-        // Convert UIImage to CIImage
-        guard let ciImage = CIImage(image: image) else {
-            throw BackgroundRemovalError.ciImageConversionFailed
-        }
-        
-        // Generate foreground mask using Vision
-        let request = VNGenerateForegroundInstanceMaskRequest()
-        let handler = VNImageRequestHandler(ciImage: ciImage)
-        try handler.perform([request])
-        
-        guard let result = request.results?.first else {
-            throw BackgroundRemovalError.maskGenerationFailed
-        }
-        
-        // Create scaled mask
-        let maskPixelBuffer = try result.generateScaledMaskForImage(
-            forInstances: result.allInstances,
-            from: handler
-        )
-        let maskImage = CIImage(cvPixelBuffer: maskPixelBuffer)
-        
-        // Apply mask to original image
-        let filter = CIFilter.blendWithMask()
-        filter.inputImage = ciImage
-        filter.maskImage = maskImage
-        filter.backgroundImage = CIImage.empty()
-        
-        guard let outputCIImage = filter.outputImage else {
-            throw BackgroundRemovalError.maskApplicationFailed
-        }
-        
-        // Convert CIImage to UIImage
-        let context = CIContext()
-        guard let cgImage = context.createCGImage(outputCIImage, from: outputCIImage.extent) else {
-            throw BackgroundRemovalError.cgImageConversionFailed
-        }
-        
-        return UIImage(cgImage: cgImage)
-    }.value
-}

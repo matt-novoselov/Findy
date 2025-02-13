@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct ClayStyledButton: View {
-    var action: Void = {}()
+    var action: () -> Void = {}
     var body: some View {
-        Button(action: {action}){
+        Button(action: {action()}){
             HStack(spacing: 5){
                 let foregroundColor = Color(hex: 0xA80ED0)
                 Group{

@@ -20,14 +20,22 @@ struct FindyApp: App {
                         Text("This app isn't available on macOS or the simulator.\nFor the best experience, please use **Swift Playground 4.6 on iPad.**")
                     }
                 } else {
-                    if appViewModel != nil, arCoordinator != nil {
+                    if appViewModel != nil,
+                       arCoordinator != nil,
+                       speechSynthesizer != nil,
+                       toastManager != nil {
                         ProxyBootstrapView()
                             .environment(appViewModel)
                             .environment(arCoordinator)
                             .environment(speechSynthesizer)
                             .environment(toastManager)
                     } else {
-                        ProgressView()
+                        VStack{
+                            ProgressView()
+                            Text("Almost there! Loading soon...")
+                                .fontDesign(.rounded)
+                                .font(.title3)
+                        }
                     }
                 }
             }
@@ -69,8 +77,8 @@ struct ProxyBootstrapView: View {
     var body: some View {
         ToastContainer{
             ContentView()
-                .colorScheme(.dark)
-                .persistentSystemOverlays(.hidden)
         }
+        .colorScheme(.dark)
+        .persistentSystemOverlays(.hidden)
     }
 }

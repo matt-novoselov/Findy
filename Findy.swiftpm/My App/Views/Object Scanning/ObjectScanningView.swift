@@ -2,9 +2,11 @@ import SwiftUI
 
 struct ObjectScanningView: View {
     @Environment(AppViewModel.self) private var appViewModel
+    @Environment(ARSceneCoordinator.self) private var arCoordinator
+    
     @State private var cameraShutterToggle: Bool = false
-    @State private var isTrainingCoverPresented: Bool = false
     @State private var isObjectFocused: Bool = false
+    @State private var isTrainingCoverPresented: Bool = false
     
     var body: some View {
         let isCameraButtonActive: Bool = appViewModel.savedObject.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity
@@ -31,26 +33,35 @@ struct ObjectScanningView: View {
                     .padding(.bottom)
             }
             .allowsHitTesting(false)
-
+        
             // MARK: Camera shutter button
             .overlay(alignment: .trailing){
                 Group{
                     if isCameraButtonActive {
                         CameraShutterButton(cameraShutterToggle: $cameraShutterToggle, isObjectFocused: isObjectFocused)
-                    } else {
-                        Button("Start Training"){
-                            self.isTrainingCoverPresented = true
-                        }
                     }
                 }
                 .padding()
                 .transition(.move(edge: .trailing))
                 .animation(.spring, value: isCameraButtonActive)
+                
+                .onChange(of: isCameraButtonActive){
+                    if isCameraButtonActive == false{
+                        isTrainingCoverPresented = true
+                    }
+                }
             }
         
-            // MARK: Model Training View
-            .fullScreenCover(isPresented: $isTrainingCoverPresented){
-                ModelTrainingView(isTrainingCoverPresented: $isTrainingCoverPresented)
+            // MARK: Training cover
+            .overlay{
+                Group{
+                    if isTrainingCoverPresented{
+                        ModelTrainingView(isTrainingCoverPresented: $isTrainingCoverPresented)
+                            .onAppear{ arCoordinator.isARContainerVisible = false }
+                            .onDisappear{ arCoordinator.isARContainerVisible = true }
+                    }
+                }
+                .animation(.spring, value: isTrainingCoverPresented)
             }
     }
 }

@@ -6,7 +6,8 @@ import UIKit
 struct SavedObject {
     var takenPhotos: [CapturedPhoto] = []
     var targetDetectionObject: String?
-    var visionClassification: [String]?
+    var visionClassifications: [String]?
+    var userPickedClassifications: Set<String> = []
     var objectCutOutImage: UIImage?
     #if canImport(CreateML)
     var imageClassifier: MLImageClassifier?

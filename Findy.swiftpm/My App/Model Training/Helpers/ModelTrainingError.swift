@@ -1,3 +1,5 @@
+import Foundation
+
 #if canImport(CreateML)
 extension ImageClassifierTrainer{
     enum ModelTrainingError: Error {
