@@ -59,15 +59,20 @@ struct ObjectTagsPickerView: View {
                 .fontWeight(.semibold)
                 .fontDesign(.rounded)
             
-            ViewThatFits {
-                // Try to show capsuleView directly
-                capsuleView
+            HStack{
+                AISphereView()
+                    .frame(width: 40, height: 40)
                 
-                // Or in a horizontal ScrollView if it doesn't fit.
-                ScrollView(.horizontal) {
+                ViewThatFits {
+                    // Try to show capsuleView directly
                     capsuleView
+                    
+                    // Or in a horizontal ScrollView if it doesn't fit.
+                    ScrollView(.horizontal) {
+                        capsuleView
+                    }
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
             }
         }
     }

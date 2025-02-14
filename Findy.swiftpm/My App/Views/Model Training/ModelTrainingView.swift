@@ -34,20 +34,19 @@ struct ModelTrainingView: View {
                 cutOutObjectView
 #if canImport(CreateML)
                 if isAnimationFinishedFinal  {
-                    VStack{
-                        ObjectTagsPickerView()
-                        
-                        ImagePlaygroundView()
-                        
-                        Button("Search for item"){
-                            appViewModel.isTrainingCoverPresented = false
-                            appViewModel.state = .searching
-                        }
-                        .animation(.spring, value: isAnimationFinishedFinal)
+                    ObjectTagsPickerView()
+                    
+                    ImagePlaygroundView()
+                    
+                    Button("Search for item"){
+                        appViewModel.isTrainingCoverPresented = false
+                        appViewModel.state = .searching
                     }
+                    .animation(.spring, value: isAnimationFinishedFinal)
                 }
 #endif
             }
+            .padding()
             imageGridView
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
