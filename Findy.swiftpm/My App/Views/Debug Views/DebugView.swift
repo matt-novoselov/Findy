@@ -5,11 +5,12 @@ struct DebugView: View {
     
     var body: some View {
         if appViewModel.isDebugMode {
-            DebugObjectDetectionView()
-                .overlay(alignment: .bottomLeading){
-                    DebugCaptureView()
-                }
-                .allowsHitTesting(false)
+            ZStack{
+                DebugObjectDetectionView()
+                DebugCaptureView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            }
+            .allowsHitTesting(false)
         }
     }
 }

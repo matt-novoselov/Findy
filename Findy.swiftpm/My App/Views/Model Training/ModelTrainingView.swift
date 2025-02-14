@@ -160,7 +160,7 @@ struct ModelTrainingView: View {
                     
                     if let averageLabel = appViewModel.savedObject.targetDetectionObject?.processedMLTag {
                         // Ensure we have an array (or create one if nil)
-                        var classifications = appViewModel.savedObject.visionClassifications ?? []
+                        var classifications = appViewModel.savedObject.visionClassifications
 
                         // Append averageLabel if it is not already in the array
                         if !classifications.contains(averageLabel) {
