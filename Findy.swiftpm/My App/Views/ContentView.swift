@@ -23,7 +23,7 @@ struct ContentView: View {
                     ModelTrainingView()
                         .onAppear{ arCoordinator.isARContainerVisible = false }
                         .onDisappear{ arCoordinator.isARContainerVisible = true }
-                        .transition(.move(edge: .bottom))
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
             .animation(.spring, value: appViewModel.isTrainingCoverPresented)

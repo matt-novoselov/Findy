@@ -24,7 +24,7 @@ struct ImagePlaygroundView: View {
             }
             
             if supportsImagePlayground {
-                Button("Show Generation Sheet") {
+                Button("Show Generation Sheet", systemImage: "apple.intelligence") {
                     self.concepts = []
                     let visionClassifications = appViewModel.savedObject.userPickedClassifications
                     for classification in visionClassifications {
@@ -38,6 +38,7 @@ struct ImagePlaygroundView: View {
                     
                     showImagePlayground = true
                 }
+                .buttonStyle(.borderedProminent)
                 .imagePlaygroundSheet(isPresented: $showImagePlayground, concepts: concepts, sourceImage: sourceImage) { url in
                     appViewModel.savedObject.appleIntelligencePreviewImage = url
                 }

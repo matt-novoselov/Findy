@@ -29,12 +29,6 @@ struct ModelTrainingView: View {
                 if isAnimationFinishedFinal {
                     ObjectTagsPickerView()
                     ImagePlaygroundView()
-                    Button("Search for item") {
-                        isViewActive = false
-                        appViewModel.isTrainingCoverPresented = false
-                        appViewModel.state = .searching
-                    }
-                    .animation(.spring, value: isAnimationFinishedFinal)
                 }
             }
             .padding()
@@ -45,9 +39,20 @@ struct ModelTrainingView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(AnimatedBackgroundView())
+        .overlay(alignment: .bottom){
+            if isAnimationFinishedFinal{
+                CandyStyledButton(title: "Search for the item", symbol: "magnifyingglass", action: {
+                    isViewActive = false
+                    appViewModel.isTrainingCoverPresented = false
+                    appViewModel.state = .searching
+                })
+                .padding()
+                .animation(.spring, value: isAnimationFinishedFinal)
+            }
+        }
         .overlay {
             if !shouldAnimate {
-                CandyStyledButton(action: startModelTraining)
+                CandyStyledButton(title: "Train AI Model", symbol: "sparkles", action: startModelTraining)
                     .animation(.spring, value: shouldAnimate)
             }
         }
@@ -118,7 +123,6 @@ struct ModelTrainingView: View {
     }
     
     // MARK: - Subviews
-    
     private var cutOutObjectView: some View {
         Group {
             if showCheckmark, let photoCutout = appViewModel.savedObject.objectCutOutImage {

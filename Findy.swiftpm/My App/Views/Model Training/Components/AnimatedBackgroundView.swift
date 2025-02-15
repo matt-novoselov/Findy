@@ -5,19 +5,26 @@ struct AnimatedBackgroundView: View {
     @State private var animationTimer: Timer?
     
     var body: some View {
-        CanvasRenderer(
-            colorSequence: [
-                Color(hex: 0x17153B), Color(hex: 0x17153B), Color(hex: 0x17153B),
-                Color(hex: 0x2E236C), Color(hex: 0xC8ACD6), Color(hex: 0x2E236C),
-                Color(hex: 0x433D8B), Color(hex: 0x17153B), Color(hex: 0x433D8B)
-            ],
-            timeParameter: timeValue
-        )
-        .scaledToFill()
-        .onAppear { initiateAnimationCycle() }
-        .onDisappear{
-            animationTimer?.invalidate()
-        }
+        Rectangle()
+            .background(Color.white)
+            .foregroundStyle(
+                CanvasRenderer(
+                    colorSequence: [
+                        Color(hex: 0x17153B), Color(hex: 0x17153B), Color(hex: 0x17153B),
+                        Color(hex: 0x2E236C), Color(hex: 0xC8ACD6), Color(hex: 0x2E236C),
+                        Color(hex: 0x433D8B), Color(hex: 0x17153B), Color(hex: 0x433D8B)
+                    ],
+                    timeParameter: timeValue
+                )
+                .body
+                .opacity(0.7)
+            )
+            .ignoresSafeArea()
+        
+            .onAppear { initiateAnimationCycle() }
+            .onDisappear{
+                animationTimer?.invalidate()
+            }
     }
     
     private func initiateAnimationCycle() {
@@ -30,18 +37,17 @@ struct AnimatedBackgroundView: View {
     }
 }
 
-struct CanvasRenderer: View {
+struct CanvasRenderer: ShapeStyle {
     let colorSequence: [Color]
     let timeParameter: Float
     
-    var body: some View {
+    var body: some ShapeStyle {
         MeshGradient(
             width: 3, height: 3,
             points: generateDynamicPoints(),
             colors: colorSequence,
             background: .black
         )
-        .edgesIgnoringSafeArea(.all)
     }
     
     private func generateDynamicPoints() -> [SIMD2<Float>] {

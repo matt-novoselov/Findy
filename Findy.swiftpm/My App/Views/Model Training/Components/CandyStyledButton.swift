@@ -1,17 +1,19 @@
 import SwiftUI
 
 struct CandyStyledButton: View {
+    var title: String
+    var symbol: String
     var action: () -> Void = {}
     var body: some View {
         Button(action: {action()}){
             HStack(spacing: 5){
                 let foregroundColor = Color(hex: 0xA80ED0)
                 Group{
-                    Image(systemName: "sparkles")
+                    Image(systemName: symbol)
                         .fontWeight(.black)
                         .font(.title3)
                     
-                    Text("Train AI Model")
+                    Text(title)
                         .fontWeight(.bold)
                 }
                 .fontDesign(.rounded)
@@ -40,10 +42,4 @@ struct CandyStyledButton: View {
         }
         .buttonStyle(.plain)
     }
-}
-
-#Preview {
-    CandyStyledButton()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding()
 }
