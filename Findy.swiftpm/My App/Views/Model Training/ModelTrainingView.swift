@@ -8,6 +8,7 @@ struct ModelTrainingView: View {
     @State private var showCheckmark = false
     @State private var animateCheckmark = false
     @State private var isAnimationFinishedFinal: Bool = false
+    @State private var isViewActive: Bool = true
     
     // Animation tracking requirements.
     @State private var hasBaseAnimationFinished = false
@@ -29,6 +30,7 @@ struct ModelTrainingView: View {
                     ObjectTagsPickerView()
                     ImagePlaygroundView()
                     Button("Search for item") {
+                        isViewActive = false
                         appViewModel.isTrainingCoverPresented = false
                         appViewModel.state = .searching
                     }
@@ -37,7 +39,9 @@ struct ModelTrainingView: View {
             }
             .padding()
             
-            imageGridView
+            if isViewActive{
+                imageGridView
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(AnimatedBackgroundView())

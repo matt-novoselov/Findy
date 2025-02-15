@@ -9,6 +9,7 @@ struct AISphereView: View {
         Color(hex: 0xEB74F8),
         Color(hex: 0xA78FF8),
     ]
+    @State private var animationTimer: Timer?
     
     var body: some View {
         VStack{
@@ -42,20 +43,21 @@ struct AISphereView: View {
                         .padding(.all, 20)
                         .blur(radius: 15)
                 }
-                .onAppear {
-                    moveColors()
+                .onAppear { initiateAnimationCycle() }
+                .onDisappear{
+                    animationTimer?.invalidate()
                 }
         }
     }
     
-    // Function to move the first color to the end
-    private func moveColors() {
-        if !movingColor.isEmpty {
+    private func initiateAnimationCycle() {
+        animationTimer = Timer.scheduledTimer(
+            withTimeInterval: 2,
+            repeats: true
+        ) { _ in
             withAnimation(.spring(duration: 2)){
                 let firstColor = movingColor.removeFirst()
                 movingColor.append(firstColor)
-            } completion: {
-                moveColors()
             }
         }
     }

@@ -15,6 +15,9 @@ struct AnimatedBackgroundView: View {
         )
         .scaledToFill()
         .onAppear { initiateAnimationCycle() }
+        .onDisappear{
+            animationTimer?.invalidate()
+        }
     }
     
     private func initiateAnimationCycle() {
