@@ -20,6 +20,7 @@ struct ImageCollectionView: View {
     let imageSize = 100.0
     @State private var imageScale: CGFloat = 0.2
     @State private var imageOffset: CGSize
+    @State private var currentRotation: Double = 0
     
     init(photo: CGImage, index: Int, geometryReaderSize: CGSize) {
         self.photo = photo
@@ -34,15 +35,16 @@ struct ImageCollectionView: View {
             .scaledToFill()
             .frame(width: imageSize, height: imageSize)
             .clipShape(.rect(cornerRadius: 10))
-            .rotationEffect(.degrees(index % 2 == 0 ? 5 : -5), anchor: .bottom)
+            .rotationEffect(.degrees(currentRotation), anchor: .bottom)
             .scaleEffect(imageScale)
             .offset(imageOffset)
             .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
             .opacity(imageScale)
             .onAppear{
-                withAnimation{
+                withAnimation(.bouncy){
                     imageOffset = .init(width: 0, height: geometryReaderSize.height - imageSize)
                     imageScale = 1
+                    currentRotation = index % 2 == 0 ? 5 : -5
                 }
             }
     }
