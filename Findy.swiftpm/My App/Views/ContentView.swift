@@ -8,6 +8,8 @@ struct ContentView: View {
         TabView {
             Tab("Viewfinder", systemImage: "camera.viewfinder") {
                 ARControllerView()
+                    .onAppear{ arCoordinator.isARContainerVisible = true }
+                    .onDisappear{ arCoordinator.isARContainerVisible = false }
             }
 
             Tab("Settings", systemImage: "gearshape.2.fill") {

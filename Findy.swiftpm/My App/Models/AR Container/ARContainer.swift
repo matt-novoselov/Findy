@@ -64,6 +64,7 @@ extension ARSceneCoordinator {
     
     private func processFrame() {
         guard isARContainerVisible else { print("No update"); return }
+        guard appViewModel?.state != .onboarding else { print("No update"); return }
         
         updateDistanceMeasurement()
         performFrameAnalysis()

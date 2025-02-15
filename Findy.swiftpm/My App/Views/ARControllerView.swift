@@ -5,26 +5,24 @@ struct ARControllerView: View {
     @Environment(AppViewModel.self) private var appViewModel
     
     var body: some View {
-        let arContainer = ARViewContainer(coordinator: arCoordinator)
-        
-        return arContainer
-        
-            .onAppear{ arCoordinator.isARContainerVisible = true }
-            .onDisappear{ arCoordinator.isARContainerVisible = false }
-        
-            .blurredOverlay(isEnabled: appViewModel.state == .onboarding)
+        ARViewContainer(coordinator: arCoordinator)
+            .blurredOverlay(isEnabled: appViewModel.shouldBlurScreenOnboarding)
             .overlay{ DebugView() }
             .ignoresSafeArea()
 
             .overlay {
-                switch appViewModel.state {
-                case .onboarding:
-                    OnboardingView()
-                case .scanning:
-                    ObjectScanningView()
-                case .searching:
-                    ObjectSearchingView()
+                Group{
+                    switch appViewModel.state {
+                    case .onboarding:
+                        OnboardingView()
+                    case .scanning:
+                        ObjectScanningView()
+                    case .searching:
+                        ObjectSearchingView()
+                    }
                 }
+                .transition(.opacity)
+                .animation(.spring, value: appViewModel.state)
             }
     }
 }

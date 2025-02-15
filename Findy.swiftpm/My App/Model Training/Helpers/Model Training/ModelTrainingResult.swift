@@ -1,5 +1,7 @@
 import UIKit
+#if canImport(CreateML)
 import CreateML
+#endif
 
 struct ModelTrainingResult {
     var objectCutOutImage: UIImage

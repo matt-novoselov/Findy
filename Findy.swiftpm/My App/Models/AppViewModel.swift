@@ -4,10 +4,11 @@ import SwiftUI
 class AppViewModel {
     var isDebugMode: Bool = false
     var cameraImageDimensions: CGSize = .init()
-    var state: AppState = .scanning
+    var state: AppState = .onboarding
     var isMetalDetectionSoundEnabled: Bool = true
     var savedObject: SavedObject = .init()
     var isTrainingCoverPresented: Bool = false
+    var shouldBlurScreenOnboarding: Bool = false
 }
 
 enum AppState: String, CaseIterable {

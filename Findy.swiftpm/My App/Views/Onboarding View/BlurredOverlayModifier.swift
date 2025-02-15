@@ -5,25 +5,22 @@ struct BlurredOverlayModifier: ViewModifier {
     let isEnabled: Bool
     
     func body(content: Content) -> some View {
-        if isEnabled {
-            content
-                .brightness(-0.1)
-                .blur(radius: 20)
-                .overlay(
-                    GeometryReader { geometry in
-                        RadialGradient(
-                            gradient: Gradient(colors: [.clear, .black.opacity(0.8)]),
-                            center: .center,
-                            startRadius: 0,
-                            endRadius: max(geometry.size.width, geometry.size.height) / 2
-                        )
-                        .opacity(1)
-                    }
-                )
-                .allowsHitTesting(false)
-        } else {
-            content
-        }
+        content
+            .brightness(isEnabled ? -0.1 : 0)
+            .blur(radius: isEnabled ? 20 : 0)
+            .overlay(
+                GeometryReader { geometry in
+                    RadialGradient(
+                        gradient: Gradient(colors: [.clear, .black.opacity(0.8)]),
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: max(geometry.size.width, geometry.size.height) / 2
+                    )
+                    .opacity(isEnabled ? 1 : 0)
+                }
+            )
+            .allowsHitTesting(false)
+            .animation(.spring(duration: 5), value: isEnabled)
     }
 }
 

@@ -6,19 +6,21 @@ struct ObjectScanningView: View {
     
     @State private var cameraShutterToggle: Bool = false
     @State private var isObjectFocused: Bool = false
-    
+
     var body: some View {
-        let isCameraButtonActive: Bool = appViewModel.savedObject.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity
+        var isCameraButtonActive: Bool {
+            appViewModel.savedObject.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity
+        }
         
         Color.clear
-        // MARK: Focus box
+            // MARK: Focus box
             .background{
                 FocusBoxParentView(isObjectFocused: $isObjectFocused)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .ignoresSafeArea()
             }
         
-        // MARK: Visual effects
+            // MARK: Visual effects
             .overlay{
                 CameraShutterView(isShutterActive: $cameraShutterToggle)
             }
@@ -41,7 +43,7 @@ struct ObjectScanningView: View {
             }
             .allowsHitTesting(false)
         
-        // MARK: Camera shutter button
+            // MARK: Camera shutter button
             .overlay(alignment: .trailing){
                 Group{
                     if isCameraButtonActive {
