@@ -10,7 +10,7 @@ struct OnboardingView: View {
     
     var body: some View {
         Color.clear
-            // Old Photo overlay (only on last screen)
+        // Old Photo overlay (only on last screen)
             .overlay(alignment: .bottomLeading) {
                 if isLastIndex {
                     OldPhotoView()
@@ -19,10 +19,10 @@ struct OnboardingView: View {
                 }
             }
         
-            // Main text overlay
+        // Main text overlay
             .overlay {
                 Group{
-                    if currentIndex >= 0 {
+                    if currentIndex >= 0 && currentIndex != 4 {
                         OnboardingTextView(text: content.texts[currentIndex])
                             .padding(.all, 40)
                             .transition(.opacity)
@@ -31,7 +31,17 @@ struct OnboardingView: View {
                 .animation(.spring(duration: 2), value: currentIndex >= 0)
             }
         
-            // Tap to continue overlay (only when not last)
+        // Welcome to Findy overlay
+            .overlay {
+                Group{
+                    if currentIndex == 4 {
+                        WelcomeToFindyView()
+                    }
+                }
+                .animation(.spring(duration: 2), value: currentIndex >= 0)
+            }
+        
+        // Tap to continue overlay (only when not last)
             .overlay(alignment: currentIndex == -1 ? .center : .bottom) {
                 if !isLastIndex {
                     OnboardingTapToContinueView()
@@ -39,7 +49,7 @@ struct OnboardingView: View {
                 }
             }
         
-            // Tap area overlay to advance
+        // Tap area overlay to advance
             .overlay {
                 Color.clear
                     .contentShape(.rect)
@@ -49,7 +59,7 @@ struct OnboardingView: View {
                     }
             }
         
-            // Start exploring button overlay (only on last screen)
+        // Start exploring button overlay (only on last screen)
             .overlay(alignment: .bottom) {
                 if isLastIndex {
                     OnboardingStartButtonView {
@@ -60,7 +70,7 @@ struct OnboardingView: View {
                 }
             }
         
-            // Skip button overlay (only when not last)
+        // Skip button overlay (only when not last)
             .overlay(alignment: .topTrailing) {
                 if !isLastIndex {
                     OnboardingSkipButtonView {

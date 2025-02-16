@@ -22,6 +22,6 @@ class ObjectScanViewModel {
     let card: OnboardingCardModel
     
     init(action: @escaping () -> Void){
-        self.card = .init(infoCards: cards, buttonAction: action, buttonTitle: "Let's find your item", mainTitle: "Object Scanning", mainDescription: "Scan your object to train an AI model.")
+        self.card = .init(infoCards: cards, buttonAction: action, buttonTitle: "Let’s capture first item", mainTitle: "Object Scanning", mainDescription: "Scan your object to train an AI model.")
     }
 }

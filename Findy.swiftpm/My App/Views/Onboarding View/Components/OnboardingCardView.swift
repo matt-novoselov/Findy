@@ -6,19 +6,7 @@ struct OnboardingCardView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 25) {
-            if let appIcon = Bundle.main.icon{
-                let imageView =                 Image(uiImage: appIcon)
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fit)
-                    .frame(height: 65)
-                    .perfectCornerRadius()
-                
-                imageView
-                    .background{
-                        imageView
-                            .blur(radius: 20)
-                    }
-            }
+            AppIconView()
             
             VStack(alignment: .leading, spacing: 2){
                 Text(card.mainTitle)
