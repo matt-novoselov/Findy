@@ -1,11 +1,3 @@
-//
-//  ObjectSearchViewModel.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 16/02/25.
-//
-
-
 import Foundation
 
 class ObjectSearchViewModel {

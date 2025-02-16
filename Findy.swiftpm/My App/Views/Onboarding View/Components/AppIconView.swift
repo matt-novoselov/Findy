@@ -1,10 +1,3 @@
-//
-//  AppIconView.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 16/02/25.
-//
-
 import SwiftUI
 
 struct AppIconView: View {
