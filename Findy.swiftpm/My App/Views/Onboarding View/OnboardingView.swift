@@ -63,7 +63,7 @@ struct OnboardingView: View {
             .overlay(alignment: .bottom) {
                 if isLastIndex {
                     OnboardingStartButtonView {
-                        appViewModel.state = .scanning
+                        finishOnboarding()
                     }
                     .transition(.move(edge: .bottom))
                     .padding(.bottom, 20)
@@ -74,7 +74,7 @@ struct OnboardingView: View {
             .overlay(alignment: .topTrailing) {
                 if !isLastIndex {
                     OnboardingSkipButtonView {
-                        appViewModel.state = .scanning
+                        finishOnboarding()
                     }
                     .transition(.move(edge: .trailing))
                 }
@@ -94,11 +94,16 @@ struct OnboardingView: View {
             }
     }
     
+    private func finishOnboarding(){
+        appViewModel.state = .scanning
+        appViewModel.shouldBlurScreenOnboarding = false
+    }
+    
     private func advance() {
         if !isLastIndex {
             withAnimation { currentIndex += 1 }
         } else {
-            appViewModel.state = .scanning
+            finishOnboarding()
         }
     }
 }
