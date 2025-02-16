@@ -24,9 +24,12 @@ class ARSceneCoordinator {
     weak var appViewModel: AppViewModel?
     weak var speechSynthesizer: SpeechSynthesizer?
     weak var toastManager: ToastManager?
+    weak var coachingOverlayView: ARCoachingOverlayView?
     
     var hasTargetObjectBeenDetected: Binding<Bool>?
     var objectDetectedAtPosition: CGPoint?
+    var isCoachingActive: Bool = false
+    var shouldSearchForTargetObject: Bool = false
     
     var isARContainerVisible: Bool = false
     
@@ -72,6 +75,25 @@ extension ARSceneCoordinator {
         if let currentFrame = arView?.session.currentFrame {
             evaluateLightingConditions(frame: currentFrame)
         }
+    }
+}
+
+extension ARView: @retroactive ARCoachingOverlayViewDelegate {
+    func addCoaching() -> ARCoachingOverlayView {
+        let coachingOverlay = ARCoachingOverlayView()
+
+        coachingOverlay.activatesAutomatically = false
+             
+        // The session this view uses to provide coaching.
+        coachingOverlay.session = self.session
+        
+        coachingOverlay.subviews.forEach { $0.backgroundColor = .clear }
+             
+        // How a view should resize itself when its superview's bounds change.
+        coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        self.addSubview(coachingOverlay)
+        return coachingOverlay
     }
 }
 
@@ -140,7 +162,10 @@ extension ARSceneCoordinator {
         
         let frameImage = CIImage(cvPixelBuffer: frame.capturedImage)
         processedFrameImage = frameImage.transformed(by: orientationTransform)
-        analyzeImageWithML()
+        
+        if shouldSearchForTargetObject{
+            analyzeImageWithML()
+        }
         
         guard let processedImage = processedFrameImage else {
             detectedObjects = []

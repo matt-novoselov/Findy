@@ -20,13 +20,14 @@ struct ObjectSearchingView: View {
                     .ignoresSafeArea()
             }
         
-            // MARK: Arrow & Measurements
+            // MARK: Arrow
             .overlay{
                 if let currentMeasurement = arCoordinator.currentMeasurement {
                     ArrowView(degrees: Double(currentMeasurement.rotationDegrees))
                 }
             }
         
+            // MARK: Distance measurements
             .overlay(alignment: .bottom){
                 if let currentMeasurement = arCoordinator.currentMeasurement {
                     DynamicFontMeasurementsView(numericValue: currentMeasurement.numericValue, unitSymbol: currentMeasurement.unitSymbol, referenceText: getDirection(degrees: Double(currentMeasurement.rotationDegrees)))
@@ -38,17 +39,24 @@ struct ObjectSearchingView: View {
         
             .toolbar(isOnboardingActive ? .hidden : .visible, for: .tabBar)
         
+            // Onboarding
             .overlay{
                 Group{
                     if isOnboardingActive{
                         OnboardingAlertView(card: ObjectSearchViewModel(action: {
                             isOnboardingActive = false
+                            arCoordinator.shouldSearchForTargetObject = true
+                            arCoordinator.coachingOverlayView?.setActive(true, animated: true)
                         }).card)
                         .ignoresSafeArea()
                         .transition(.opacity)
                     }
                 }
                 .animation(.spring, value: isOnboardingActive)
+            }
+        
+            .onChange(of: hasTargetObjectBeenDetected){
+                arCoordinator.coachingOverlayView?.setActive(false, animated: false)
             }
         
             .onAppear{

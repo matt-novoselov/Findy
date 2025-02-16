@@ -7,10 +7,10 @@ struct ARViewContainer: UIViewRepresentable {
     
     func makeUIView(context: Context) -> ARView {
         let view = ARView(frame: .zero)
+        self.coordinator.coachingOverlayView = view.addCoaching()
         coordinator.initializeARScene(with: view)
         return view
     }
     
     func updateUIView(_ uiView: ARView, context: Context) {}
 }
-
