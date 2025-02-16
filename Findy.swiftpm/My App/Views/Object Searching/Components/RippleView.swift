@@ -1,4 +1,5 @@
 import SwiftUI
+import AVFoundation
 
 // A simple model to track each ripple's position.
 struct Ripple: Identifiable {
@@ -71,6 +72,13 @@ struct RippleView: View {
                 withAnimation(.easeOut(duration: 0.6)) {
                     animate = true
                 }
+                
+                playSound()
             }
+    }
+    
+    private func playSound(){
+        let successSound: SystemSoundID = 1112
+        AudioServicesPlaySystemSound(successSound)
     }
 }
