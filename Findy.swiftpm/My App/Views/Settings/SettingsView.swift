@@ -3,38 +3,63 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(SpeechSynthesizer.self) private var speechSynthesizer
     @Environment(AppViewModel.self) private var appViewModel
-    
+
     var body: some View {
         @Bindable var speechSynthesizer = speechSynthesizer
         @Bindable var appViewModel = appViewModel
-        
-        Group{
-            SpeechSpeedSliderView()
-            
-            Toggle(isOn: $speechSynthesizer.isSpeechSynthesizerEnabled, label: {
-                Text("Enable Speech Synthesizer")
-                    .fontDesign(.rounded)
-            })
-            
-            Toggle(isOn: $appViewModel.isMetalDetectionSoundEnabled, label: {
-                Text("Enable Metal Detection sound")
-                    .fontDesign(.rounded)
-            })
-            
-            Toggle("Debug", isOn: $appViewModel.isDebugMode)
-                .toggleStyle(.switch)
-                .fontDesign(.rounded)
-            
-            Picker("App State", selection: $appViewModel.state) {
-                ForEach(AppState.allCases, id: \.self) { state in
-                    Text(state.rawValue)
-                        .tag(state)
-                        .fontDesign(.rounded)
-                }
+
+        List {
+            Section(
+                header: Label("Voice Assistance", systemImage: "waveform")
+                    .accentColor(.purple),
+                footer: Text("Enable to have spoken assistance during app usage.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            ) {
+                Toggle(
+                    "Speech Synthesizer",
+                    isOn: $speechSynthesizer.isSpeechSynthesizerEnabled
+                )
+                .accessibilityLabel("Toggle voice assistance for spoken directions")
+                
+                SpeechSpeedSliderView()
             }
-            .pickerStyle(.segmented)
+
+            Section(
+                header: Label("Proximity Ping Sound", systemImage: "speaker.wave.2.fill")
+                    .accentColor(.green),
+                footer: Text("Play a ping sound when an object comes close.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            ) {
+                Toggle(
+                    "Play Alert Sound",
+                    isOn: $appViewModel.isMetalDetectionSoundEnabled
+                )
+                .accessibilityLabel("Toggle sound alerts for nearby objects")
+            }
+
+            Section(
+                header: Label("Developer Options", systemImage: "ladybug")
+                    .accentColor(.red),
+                footer: Text("For development and troubleshooting purposes. Enabling might affect performance.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            ) {
+                Toggle(
+                    "Enable Debug Mode",
+                    isOn: $appViewModel.isDebugMode
+                )
+                .accessibilityLabel("Toggle debug mode for additional developer information")
+            }
         }
-        .padding()
-        
+        .navigationTitle("App Settings")
+        .listStyle(.insetGrouped)
     }
+}
+
+#Preview {
+    SettingsView()
+        .environment(SpeechSynthesizer())
+        .environment(AppViewModel())
 }
