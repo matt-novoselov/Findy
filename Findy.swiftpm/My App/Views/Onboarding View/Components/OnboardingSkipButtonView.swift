@@ -6,6 +6,7 @@ struct OnboardingSkipButtonView: View {
     var body: some View {
         Button(action: action) {
             Text("Skip Onboarding")
+                .fontDesign(.rounded)
                 .padding(6)
                 .padding(.horizontal, 8)
                 .font(.callout)

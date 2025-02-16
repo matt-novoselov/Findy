@@ -11,6 +11,7 @@ struct DebugCaptureView: View {
                 .clipShape(.rect(cornerRadius: 4))
         } else {
             Text("No capture")
+                .fontDesign(.rounded)
         }
     }
 }

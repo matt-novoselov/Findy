@@ -8,7 +8,8 @@ struct ProgressBarView: View {
         HStack{
             // Photo count display
             let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
-            Text("\(amountOfPhotos)/\(maxCapacity)")
+            Text("\(amountOfPhotos) / \(maxCapacity)")
+                .fontDesign(.rounded)
                 .contentTransition(.numericText(value: Double(amountOfPhotos)))
                 .animation(.spring, value: amountOfPhotos)
             
@@ -19,7 +20,6 @@ struct ProgressBarView: View {
                 }
             }
         }
-        .fontDesign(.monospaced)
         .fontWeight(.medium)
     }
 }

@@ -23,11 +23,13 @@ struct OnboardingCardView: View {
             VStack(alignment: .leading, spacing: 2){
                 Text(card.mainTitle)
                     .font(.title)
+                    .fontDesign(.rounded)
                     .bold()
                     .foregroundStyle(.primary)
                 
                 Text(card.mainDescription)
                     .font(.body)
+                    .fontDesign(.rounded)
                     .fontWeight(.medium)
                     .foregroundStyle(.secondary)
             }
@@ -50,6 +52,7 @@ struct OnboardingCardView: View {
                                     .foregroundStyle(.primary)
                                 
                                 Text(.init(infoCard.description))
+                                    .fontDesign(.rounded)
                                     .font(.body)
                                     .foregroundStyle(.secondary)
                             }
@@ -72,6 +75,7 @@ struct OnboardingCardView: View {
                 }
             }) {
                 Text(isLast ? card.buttonTitle : "Continue")
+                    .fontDesign(.rounded)
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.primary)

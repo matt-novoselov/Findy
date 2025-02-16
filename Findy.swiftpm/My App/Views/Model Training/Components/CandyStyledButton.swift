@@ -15,6 +15,7 @@ struct CandyStyledButton: View {
                     
                     Text(title)
                         .fontWeight(.bold)
+                        .fontDesign(.rounded)
                 }
                 .fontDesign(.rounded)
                 .foregroundStyle(foregroundColor)

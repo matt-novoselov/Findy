@@ -42,6 +42,7 @@ struct BoundingBox: View {
             // Label and confidence
             Text("\(result.label) \(String(format: "%.1f", result.confidence * 100))%")
                 .font(.system(size: 12, weight: .semibold))
+                .fontDesign(.rounded)
                 .foregroundColor(.white)
                 .padding(4)
                 .background(.black.opacity(0.7))

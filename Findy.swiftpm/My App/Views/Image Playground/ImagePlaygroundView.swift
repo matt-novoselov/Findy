@@ -48,6 +48,7 @@ struct ImagePlaygroundView: View {
                     systemImage: "xmark.circle",
                     description: Text("Update to iOS 18.2 to use this feature!")
                 )
+                .fontDesign(.rounded)
             }
         }
     }

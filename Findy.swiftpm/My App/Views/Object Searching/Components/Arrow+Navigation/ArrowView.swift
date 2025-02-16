@@ -81,8 +81,9 @@ func getDirection(degrees: Double) -> String {
 
         // Add the direction text
         Text("Pointing: \(getDirection(degrees: degrees))")
-            .padding()
+            .fontDesign(.rounded)
             .font(.title)
+            .padding()
     }
     .padding()
 }

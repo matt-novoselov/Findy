@@ -17,10 +17,12 @@ struct ToastView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(notification.title)
                     .font(.body)
+                    .fontDesign(.rounded)
                     .bold()
                 
                 Text(notification.message)
                     .font(.subheadline)
+                    .fontDesign(.rounded)
                     .foregroundColor(.secondary)
             }
             .foregroundColor(.white)
@@ -54,7 +56,9 @@ struct ToastView: View {
             withAnimation{
                 self.isBlurred = true
             } completion: {
-                self.isBlurred = false
+                withAnimation{
+                    self.isBlurred = false
+                }
             }
         }
     }

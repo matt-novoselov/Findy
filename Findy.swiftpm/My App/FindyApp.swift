@@ -16,8 +16,10 @@ struct FindyApp: App {
                     ContentUnavailableView {
                         Text("Findy App")
                             .font(.title)
+                            .fontDesign(.rounded)
                     } description: {
                         Text("This app isn't available on macOS or the simulator.\nFor the best experience, please use **Swift Playground 4.6 on iPad.**")
+                            .fontDesign(.rounded)
                     }
                 } else {
                     if appViewModel != nil,
