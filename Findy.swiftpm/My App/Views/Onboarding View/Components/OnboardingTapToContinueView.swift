@@ -12,7 +12,7 @@ struct OnboardingTapToContinueView: View {
         .fontDesign(.rounded)
         .font(.largeTitle)
         .fontWeight(.bold)
-        .opacity(animate ? 0.4 : 0.6)
+        .opacity(animate ? 0.4 : 0.8)
         .padding(.bottom, 20)
         .onAppear {
             withAnimation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)) {

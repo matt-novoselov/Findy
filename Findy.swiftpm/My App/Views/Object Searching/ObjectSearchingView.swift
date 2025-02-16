@@ -3,6 +3,7 @@ import SwiftUI
 struct ObjectSearchingView: View {
     @Environment(ARSceneCoordinator.self) private var arCoordinator
     @State private var hasTargetObjectBeenDetected: Bool = false
+    @State private var isOnboardingActive: Bool = true
     
     var body: some View {
         Color.clear
@@ -34,6 +35,21 @@ struct ObjectSearchingView: View {
             }
         
             .allowsHitTesting(false)
+        
+            .toolbar(isOnboardingActive ? .hidden : .visible, for: .tabBar)
+        
+            .overlay{
+                Group{
+                    if isOnboardingActive{
+                        OnboardingAlertView(card: ObjectSearchViewModel(action: {
+                            isOnboardingActive = false
+                        }).card)
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+                    }
+                }
+                .animation(.spring, value: isOnboardingActive)
+            }
         
             .onAppear{
                 arCoordinator.hasTargetObjectBeenDetected = $hasTargetObjectBeenDetected

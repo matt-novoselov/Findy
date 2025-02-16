@@ -6,10 +6,11 @@ struct ObjectScanningView: View {
     
     @State private var cameraShutterToggle: Bool = false
     @State private var isObjectFocused: Bool = false
+    @State private var isOnboardingActive: Bool = true
 
     var body: some View {
         var isCameraButtonActive: Bool {
-            appViewModel.savedObject.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity
+            appViewModel.savedObject.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity && !isOnboardingActive
         }
         
         Color.clear
@@ -59,6 +60,21 @@ struct ObjectScanningView: View {
                         appViewModel.isTrainingCoverPresented = true
                     }
                 }
+            }
+        
+            .toolbar(isOnboardingActive ? .hidden : .visible, for: .tabBar)
+        
+            .overlay{
+                Group{
+                    if isOnboardingActive{
+                        OnboardingAlertView(card: ObjectScanViewModel(action: {
+                            isOnboardingActive = false
+                        }).card)
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+                    }
+                }
+                .animation(.spring, value: isOnboardingActive)
             }
     }
 }

@@ -5,7 +5,7 @@ struct OnboardingView: View {
     @Environment(AppViewModel.self) private var appViewModel
     let content = OnboardingContent()
     
-    @State private var currentIndex: Int = 0
+    @State private var currentIndex: Int = -1
     private var isLastIndex: Bool { currentIndex == content.texts.count - 1 }
     
     var body: some View {
@@ -21,13 +21,20 @@ struct OnboardingView: View {
         
             // Main text overlay
             .overlay {
-                OnboardingTextView(text: content.texts[currentIndex])
+                Group{
+                    if currentIndex >= 0 {
+                        OnboardingTextView(text: content.texts[currentIndex])
+                            .transition(.opacity)
+                    }
+                }
+                .animation(.spring(duration: 2), value: currentIndex >= 0)
             }
         
             // Tap to continue overlay (only when not last)
-            .overlay(alignment: .bottom) {
+            .overlay(alignment: currentIndex == -1 ? .center : .bottom) {
                 if !isLastIndex {
                     OnboardingTapToContinueView()
+                        .animation(.spring(duration: 1.5), value: currentIndex == -1)
                 }
             }
         
