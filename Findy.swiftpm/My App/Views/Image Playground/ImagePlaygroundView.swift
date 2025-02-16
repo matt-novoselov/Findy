@@ -11,39 +11,18 @@ struct ImagePlaygroundView: View {
     
     
     var body: some View {
-        VStack {
-            if let url = appViewModel.savedObject.appleIntelligencePreviewImage {
-                AsyncImage(url: url) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .clipShape(.rect(cornerRadius: 20))
-                        .frame(maxWidth: 300, maxHeight: 300)
-                } placeholder: {
-                    ProgressView()
-                }
+        if supportsImagePlayground {
+            Button(action: {openImagePlaygrounds()}) {
+                ImagePlaygroundButtonLabel()
             }
-            
-            
-            if supportsImagePlayground {
-                Button(action: {openImagePlaygrounds()}) {
-                    ImagePlaygroundButtonLabel()
-                }
-                .tint(.white)
-                .fontDesign(.rounded)
-                .fontWeight(.semibold)
-                .foregroundStyle(.black)
-                .buttonStyle(.borderedProminent)
-                .clipShape(.capsule)
-                .imagePlaygroundSheet(isPresented: $showImagePlayground, concepts: concepts, sourceImage: sourceImage) { url in
-                    appViewModel.savedObject.appleIntelligencePreviewImage = url
-                }
-            } else {
-                ContentUnavailableView(
-                    "Image Playground Isn't Available Yet",
-                    systemImage: "xmark.circle",
-                    description: Text("Update to iOS 18.2 to use this feature!")
-                )
-                .fontDesign(.rounded)
+            .tint(.white)
+            .fontDesign(.rounded)
+            .fontWeight(.semibold)
+            .foregroundStyle(.black)
+            .buttonStyle(.borderedProminent)
+            .clipShape(.capsule)
+            .imagePlaygroundSheet(isPresented: $showImagePlayground, concepts: concepts, sourceImage: sourceImage) { url in
+                appViewModel.savedObject.appleIntelligencePreviewImage = url
             }
         }
     }
