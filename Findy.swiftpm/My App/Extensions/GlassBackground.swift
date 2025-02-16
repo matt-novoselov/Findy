@@ -10,7 +10,7 @@ struct GlassBackground: ViewModifier {
     ]
     
     func body(content: Content) -> some View {
-        let linearGradient = LinearGradient(colors: gradientColors, startPoint: .topLeading, endPoint: .bottom)
+        let linearGradient = LinearGradient(colors: gradientColors, startPoint: .top, endPoint: .bottom)
         
         content
             .background {
