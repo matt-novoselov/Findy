@@ -20,6 +20,13 @@ struct ObjectSearchingView: View {
                     .ignoresSafeArea()
             }
         
+            .overlay(alignment: .topLeading){
+                SearchingLabelView()
+                    .padding()
+                    .padding(.top)
+                    .ignoresSafeArea()
+            }
+        
             // MARK: Arrow
             .overlay{
                 if let currentMeasurement = arCoordinator.currentMeasurement {
