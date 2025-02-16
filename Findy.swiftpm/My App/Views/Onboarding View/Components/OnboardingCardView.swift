@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OnboardingCardView: View {
     var card: OnboardingCardModel
+    @State private var currentIndex: Int = 0
     
     var body: some View {
         VStack(alignment: .leading, spacing: 25) {
@@ -31,30 +32,46 @@ struct OnboardingCardView: View {
                     .foregroundStyle(.secondary)
             }
             
+            Rectangle()
+                .frame(height: 1)
+                .foregroundStyle(.tertiary)
+            
             VStack(alignment: .leading, spacing: 12) {
-                ForEach(card.infoCards) { card in
-                    HStack(spacing: 15) {
-                        Group{
-                            Image(systemName: "xmark")
-                                .foregroundStyle(.clear)
-                                .overlay{
-                                    Image(systemName: card.icon)
-                                }
+                ForEach(Array(card.infoCards.enumerated()), id: \.offset) { index, infoCard in
+                    Group{
+                        if currentIndex >= index {
+                            HStack(spacing: 15) {
+                                Image(systemName: "xmark")
+                                    .foregroundStyle(.clear)
+                                    .overlay {
+                                        Image(systemName: infoCard.icon)
+                                    }
+                                    .font(.body)
+                                    .foregroundStyle(.primary)
+                                
+                                Text(.init(infoCard.description))
+                                    .font(.body)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .transition(.move(edge: .bottom).combined(with: .blurReplace))
                         }
-                        .font(.body)
-                        .foregroundStyle(.primary)
-                        
-                        Text(.init(card.description))
-                            .font(.body)
-                            .foregroundStyle(.secondary)
                     }
+                    .animation(.spring, value: currentIndex)
                 }
             }
+
             
+            let isLast = currentIndex == card.infoCards.count - 1
             Button(action: {
-                card.buttonAction()
+                if isLast{
+                    card.buttonAction()
+                } else {
+                    if currentIndex < card.infoCards.count {
+                        currentIndex += 1
+                    }
+                }
             }) {
-                Text(card.buttonTitle)
+                Text(isLast ? card.buttonTitle : "Continue")
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.primary)
@@ -67,10 +84,12 @@ struct OnboardingCardView: View {
                             .blendMode(.luminosity)
                     }
                     .cornerRadius(16)
+                    .animation(.none, value: isLast)
             }
         }
         .padding(.all, 25)
         .glassBackground(cornerRadius: 40)
+        .animation(.spring(), value: currentIndex)
         .frame(width: 420)
     }
 }
@@ -85,9 +104,9 @@ struct OnboardingAlertView: View {
     }
 }
 
-//#Preview {
-//    Color.green
-//        .overlay{
-//            OnboardingAlertView(card: ObjectSearchViewModel().card)
-//        }
-//}
+#Preview {
+    Color.green
+        .overlay{
+            OnboardingAlertView(card: ObjectSearchViewModel(action: {}).card)
+        }
+}

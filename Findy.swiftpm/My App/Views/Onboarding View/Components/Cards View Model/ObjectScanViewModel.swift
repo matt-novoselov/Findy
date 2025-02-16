@@ -9,11 +9,14 @@ class ObjectScanViewModel {
             icon: "rectangle.on.rectangle.slash.fill",
             description: "**Clear the background:** Use a plain, uncluttered space to keep distractions away."),
         OnboardingCardDescriptionModel(
-            icon: "sun.max.fill",
-            description: "**Light it up:** Make sure the area is well lit."),
+            icon: "viewfinder",
+            description: "**Frame It Right:** Make sure your object fits in the viewfinder before capturing a photo."),
         OnboardingCardDescriptionModel(
             icon: "arrow.trianglehead.2.clockwise.rotate.90",
-            description: "**Show different angles:** Snap multiple shots to give AI a complete view.")
+            description: "**Show different angles:** Snap multiple shots to give AI a complete view."),
+//        OnboardingCardDescriptionModel(
+//            icon: "sun.max.fill",
+//            description: "**Light it up:** Make sure the area is well lit.")
     ]
     
     let card: OnboardingCardModel

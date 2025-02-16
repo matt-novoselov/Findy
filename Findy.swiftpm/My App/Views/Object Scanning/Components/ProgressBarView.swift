@@ -43,6 +43,7 @@ struct ProgressCapsuleView: View {
                     .foregroundStyle(Color.primary.opacity(0.6))
                     .frame(maxWidth: index < amountOfPhotos ? .infinity : 0)
             }
+            .padding(-1)
             .clipShape(.capsule)
             .animation(
                 .easeInOut(duration: 0.2).delay(Double(index) * 0.05),
