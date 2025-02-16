@@ -3,7 +3,7 @@ import SwiftUI
 struct OldPhotoView: View {
     @State private var didAppear = false
     var body: some View {
-        Image(.oldPhoto)
+        Image("OldPhoto")
             .resizable()
             .aspectRatio(contentMode: .fit)
             .rotationEffect(!didAppear ? Angle(degrees: -180) : .zero, anchor: .bottomLeading)
