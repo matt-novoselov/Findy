@@ -12,7 +12,7 @@ struct OnboardingSkipButtonView: View {
                 .fontWeight(.semibold)
                 .fontDesign(.rounded)
                 .foregroundStyle(.secondary)
-                .glassBackground(cornerRadius: 1000)
+                .glassBackground(cornerRadius: .infinity)
                 .padding(20)
                 .padding(.top)
         }

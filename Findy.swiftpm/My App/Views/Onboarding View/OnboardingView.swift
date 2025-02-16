@@ -24,6 +24,7 @@ struct OnboardingView: View {
                 Group{
                     if currentIndex >= 0 {
                         OnboardingTextView(text: content.texts[currentIndex])
+                            .padding(.all, 40)
                             .transition(.opacity)
                     }
                 }

@@ -27,7 +27,7 @@ struct ToastView: View {
         }
         .blur(radius: isBlurred ? 10 : 0)
         .padding(.all, 20)
-        .background(Material.thin, in: .capsule)
+        .glassBackground(cornerRadius: .infinity)
         .clipShape(.capsule)
         
         .gesture(

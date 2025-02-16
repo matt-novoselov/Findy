@@ -10,7 +10,7 @@ struct OnboardingTextView: View {
             .font(.title2)
             .fontWeight(.bold)
             .padding(30)
-            .glassBackground(cornerRadius: 1000)
+            .glassBackground(cornerRadius: .infinity)
             .clipShape(Capsule())
     }
 }
