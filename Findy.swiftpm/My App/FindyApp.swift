@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 @main
 struct FindyApp: App {
@@ -8,6 +9,11 @@ struct FindyApp: App {
     @State private var arCoordinator: ARSceneCoordinator?
     @State private var speechSynthesizer: SpeechSynthesizer?
     @State private var toastManager: ToastManager?
+    
+    init() {
+        try? Tips.configure()
+        try? Tips.resetDatastore()
+    }
     
     var body: some Scene {
         WindowGroup {

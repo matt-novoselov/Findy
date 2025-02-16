@@ -7,9 +7,11 @@ struct CameraShutterButton: View {
     @Environment(ToastManager.self) var toastManager
     @Binding var cameraShutterToggle: Bool
     var isObjectFocused: Bool
+    private let tip = CameraButtonTip()
     
     var body: some View {
         Button(action: {
+            tip.invalidate(reason: .actionPerformed)
             if isObjectFocused{
                 takePhoto()
             } else {
@@ -21,6 +23,12 @@ struct CameraShutterButton: View {
                 .frame(width: 55, height: 55)
         }
         .buttonStyle(ShutterButtonStyle())
+        
+        // MARK: Tip
+        .popoverTip(
+            self.tip
+        )
+        .tipImageStyle(Color.secondary)
         
         // Outer ring
         .overlay{
