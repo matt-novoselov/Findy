@@ -13,6 +13,8 @@ struct ObjectScanningView: View {
             appViewModel.savedObject.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity && !isOnboardingActive
         }
         
+        let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
+        
         Color.clear
             // MARK: Focus box
             .background{
@@ -25,8 +27,9 @@ struct ObjectScanningView: View {
             .overlay{
                 CameraShutterView(isShutterActive: $cameraShutterToggle)
             }
+        
+            // MARK: Progress bar
             .overlay(alignment: .bottom){
-                let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
                 Group{
                     if amountOfPhotos > 0 {
                         ProgressBarView()
@@ -37,6 +40,8 @@ struct ObjectScanningView: View {
                 
                 .animation(.spring, value: amountOfPhotos)
             }
+        
+            // MARK: Photo Collection
             .overlay(alignment: .bottomLeading){
                 PhotoCollectionView()
                     .padding()
@@ -62,7 +67,7 @@ struct ObjectScanningView: View {
                 }
             }
         
-            .toolbar(isOnboardingActive ? .hidden : .visible, for: .tabBar)
+            .toolbar((!isOnboardingActive && amountOfPhotos > 0) ? .visible : .hidden, for: .tabBar)
         
             .overlay{
                 Group{
