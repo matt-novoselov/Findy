@@ -7,13 +7,13 @@ struct GlowingEdgesView: View {
     var body: some View {
         ZStack{
             let greenRectangleValue: CGFloat = 5
-            RoundedRectangle(cornerRadius: getCornerRadius())
+            RoundedRectangle(cornerRadius: getDeviceBasedCornerRadius())
                 .stroke(.green, lineWidth: objectDetected ? greenRectangleValue : 0, antialiased: true)
                 .animation(.spring, value: objectDetected)
                 .blur(radius: greenRectangleValue)
             
             let whiteRectangleValue: CGFloat = 3
-            RoundedRectangle(cornerRadius: getCornerRadius())
+            RoundedRectangle(cornerRadius: getDeviceBasedCornerRadius())
                 .stroke(.white, lineWidth: objectDetected ? whiteRectangleValue : 0, antialiased: true)
                 .animation(.spring, value: objectDetected)
                 .blur(radius: whiteRectangleValue)
@@ -22,7 +22,7 @@ struct GlowingEdgesView: View {
     }
 }
 
-func getCornerRadius() -> CGFloat {
+func getDeviceBasedCornerRadius() -> CGFloat {
     let screenSize = UIScreen.main.bounds.size
     let sortedScreen = [screenSize.width, screenSize.height].sorted()
     

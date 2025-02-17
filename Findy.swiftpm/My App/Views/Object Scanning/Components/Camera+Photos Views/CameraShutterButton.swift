@@ -39,9 +39,6 @@ struct CameraShutterButton: View {
     }
     
     func takePhoto(){
-        // Play shutter animation
-        cameraShutterToggle.toggle()
-        
         // Play shutter sound
         let shutterSoundID: SystemSoundID = 1108
         AudioServicesPlaySystemSound(shutterSoundID)
@@ -58,6 +55,11 @@ struct CameraShutterButton: View {
                     processedObservation: mostProminentResult
                 )
                 appViewModel.savedObject.takenPhotos.append(capturedPhoto)
+                
+                if appViewModel.savedObject.takenPhotos.count < AppMetrics.maxPhotoArrayCapacity {
+                    // Play flashlight animation
+                    cameraShutterToggle.toggle()
+                }
             }
         }
     }

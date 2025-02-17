@@ -26,7 +26,7 @@ struct ObjectScanningView: View {
         
             // MARK: Visual effects
             .overlay{
-                CameraShutterView(isShutterActive: $cameraShutterToggle)
+                CameraFlashlightView(isShutterActive: $cameraShutterToggle)
             }
         
             // MARK: Progress bar

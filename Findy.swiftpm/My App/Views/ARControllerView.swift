@@ -17,6 +17,8 @@ struct ARControllerView: View {
                         OnboardingView()
                     case .scanning:
                         ObjectScanningView()
+                    case .dimmed:
+                        DimmedView()
                     case .searching:
                         ObjectSearchingView()
                     }

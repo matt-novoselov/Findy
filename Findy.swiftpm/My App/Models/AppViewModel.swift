@@ -15,4 +15,5 @@ enum AppState: String, CaseIterable {
     case onboarding = "Onboarding"
     case scanning = "Scanning"
     case searching = "Searching"
+    case dimmed = "Dimmed"
 }

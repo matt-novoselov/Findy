@@ -55,7 +55,7 @@ struct ModelTrainingView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(AnimatedBackgroundView())
+        .glassBackground(cornerRadius: getDeviceBasedCornerRadius()-10)
         .overlay(alignment: .bottom){
             if isAnimationFinishedFinal{
                 CandyStyledButton(title: "Search for the item", symbol: "magnifyingglass", action: {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CameraShutterView: View {
+struct CameraFlashlightView: View {
     @State private var opacity: Double = 0
     @Binding var isShutterActive: Bool
     
@@ -19,7 +19,7 @@ struct CameraShutterView: View {
 
 #Preview {
     @Previewable @State var activeShutter: Bool = false
-    CameraShutterView(isShutterActive: $activeShutter)
+    CameraFlashlightView(isShutterActive: $activeShutter)
         .background(.green)
         .overlay{
             Button("Toggle"){

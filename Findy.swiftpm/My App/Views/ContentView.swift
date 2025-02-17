@@ -23,12 +23,14 @@ struct ContentView: View {
             Group{
                 if appViewModel.isTrainingCoverPresented{
                     ModelTrainingView()
-                        .onAppear{ arCoordinator.isARContainerVisible = false }
+                        .padding(10)
+                        .onAppear{ arCoordinator.isARContainerVisible = false; appViewModel.state = .dimmed }
                         .onDisappear{ arCoordinator.isARContainerVisible = true }
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
             .animation(.spring, value: appViewModel.isTrainingCoverPresented)
+            .ignoresSafeArea()
         }
         
     }
