@@ -255,10 +255,12 @@ extension ARSceneCoordinator {
     private func establishNewTracking(with query: ARRaycastQuery) {
         guard let arView else { return }
         
-        if let dominantObservation = getDominantObservation(), let targetObject = appViewModel?.savedObject.targetDetectionObject {
+        if let dominantObservation = getDominantObservation(), let appViewModel {
+            let givenObjectName = appViewModel.savedObject.userGivenObjectName
+            let itemName = givenObjectName.isEmpty ? "Your item" : givenObjectName
             let detectionPoint = dominantObservation.boundingBox.midPoint
             Task{
-                await provideDetectionFeedback(for: targetObject, at: detectionPoint)
+                await provideDetectionFeedback(for: itemName, at: detectionPoint)
             }
         }
         
