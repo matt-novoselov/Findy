@@ -266,7 +266,7 @@ extension ARSceneCoordinator {
         arView.scene.addAnchor(indicatorAnchor)
         trackedAnchor = indicatorAnchor
         
-        animateVisualIndicator(indicatorAnchor)
+//        animateVisualIndicator(indicatorAnchor)
         maintainContinuousTracking(with: query, for: indicatorAnchor)
     }
     
@@ -316,8 +316,6 @@ extension ARSceneCoordinator {
             if let firstResult = results.first {
                 anchor.transform = Transform(matrix: firstResult.worldTransform)
                 anchor.transform.rotation = .init()
-            } else {
-                self.resetCurrentTracking()
             }
         }
     }

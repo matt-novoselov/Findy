@@ -11,6 +11,7 @@ struct SearchingLabelView: View {
                 AsyncImage(url: aiImage) { image in
                     image
                         .resizable()
+                        .interpolation(.high)
                         .aspectRatio(contentMode: .fit)
                         .clipShape(.rect(cornerRadius: 20))
                         .frame(maxWidth: 70, maxHeight: 70)
@@ -20,6 +21,7 @@ struct SearchingLabelView: View {
             } else if let cutOutImage = appViewModel.savedObject.objectCutOutImage {
                 Image(uiImage: cutOutImage)
                     .resizable()
+                    .interpolation(.high)
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 70, maxHeight: 70)
             }

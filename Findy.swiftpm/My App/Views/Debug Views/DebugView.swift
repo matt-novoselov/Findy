@@ -8,7 +8,7 @@ struct DebugView: View {
             ZStack{
                 DebugObjectDetectionView()
                 DebugCaptureView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
             .allowsHitTesting(false)
         }
