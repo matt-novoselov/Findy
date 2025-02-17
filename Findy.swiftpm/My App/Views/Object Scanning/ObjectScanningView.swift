@@ -3,6 +3,7 @@ import SwiftUI
 struct ObjectScanningView: View {
     @Environment(AppViewModel.self) private var appViewModel
     @Environment(ARSceneCoordinator.self) private var arCoordinator
+    @Environment(SpeechSynthesizer.self) private var speechSynthesizer
     
     @State private var cameraShutterToggle: Bool = false
     @State private var isObjectFocused: Bool = false
@@ -54,9 +55,10 @@ struct ObjectScanningView: View {
                 Group{
                     if isCameraButtonActive {
                         CameraShutterButton(cameraShutterToggle: $cameraShutterToggle, isObjectFocused: isObjectFocused)
+                            .padding()
                     }
                 }
-                .padding()
+                .ignoresSafeArea()
                 .transition(.move(edge: .trailing))
                 .animation(.spring, value: isCameraButtonActive)
                 
@@ -74,12 +76,22 @@ struct ObjectScanningView: View {
                     if isOnboardingActive{
                         OnboardingAlertView(card: ObjectScanViewModel(action: {
                             isOnboardingActive = false
+                            speechSynthesizer.speak(text: SSPrompts.captureFirstItem)
                         }).card)
                         .ignoresSafeArea()
                         .transition(.opacity)
                     }
                 }
                 .animation(.spring, value: isOnboardingActive)
+            }
+        
+            .onChange(of: appViewModel.savedObject.takenPhotos.count){
+                let newValue = appViewModel.savedObject.takenPhotos.count
+                if newValue == 1 {
+                    speechSynthesizer.speak(text: SSPrompts.trainAI)
+                } else if newValue == 5 {
+                    speechSynthesizer.speak(text: SSPrompts.halfway)
+                }
             }
     }
 }

@@ -2,6 +2,8 @@ import SwiftUI
 
 struct ObjectSearchingView: View {
     @Environment(ARSceneCoordinator.self) private var arCoordinator
+    @Environment(AppViewModel.self) private var appViewModel
+    @Environment(SpeechSynthesizer.self) private var speechSynthesizer
     @State private var hasTargetObjectBeenDetected: Bool = false
     @State private var isOnboardingActive: Bool = true
     
@@ -37,7 +39,7 @@ struct ObjectSearchingView: View {
             // MARK: Distance measurements
             .overlay(alignment: .bottom){
                 if let currentMeasurement = arCoordinator.currentMeasurement {
-                    DynamicFontMeasurementsView(numericValue: currentMeasurement.numericValue, unitSymbol: currentMeasurement.unitSymbol, referenceText: getDirection(degrees: Double(currentMeasurement.rotationDegrees)))
+                    DynamicFontMeasurementsView(numericValue: currentMeasurement.numericValue, unitSymbol: currentMeasurement.unitSymbol, referenceText: currentMeasurement.getDirection.0)
                         .padding()
                 }
             }
@@ -54,6 +56,7 @@ struct ObjectSearchingView: View {
                             isOnboardingActive = false
                             arCoordinator.shouldSearchForTargetObject = true
                             arCoordinator.coachingOverlayView?.setActive(true, animated: true)
+                            speechSynthesizer.speak(text: SSPrompts.searching)
                         }).card)
                         .ignoresSafeArea()
                         .transition(.opacity)
@@ -68,6 +71,13 @@ struct ObjectSearchingView: View {
         
             .onAppear{
                 arCoordinator.hasTargetObjectBeenDetected = $hasTargetObjectBeenDetected
+            }
+            
+            .onChange(of: arCoordinator.currentMeasurement?.getDirection.1){
+                let currentMeasurement = arCoordinator.currentMeasurement
+                if let distance = currentMeasurement?.formattedValue, let direction = currentMeasurement?.getDirection.1, let object = appViewModel.savedObject.targetDetectionObject {
+                    speechSynthesizer.speak(text: "\(object) is \(distance) \(direction) ")
+                }
             }
 
     }

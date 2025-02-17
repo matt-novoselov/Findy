@@ -34,4 +34,24 @@ struct SceneMeasurement: Equatable {
         formatter.unitStyle = .short
         return formatter.string(from: convertedMeasurement)
     }
+    
+    // Add this function to calculate the direction
+    var getDirection: (String, String) {
+        let normalizedDegrees = normalizedDegrees(Double(self.rotationDegrees))
+        let angle = normalizedDegrees
+        if (0...25).contains(angle) || (335...360).contains(angle) {
+            return ("In front", "In front of you")
+        } else if (225...335).contains(angle) {
+            return ("To the right", "To your right")
+        } else if (135...225).contains(angle) {
+            return ("Behind", "Behind you")
+        } else {
+            return ("To the left", "To your left")
+        }
+        
+        func normalizedDegrees(_ degrees: Double) -> Double {
+            let modDegrees = degrees.truncatingRemainder(dividingBy: 360)
+            return modDegrees >= 0 ? modDegrees : modDegrees + 360
+        }
+    }
 }

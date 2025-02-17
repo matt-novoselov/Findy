@@ -215,11 +215,7 @@ extension ARSceneCoordinator {
         
         self.objectDetectedAtPosition = position
         speechSynthesizer?.speak(text: "\(object) detected!")
-        
-        if let distance = currentMeasurement?.formattedValue {
-            speechSynthesizer?.speak(text: "\(object) is \(distance) away.")
-        }
-        
+
         hasTargetObjectBeenDetected?.wrappedValue = true
     }
 }

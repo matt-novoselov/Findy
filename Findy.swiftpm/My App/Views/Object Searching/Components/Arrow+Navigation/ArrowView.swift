@@ -51,26 +51,6 @@ struct CircularProgressView: View {
     }
 }
 
-// Add this function to calculate the direction
-func getDirection(degrees: Double) -> String {
-    let normalizedDegrees = normalizedDegrees(degrees)
-    let angle = normalizedDegrees
-    if (0...25).contains(angle) || (335...360).contains(angle) {
-        return "In front"
-    } else if (225...335).contains(angle) {
-        return "To the right"
-    } else if (135...225).contains(angle) {
-        return "Behind"
-    } else {
-        return "To the left"
-    }
-    
-    func normalizedDegrees(_ degrees: Double) -> Double {
-        let modDegrees = degrees.truncatingRemainder(dividingBy: 360)
-        return modDegrees >= 0 ? modDegrees : modDegrees + 360
-    }
-}
-
 #Preview{
     @Previewable @State var degrees: Double = 0
     VStack{
@@ -79,11 +59,11 @@ func getDirection(degrees: Double) -> String {
         Slider(value: $degrees, in: -360...360)
             .padding()
 
-        // Add the direction text
-        Text("Pointing: \(getDirection(degrees: degrees))")
-            .fontDesign(.rounded)
-            .font(.title)
-            .padding()
+//        // Add the direction text
+//        Text("Pointing: \(getDirection(degrees: degrees))")
+//            .fontDesign(.rounded)
+//            .font(.title)
+//            .padding()
     }
     .padding()
 }

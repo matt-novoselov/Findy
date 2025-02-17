@@ -26,22 +26,24 @@ struct ModelTrainingView: View {
             VStack {
                 if isAnimationFinishedFinal {
                     VariableFontAnimationView()
-                    
-                    if appViewModel.savedObject.appleIntelligencePreviewImage != nil {
-                        if let url = appViewModel.savedObject.appleIntelligencePreviewImage {
-                            AsyncImage(url: url) { image in
-                                image.resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .clipShape(.rect(cornerRadius: 20))
-                                    .frame(maxWidth: 300, maxHeight: 300)
-                            } placeholder: {
-                                ProgressView()
-                            }
+                }
+                
+                if appViewModel.savedObject.appleIntelligencePreviewImage != nil {
+                    if let url = appViewModel.savedObject.appleIntelligencePreviewImage {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .clipShape(.rect(cornerRadius: 20))
+                                .frame(maxWidth: 300, maxHeight: 300)
+                        } placeholder: {
+                            ProgressView()
                         }
-                    } else {
-                        cutOutObjectView
                     }
-                    
+                } else {
+                    cutOutObjectView
+                }
+                
+                if isAnimationFinishedFinal {
                     ObjectTagsPickerView()
                     ImagePlaygroundView()
                 }
