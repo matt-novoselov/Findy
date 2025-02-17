@@ -36,9 +36,7 @@ struct ModelTrainingView: View {
                     if let url = appViewModel.savedObject.appleIntelligencePreviewImage {
                         AsyncImage(url: url) { image in
                             image.resizable()
-                                .aspectRatio(contentMode: .fit)
                                 .clipShape(.rect(cornerRadius: 20))
-                                .frame(maxWidth: 300, maxHeight: 300)
                         } placeholder: {
                             ProgressView()
                         }
@@ -47,6 +45,11 @@ struct ModelTrainingView: View {
                     cutOutObjectView
                 }
             }
+            .aspectRatio(contentMode: .fit)
+            .frame(maxWidth: isAnimationFinishedFinal ? .infinity : 150)
+            .animation(.spring, value: isAnimationFinishedFinal)
+            .scaledToFit()
+            .padding(40)
             
             Spacer()
             
@@ -72,11 +75,11 @@ struct ModelTrainingView: View {
                     appViewModel.isTrainingCoverPresented = false
                     appViewModel.state = .searching
                 })
-                .padding()
+                .padding(.top)
                 .animation(.spring, value: isAnimationFinishedFinal)
             }
         }
-        .padding(.horizontal, 16)
+        .padding(.all, 20)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .glassBackground(cornerRadius: getDeviceBasedCornerRadius()-10)
         .overlay{
@@ -167,8 +170,6 @@ struct ModelTrainingView: View {
             if showCheckmark, let photoCutout = appViewModel.savedObject.objectCutOutImage {
                 Image(uiImage: photoCutout)
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 150)
                     .symbolEffect(.bounce, value: animateCheckmark)
                     .symbolEffect(.pulse, value: animateCheckmark)
                     .foregroundStyle(.white)
@@ -190,6 +191,7 @@ struct ModelTrainingView: View {
                             x: circleRadius * CGFloat(cos(angle)),
                             y: circleRadius * CGFloat(sin(angle))
                         )
+                        .zIndex(Double(index)+10)
                 }
             }
         }
