@@ -21,7 +21,7 @@ final class ModelTrainingCoordinator {
         }
         
         // 5. Remove background from the chosen image.
-        let resultImage = try await removeBackground(from: mostBeautiful)
+        let resultImage = await removeBackground(from: mostBeautiful)
         
         // 6. Classify the cut-out image.
         let classifications = try await ImageClassificationService.classify(image: resultImage)
