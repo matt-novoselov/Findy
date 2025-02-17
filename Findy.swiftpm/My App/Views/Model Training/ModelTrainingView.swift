@@ -77,6 +77,8 @@ struct ModelTrainingView: View {
     }
     
     private func startModelTraining() {
+        guard shouldAnimate == false else { return }
+        
         // Start UI animations.
         startAnimations()
         
@@ -104,7 +106,7 @@ struct ModelTrainingView: View {
     /// Start animations and schedule their “completion” via DispatchQueue.
     private func startAnimations() {
         withAnimation {
-            shouldAnimate.toggle()
+            shouldAnimate = true
         } completion: {
             withAnimation(.easeOut(duration: 10)) {
                 scaleOverTime = true
