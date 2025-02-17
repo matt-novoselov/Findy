@@ -22,12 +22,16 @@ struct ModelTrainingView: View {
     
     var body: some View {
         VStack {
-            // MARK: Variable font animation
-            if isAnimationFinishedFinal {
-                VariableFontAnimationView()
-                    .padding(.top)
+            ZStack{
+                // MARK: Variable font animation
+                if isAnimationFinishedFinal {
+                    VariableFontAnimationView()
+                        .padding(.top)
+                        .transition(.blurReplace)
+                }
             }
-            
+            .animation(.spring, value: isAnimationFinishedFinal)
+                        
             Spacer()
             
             // MARK: Image cut out
@@ -46,38 +50,44 @@ struct ModelTrainingView: View {
                 }
             }
             .aspectRatio(contentMode: .fit)
-            .frame(maxWidth: isAnimationFinishedFinal ? .infinity : 150)
+            .frame(maxWidth: isAnimationFinishedFinal ? .infinity : 300)
             .animation(.spring, value: isAnimationFinishedFinal)
             .scaledToFit()
             .padding(40)
             
             Spacer()
             
-            // MARK: Scroll View
-            if isAnimationFinishedFinal {
-                Group{
-                    NameInputFieldView()
-                    
-                    ObjectTagsPickerView()
-                    
-                    ImagePlaygroundView()
-                        .frame(maxWidth: .infinity, alignment: .leading)
+            VStack{
+                // MARK: Scroll View
+                if isAnimationFinishedFinal {
+                    Group{
+                        Group{
+                            NameInputFieldView()
+                            
+                            ObjectTagsPickerView()
+                            
+                            ImagePlaygroundView()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .separatorBackground()
+                        
+                        // MARK: Candy button
+                        let givenObjectName = appViewModel.savedObject.userGivenObjectName
+                        let itemName = givenObjectName.isEmpty ? "item" : givenObjectName
+                        
+                        CandyStyledButton(title: "Search for the \(itemName)", symbol: "magnifyingglass", action: {
+                            isViewActive = false
+                            appViewModel.isTrainingCoverPresented = false
+                            appViewModel.state = .searching
+                        })
+                        .padding(.top)
+                        .animation(.spring, value: isAnimationFinishedFinal)
+                    }
+                    .transition(.blurReplace)
                 }
-                .frame(maxWidth: .infinity)
-                .separatorBackground()
-                
-                // MARK: Candy button
-                let givenObjectName = appViewModel.savedObject.userGivenObjectName
-                let itemName = givenObjectName.isEmpty ? "item" : givenObjectName
-                
-                CandyStyledButton(title: "Search for the \(itemName)", symbol: "magnifyingglass", action: {
-                    isViewActive = false
-                    appViewModel.isTrainingCoverPresented = false
-                    appViewModel.state = .searching
-                })
-                .padding(.top)
-                .animation(.spring, value: isAnimationFinishedFinal)
             }
+            .animation(.spring, value: isAnimationFinishedFinal)
         }
         .padding(.all, 20)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
