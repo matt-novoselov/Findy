@@ -9,6 +9,7 @@ struct ModelTrainingView: View {
     @State private var animateCheckmark = false
     @State private var isAnimationFinishedFinal: Bool = false
     @State private var isViewActive: Bool = true
+    @State private var circleRadius: CGFloat = 130.0
     
     // Animation tracking requirements.
     @State private var hasBaseAnimationFinished = false
@@ -16,8 +17,6 @@ struct ModelTrainingView: View {
     private var isWrappingUpAnimations: Bool {
         return hasBaseAnimationFinished && hasModelTrainingFinished
     }
-    
-    private let gridColumns = Array(repeating: GridItem(.fixed(100)), count: 3)
     
     private let coordinator = ModelTrainingCoordinator()
     
@@ -82,7 +81,7 @@ struct ModelTrainingView: View {
         .glassBackground(cornerRadius: getDeviceBasedCornerRadius()-10)
         .overlay{
             if isViewActive{
-                imageGridView
+                imageCircleView
             }
         }
         .overlay {
@@ -139,6 +138,9 @@ struct ModelTrainingView: View {
     }
     
     private func wrapUpAnimations() {
+        withAnimation(.easeIn(duration: 3)){
+            circleRadius = 50
+        }
         withAnimation(.easeOut(duration: 3)) {
             isProcessingComplete = true
         } completion: {
@@ -176,13 +178,18 @@ struct ModelTrainingView: View {
             }
         }
     }
-    
-    private var imageGridView: some View {
-        LazyVGrid(columns: gridColumns, spacing: 5) {
-            ForEach(0..<9, id: \.self) { _ in
+
+    private var imageCircleView: some View {
+        ZStack {
+            ForEach(0..<9, id: \.self) { index in
                 if shouldAnimate && !appViewModel.savedObject.takenPhotos.isEmpty {
+                    let angle = 2 * Double.pi / 9.0 * Double(index)
                     AnimatedImageCell()
                         .blur(radius: isProcessingComplete ? 20 : 0)
+                        .offset(
+                            x: circleRadius * CGFloat(cos(angle)),
+                            y: circleRadius * CGFloat(sin(angle))
+                        )
                 }
             }
         }
@@ -193,4 +200,5 @@ struct ModelTrainingView: View {
         .shadow(color: .white, radius: isProcessingComplete ? 100 : 0)
         .opacity(showCheckmark ? 0 : 1)
     }
+
 }
