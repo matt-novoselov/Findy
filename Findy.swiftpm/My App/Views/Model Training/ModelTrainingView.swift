@@ -24,22 +24,24 @@ struct ModelTrainingView: View {
     var body: some View {
         ZStack {
             VStack {
-                if appViewModel.savedObject.appleIntelligencePreviewImage != nil {
-                    if let url = appViewModel.savedObject.appleIntelligencePreviewImage {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .clipShape(.rect(cornerRadius: 20))
-                                .frame(maxWidth: 300, maxHeight: 300)
-                        } placeholder: {
-                            ProgressView()
-                        }
-                    }
-                } else {
-                    cutOutObjectView
-                }
-                
                 if isAnimationFinishedFinal {
+                    VariableFontAnimationView()
+                    
+                    if appViewModel.savedObject.appleIntelligencePreviewImage != nil {
+                        if let url = appViewModel.savedObject.appleIntelligencePreviewImage {
+                            AsyncImage(url: url) { image in
+                                image.resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .clipShape(.rect(cornerRadius: 20))
+                                    .frame(maxWidth: 300, maxHeight: 300)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        }
+                    } else {
+                        cutOutObjectView
+                    }
+                    
                     ObjectTagsPickerView()
                     ImagePlaygroundView()
                 }
@@ -88,9 +90,9 @@ struct ModelTrainingView: View {
                     appViewModel.savedObject.objectCutOutImage = result.objectCutOutImage
                     appViewModel.savedObject.targetDetectionObject = result.averageLabel
                     appViewModel.savedObject.visionClassifications = result.visionClassifications
-                    #if canImport(CreateML)
+#if canImport(CreateML)
                     appViewModel.savedObject.imageClassifier = result.trainedModel
-                    #endif
+#endif
                 }
             } catch {
                 print("Training failed: \(error)")
