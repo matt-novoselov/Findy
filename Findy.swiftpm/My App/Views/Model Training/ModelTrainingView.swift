@@ -22,12 +22,17 @@ struct ModelTrainingView: View {
     private let coordinator = ModelTrainingCoordinator()
     
     var body: some View {
-        ZStack {
-            VStack {
-                if isAnimationFinishedFinal {
-                    VariableFontAnimationView()
-                }
-                
+        VStack {
+            // MARK: Variable font animation
+            if isAnimationFinishedFinal {
+                VariableFontAnimationView()
+                    .padding(.top)
+            }
+            
+            Spacer()
+            
+            // MARK: Image cut out
+            Group{
                 if appViewModel.savedObject.appleIntelligencePreviewImage != nil {
                     if let url = appViewModel.savedObject.appleIntelligencePreviewImage {
                         AsyncImage(url: url) { image in
@@ -42,29 +47,42 @@ struct ModelTrainingView: View {
                 } else {
                     cutOutObjectView
                 }
-                
-                if isAnimationFinishedFinal {
-                    ObjectTagsPickerView()
-                    ImagePlaygroundView()
-                }
             }
-            .padding()
             
-            if isViewActive{
-                imageGridView
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .glassBackground(cornerRadius: getDeviceBasedCornerRadius()-10)
-        .overlay(alignment: .bottom){
-            if isAnimationFinishedFinal{
-                CandyStyledButton(title: "Search for the item", symbol: "magnifyingglass", action: {
+            Spacer()
+            
+            // MARK: Scroll View
+            if isAnimationFinishedFinal {
+                Group{
+                    NameInputFieldView()
+                    
+                    ObjectTagsPickerView()
+                    
+                    ImagePlaygroundView()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxWidth: .infinity)
+                .separatorBackground()
+                
+                // MARK: Candy button
+                let givenObjectName = appViewModel.savedObject.userGivenObjectName
+                let itemName = givenObjectName.isEmpty ? "item" : givenObjectName
+                
+                CandyStyledButton(title: "Search for the \(itemName)", symbol: "magnifyingglass", action: {
                     isViewActive = false
                     appViewModel.isTrainingCoverPresented = false
                     appViewModel.state = .searching
                 })
                 .padding()
                 .animation(.spring, value: isAnimationFinishedFinal)
+            }
+        }
+        .padding(.horizontal, 16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .glassBackground(cornerRadius: getDeviceBasedCornerRadius()-10)
+        .overlay{
+            if isViewActive{
+                imageGridView
             }
         }
         .overlay {

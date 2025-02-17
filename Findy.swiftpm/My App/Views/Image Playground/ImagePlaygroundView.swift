@@ -9,20 +9,29 @@ struct ImagePlaygroundView: View {
     @State private var concepts: [ImagePlaygroundConcept] = []
     @State private var sourceImage: Image?
     
-    
     var body: some View {
-        if supportsImagePlayground {
-            Button(action: {openImagePlaygrounds()}) {
-                ImagePlaygroundButtonLabel()
+        VStack (alignment: .leading){
+            HStack{
+                Group{
+                    Image(systemName: "photo")
+                    Text("Preview Image")
+                }
+                .font(.body)
+                .foregroundStyle(Color.primary)
+                .fontWeight(.semibold)
+                .fontDesign(.rounded)
             }
-            .tint(.white)
-            .fontDesign(.rounded)
-            .fontWeight(.semibold)
-            .foregroundStyle(.black)
-            .buttonStyle(.borderedProminent)
-            .clipShape(.capsule)
-            .imagePlaygroundSheet(isPresented: $showImagePlayground, concepts: concepts, sourceImage: sourceImage) { url in
-                appViewModel.savedObject.appleIntelligencePreviewImage = url
+            
+            VStack{
+                if supportsImagePlayground {
+                    Button(action: {openImagePlaygrounds()}) {
+                        ImagePlaygroundButtonLabel()
+                    }
+                    .clipShape(.capsule)
+                    .imagePlaygroundSheet(isPresented: $showImagePlayground, concepts: concepts, sourceImage: sourceImage) { url in
+                        appViewModel.savedObject.appleIntelligencePreviewImage = url
+                    }
+                }
             }
         }
     }
@@ -45,7 +54,7 @@ struct ImagePlaygroundView: View {
 
 struct ImagePlaygroundButtonLabel: View {
     var body: some View {
-        HStack{
+        HStack(spacing: 8){
             Group{
                 Image(systemName: "apple.intelligence")
                     .foregroundStyle(.white)
@@ -59,7 +68,14 @@ struct ImagePlaygroundButtonLabel: View {
                 Text("Generate Preview Image")
             }
             .font(.body)
+            .fontDesign(.rounded)
+            .fontWeight(.medium)
+            .foregroundStyle(Color.primary)
         }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+        .clipShape(.capsule)
+        .background(RecessedRectangleView())
     }
 }
 
@@ -93,13 +109,12 @@ struct ImagePlaygroundLabelGradient: View {
 }
 
 #Preview {
-    Button(action: {}) {
-        ImagePlaygroundButtonLabel()
+    ZStack{
+        Color.green
+        
+        Button(action: {}) {
+            ImagePlaygroundButtonLabel()
+        }
+        .clipShape(.capsule)
     }
-    .tint(.white)
-    .fontDesign(.rounded)
-    .fontWeight(.semibold)
-    .foregroundStyle(.black)
-    .buttonStyle(.borderedProminent)
-    .clipShape(.capsule)
 }
