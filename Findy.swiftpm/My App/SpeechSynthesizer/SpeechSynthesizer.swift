@@ -1,5 +1,7 @@
 import AVFoundation
 
+extension AVSpeechSynthesizer: @unchecked @retroactive Sendable {}
+
 @Observable
 class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
     private let synthesizer = AVSpeechSynthesizer()
@@ -14,7 +16,9 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
 
     func speak(text: String) {
         let utterance = AVSpeechUtterance(string: text)
-        if let voice = AVSpeechSynthesisVoice(identifier: AppMetrics.speechVoiceIdentifier) {
+        if let voice = AVSpeechSynthesisVoice(
+            identifier: AppMetrics.speechVoiceIdentifier
+        ) {
             utterance.voice = voice
         }
         utterance.rate = speechSynthesizerPlaybackSpeed
@@ -37,13 +41,17 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
     }
 
     // MARK: - AVSpeechSynthesizerDelegate
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer,
-                           didFinish utterance: AVSpeechUtterance) {
+    func speechSynthesizer(
+        _ synthesizer: AVSpeechSynthesizer,
+        didFinish utterance: AVSpeechUtterance
+    ) {
         speakNext()
     }
     
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer,
-                           didCancel utterance: AVSpeechUtterance) {
+    func speechSynthesizer(
+        _ synthesizer: AVSpeechSynthesizer,
+        didCancel utterance: AVSpeechUtterance
+    ) {
         // In case of cancellation, try to speak the next utterance.
         speakNext()
     }
