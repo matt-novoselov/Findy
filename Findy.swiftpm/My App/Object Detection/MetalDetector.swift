@@ -8,7 +8,6 @@ class MetalDetector {
     private let minTimeInterval: TimeInterval = 0.05
     private let maxTimeInterval: TimeInterval = 2.0
     private let checkTimeInterval: TimeInterval = 0.05
-    private let beepSoundID: SystemSoundID = 1052
     
     private var timer: Timer?
     private var lastBeepTime: Date?
@@ -54,6 +53,6 @@ class MetalDetector {
     }
     
     private func playBeep() {
-        AudioServicesPlaySystemSound(beepSoundID)
+//        AudioServicesPlaySystemSound(beepSoundID)
     }
 }

@@ -5,7 +5,7 @@ class AppViewModel {
     var isDebugMode: Bool = false
     var cameraImageDimensions: CGSize = .init()
     var state: AppState = .onboarding
-    var isMetalDetectionSoundEnabled: Bool = true
+    var isMetalDetectionSoundEnabled: Bool = false
     var savedObject: SavedObject = .init()
     var isTrainingCoverPresented: Bool = false
     var shouldBlurScreenOnboarding: Bool = false
