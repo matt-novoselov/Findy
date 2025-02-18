@@ -14,6 +14,7 @@ struct SettingsView: View {
                     .accentColor(.purple),
                 footer: Text("Enable to have spoken assistance during app usage.")
                     .font(.caption)
+                    .fontDesign(.rounded)
                     .foregroundColor(.secondary)
             ) {
                 Toggle(
@@ -24,20 +25,22 @@ struct SettingsView: View {
                 
                 SpeechSpeedSliderView()
             }
+            .fontDesign(.rounded)
 
-            Section(
-                header: Label("Proximity Ping Sound", systemImage: "speaker.wave.2.fill")
-                    .accentColor(.green),
-                footer: Text("Play a ping sound when an object comes close.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            ) {
-                Toggle(
-                    "Play Alert Sound",
-                    isOn: $appViewModel.isMetalDetectionSoundEnabled
-                )
-                .accessibilityLabel("Toggle sound alerts for nearby objects")
-            }
+            #warning("Don't forget to enable")
+//            Section(
+//                header: Label("Proximity Ping Sound", systemImage: "speaker.wave.2.fill")
+//                    .accentColor(.green),
+//                footer: Text("Play a ping sound when an object comes close.")
+//                    .font(.caption)
+//                    .foregroundColor(.secondary)
+//            ) {
+//                Toggle(
+//                    "Play Alert Sound",
+//                    isOn: $appViewModel.isMetalDetectionSoundEnabled
+//                )
+//                .accessibilityLabel("Toggle sound alerts for nearby objects")
+//            }
 
             Section(
                 header: Label("Developer Options", systemImage: "ladybug")
@@ -45,6 +48,7 @@ struct SettingsView: View {
                 footer: Text("For development and troubleshooting purposes. Enabling might affect performance.")
                     .font(.caption)
                     .foregroundColor(.secondary)
+                    .fontDesign(.rounded)
             ) {
                 Toggle(
                     "Enable Debug Mode",
@@ -52,6 +56,7 @@ struct SettingsView: View {
                 )
                 .accessibilityLabel("Toggle debug mode for additional developer information")
             }
+            .fontDesign(.rounded)
         }
         .navigationTitle("App Settings")
         .listStyle(.insetGrouped)

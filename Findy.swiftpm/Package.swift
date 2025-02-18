@@ -33,7 +33,7 @@ let package = Package(
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
             ],
             capabilities: [
-                .camera(purposeString: "This app needs camera access to detect objects.")
+                .camera(purposeString: "App needs camera access to detect objects.")
             ],
             appCategory: .utilities
         )

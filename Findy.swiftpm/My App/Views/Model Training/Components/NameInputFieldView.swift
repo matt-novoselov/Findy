@@ -1,10 +1,3 @@
-//
-//  SwiftUIView.swift
-//  Findy
-//
-//  Created by Matt Novoselov on 17/02/25.
-//
-
 import SwiftUI
 
 struct NameInputFieldView: View {
