@@ -11,7 +11,7 @@ struct ModelTrainingView: View {
     @State private var animateCheckmark = false
     @State private var isAnimationFinishedFinal: Bool = false
     @State private var isViewActive: Bool = true
-    @State private var circleRadius: CGFloat = 100
+    @State private var circleRadius: CGFloat = 90
     
     // Animation tracking requirements.
     @State private var hasBaseAnimationFinished = false
