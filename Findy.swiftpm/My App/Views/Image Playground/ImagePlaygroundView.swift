@@ -43,6 +43,10 @@ struct ImagePlaygroundView: View {
             self.concepts.append(.text(classification.description))
         }
         
+        if !appViewModel.savedObject.userGivenObjectName.isEmpty {
+            self.concepts.append(.text(appViewModel.savedObject.userGivenObjectName))
+        }
+        
         if let cutOutImage = appViewModel.savedObject.objectCutOutImage {
             let imageWithWhiteBG = cutOutImage.imageWithWhiteBackgroundSquare()
             self.sourceImage = Image(uiImage: imageWithWhiteBG)
