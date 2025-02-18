@@ -81,7 +81,7 @@ struct ModelTrainingView: View {
                             appViewModel.isTrainingCoverPresented = false
                             appViewModel.state = .searching
                         })
-                        .padding(.top)
+                        .padding(.vertical)
                         .animation(.spring, value: isAnimationFinishedFinal)
                     }
                     .transition(.blurReplace)
