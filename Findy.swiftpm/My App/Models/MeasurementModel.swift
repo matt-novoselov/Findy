@@ -27,11 +27,19 @@ struct SceneMeasurement: Equatable {
     }
     
     var formattedValue: String {
+        formattedValue(with: .short)
+    }
+    
+    var formattedValueFull: String {
+        formattedValue(with: .long)
+    }
+
+    func formattedValue(with style: MeasurementFormatter.UnitStyle) -> String {
         let formatter = MeasurementFormatter()
         formatter.unitOptions = .providedUnit
         formatter.numberFormatter.maximumFractionDigits = 2
         formatter.numberFormatter.minimumFractionDigits = 2
-        formatter.unitStyle = .short
+        formatter.unitStyle = style
         return formatter.string(from: convertedMeasurement)
     }
     

@@ -75,7 +75,7 @@ struct ObjectSearchingView: View {
             
             .onChange(of: arCoordinator.currentMeasurement?.getDirection.1){
                 let currentMeasurement = arCoordinator.currentMeasurement
-                if let distance = currentMeasurement?.formattedValue, let direction = currentMeasurement?.getDirection.1 {
+                if let distance = currentMeasurement?.formattedValueFull, let direction = currentMeasurement?.getDirection.1 {
                     let givenObjectName = appViewModel.savedObject.userGivenObjectName
                     let itemName = givenObjectName.isEmpty ? "Your item" : givenObjectName
                     speechSynthesizer.speak(text: "\(itemName) is \(distance) \(direction)", cancellable: true, urgent: true)
