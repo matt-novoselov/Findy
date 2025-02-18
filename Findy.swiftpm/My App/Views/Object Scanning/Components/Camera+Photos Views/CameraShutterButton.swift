@@ -24,12 +24,6 @@ struct CameraShutterButton: View {
         }
         .buttonStyle(ShutterButtonStyle())
         
-        // MARK: Tip
-        .popoverTip(
-            self.tip
-        )
-        .tipImageStyle(Color.secondary)
-        
         // Outer ring
         .overlay{
             Circle()
@@ -75,5 +69,31 @@ struct ShutterButtonStyle: ButtonStyle {
             )
             .scaleEffect(configuration.isPressed ? 0.9 : 1)
             .animation(.easeInOut(duration: 0.2), value: configuration.isPressed)
+    }
+}
+
+struct CameraShutterButtonContainerView: View{
+    @Environment(AppViewModel.self) private var appViewModel
+    var isCameraButtonActive: Bool
+    @Binding var cameraShutterToggle: Bool
+    @Binding var isObjectFocused: Bool
+    
+    var body: some View{
+        Group{
+            if isCameraButtonActive {
+                CameraShutterButton(cameraShutterToggle: $cameraShutterToggle, isObjectFocused: isObjectFocused)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+                    .padding()
+                    .ignoresSafeArea()
+                    .transition(.move(edge: .trailing))
+            }
+        }
+        .animation(.spring, value: isCameraButtonActive)
+        
+        .onChange(of: isCameraButtonActive){
+            if isCameraButtonActive == false{
+                appViewModel.isTrainingCoverPresented = true
+            }
+        }
     }
 }

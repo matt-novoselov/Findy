@@ -51,22 +51,12 @@ struct ObjectScanningView: View {
             .allowsHitTesting(false)
         
             // MARK: Camera shutter button
+            .overlay{
+                CameraShutterButtonContainerView(isCameraButtonActive: isCameraButtonActive, cameraShutterToggle: $cameraShutterToggle, isObjectFocused: $isObjectFocused)
+            }
+        
             .overlay(alignment: .trailing){
-                Group{
-                    if isCameraButtonActive {
-                        CameraShutterButton(cameraShutterToggle: $cameraShutterToggle, isObjectFocused: isObjectFocused)
-                            .padding()
-                    }
-                }
-                .ignoresSafeArea()
-                .transition(.move(edge: .trailing))
-                .animation(.spring, value: isCameraButtonActive)
-                
-                .onChange(of: isCameraButtonActive){
-                    if isCameraButtonActive == false{
-                        appViewModel.isTrainingCoverPresented = true
-                    }
-                }
+                CameraTipView(isOnboardingActive: isOnboardingActive)
             }
         
             .toolbar((!isOnboardingActive && amountOfPhotos > 0) ? .visible : .hidden, for: .tabBar)
