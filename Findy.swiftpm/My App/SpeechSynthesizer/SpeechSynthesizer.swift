@@ -21,13 +21,11 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
         ) {
             utterance.voice = voice
         }
-        utterance.rate = speechSynthesizerPlaybackSpeed
         enqueue(utterance)
     }
 
     private func enqueue(_ utterance: AVSpeechUtterance) {
         utteranceQueue.append(utterance)
-        // If not currently speaking, start with this utterance
         if !synthesizer.isSpeaking {
             speakNext()
         }
@@ -37,6 +35,7 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
         guard !utteranceQueue.isEmpty else { return }
         guard isSpeechSynthesizerEnabled else { return }
         let nextUtterance = utteranceQueue.removeFirst()
+        nextUtterance.rate = speechSynthesizerPlaybackSpeed
         synthesizer.speak(nextUtterance)
     }
 
