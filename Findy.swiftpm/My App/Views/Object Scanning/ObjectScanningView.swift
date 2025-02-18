@@ -89,7 +89,7 @@ struct ObjectScanningView: View {
                 let newValue = appViewModel.savedObject.takenPhotos.count
                 if newValue == 1 {
                     speechSynthesizer.speak(text: SSPrompts.trainAI)
-                } else if newValue == 5 {
+                } else if newValue == AppMetrics.maxPhotoArrayCapacity / 2 {
                     speechSynthesizer.speak(text: SSPrompts.halfway)
                 }
             }

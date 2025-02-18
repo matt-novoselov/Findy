@@ -9,7 +9,7 @@ struct ModelTrainingView: View {
     @State private var animateCheckmark = false
     @State private var isAnimationFinishedFinal: Bool = false
     @State private var isViewActive: Bool = true
-    @State private var circleRadius: CGFloat = 130.0
+    @State private var circleRadius: CGFloat = 100
     
     // Animation tracking requirements.
     @State private var hasBaseAnimationFinished = false
@@ -192,16 +192,20 @@ struct ModelTrainingView: View {
 
     private var imageCircleView: some View {
         ZStack {
-            ForEach(0..<9, id: \.self) { index in
+            ForEach(0..<AppMetrics.maxPhotoArrayCapacity, id: \.self) { index in
                 if shouldAnimate && !appViewModel.savedObject.takenPhotos.isEmpty {
-                    let angle = 2 * Double.pi / 9.0 * Double(index)
+                    
+                    // Calculate the angle based on the total number of items
+                    let totalPhotos = Double(AppMetrics.maxPhotoArrayCapacity)
+                    let angle = 2 * Double.pi / totalPhotos * Double(index)
+                    
                     AnimatedImageCell()
                         .blur(radius: isProcessingComplete ? 20 : 0)
                         .offset(
                             x: circleRadius * CGFloat(cos(angle)),
                             y: circleRadius * CGFloat(sin(angle))
                         )
-                        .zIndex(Double(index)+10)
+                        .zIndex(Double(index) + 10)
                 }
             }
         }
