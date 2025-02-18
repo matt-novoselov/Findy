@@ -13,7 +13,7 @@ struct ImagePlaygroundView: View {
             HStack{
                 Group{
                     Image(systemName: "photo")
-                    Text("Preview Image")
+                    Text("AI Preview Image")
                 }
                 .font(.body)
                 .foregroundStyle(Color.primary)
@@ -64,7 +64,7 @@ struct ImagePlaygroundButtonLabel: View {
                             .mask(Image(systemName: "apple.intelligence"))
                     )
                 
-                Text("Generate Preview Image")
+                Text("Open Image Playground")
             }
             .font(.body)
             .fontDesign(.rounded)

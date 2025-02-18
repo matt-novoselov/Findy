@@ -16,6 +16,6 @@ class ObjectSearchViewModel {
     let card: OnboardingCardModel
     
     init(action: @escaping () -> Void){
-        self.card = .init(infoCards: cards, buttonAction: action, buttonTitle: "Find captured item", mainTitle: "Object Searching", mainDescription: "Search for the scanned object in your surroundings.")
+        self.card = .init(infoCards: cards, buttonAction: action, buttonTitle: "Find captured item", mainTitle: "AI Object Searching", mainDescription: "Search for the scanned object in your surroundings with.")
     }
 }

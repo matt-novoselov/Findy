@@ -3,7 +3,7 @@ import SwiftUI
 struct VariableFontAnimationView: View {
     @Environment(AppViewModel.self) private var appViewModel
     @State private var fontWeight: Double = 0
-    @State private var text = "Model Training Done"
+    @State private var text = "AI Model Trained!"
     let delayPerSymbol: Double = 0.05
     let animationDuration: Double = 0.25
     
