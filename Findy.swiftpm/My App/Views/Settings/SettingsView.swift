@@ -60,6 +60,8 @@ struct SettingsView: View {
         }
         .navigationTitle("App Settings")
         .listStyle(.insetGrouped)
+        
+        DevelopedWithLoveView()
     }
 }
 
