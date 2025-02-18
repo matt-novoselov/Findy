@@ -3,7 +3,6 @@ import ImagePlayground
 
 struct ImagePlaygroundView: View {
     @Environment(AppViewModel.self) private var appViewModel
-    @Environment(\.supportsImagePlayground) private var supportsImagePlayground
     @State private var showImagePlayground = false
     
     @State private var concepts: [ImagePlaygroundConcept] = []
@@ -22,16 +21,12 @@ struct ImagePlaygroundView: View {
                 .fontDesign(.rounded)
             }
             
-            VStack{
-                if supportsImagePlayground {
-                    Button(action: {openImagePlaygrounds()}) {
-                        ImagePlaygroundButtonLabel()
-                    }
-                    .clipShape(.capsule)
-                    .imagePlaygroundSheet(isPresented: $showImagePlayground, concepts: concepts, sourceImage: sourceImage) { url in
-                        appViewModel.savedObject.appleIntelligencePreviewImage = url
-                    }
-                }
+            Button(action: {openImagePlaygrounds()}) {
+                ImagePlaygroundButtonLabel()
+            }
+            .clipShape(.capsule)
+            .imagePlaygroundSheet(isPresented: $showImagePlayground, concepts: concepts, sourceImage: sourceImage) { url in
+                appViewModel.savedObject.appleIntelligencePreviewImage = url
             }
         }
     }

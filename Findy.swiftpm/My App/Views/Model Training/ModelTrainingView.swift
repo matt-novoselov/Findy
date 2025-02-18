@@ -1,7 +1,9 @@
 import SwiftUI
 
 struct ModelTrainingView: View {
+    @Environment(\.supportsImagePlayground) private var supportsImagePlayground
     @Environment(AppViewModel.self) private var appViewModel
+    
     @State private var shouldAnimate = false
     @State private var scaleOverTime = false
     @State private var isProcessingComplete = false
@@ -66,8 +68,10 @@ struct ModelTrainingView: View {
                             
                             ObjectTagsPickerView()
                             
-                            ImagePlaygroundView()
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            if supportsImagePlayground{
+                                ImagePlaygroundView()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
                         .frame(maxWidth: .infinity)
                         .separatorBackground()
