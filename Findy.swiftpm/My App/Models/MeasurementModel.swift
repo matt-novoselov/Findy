@@ -1,8 +1,8 @@
 import Foundation
 
-struct SceneMeasurement: Equatable {
+struct SceneMeasurement {
     let meterDistance: Float
-    let rotationDegrees: Float
+    let rotationDegrees: (yaw: Float, pitch: Float, roll: Float)
     
     private var baseMeasurement: Measurement<UnitLength> {
         Measurement(value: Double(meterDistance), unit: .meters)
@@ -45,7 +45,7 @@ struct SceneMeasurement: Equatable {
     
     // Add this function to calculate the direction
     var getDirection: (String, String) {
-        let normalizedDegrees = normalizedDegrees(Double(self.rotationDegrees))
+        let normalizedDegrees = normalizedDegrees(Double(self.rotationDegrees.yaw))
         let angle = normalizedDegrees
         if (0...25).contains(angle) || (335...360).contains(angle) {
             return ("In front", "In front of you")

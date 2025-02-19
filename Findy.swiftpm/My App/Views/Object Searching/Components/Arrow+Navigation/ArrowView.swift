@@ -1,15 +1,27 @@
 import SwiftUI
 
 struct ArrowView: View {
-    var degrees: Double = 0
+    var degrees: (yaw: Float, pitch: Float, roll: Float)
     
     var body: some View {
+        let yawDegrees = Double(degrees.yaw)
+        let pitchDegrees = Double(degrees.pitch)
+        
         Image(systemName: "arrow.up")
             .font(.system(size: 180, weight: .heavy))
-            .rotationEffect(.init(degrees: -degrees))
+            .rotation3DEffect(
+                .init(degrees: -yawDegrees),
+                axis: (x: 0, y: 0, z: 1),
+                perspective: 0
+            )
+            .rotation3DEffect(
+                .init(degrees: (-pitchDegrees + 90).clamped(to: -45...45)),
+                axis: (x: 1, y: 0, z: 0),
+                perspective: 0
+            )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay{
-                LiquidCirclesView(degrees: degrees)
+                LiquidCirclesView(degrees: yawDegrees)
             }
     }
 }
@@ -51,19 +63,19 @@ struct CircularProgressView: View {
     }
 }
 
-#Preview{
-    @Previewable @State var degrees: Double = 0
-    VStack{
-        ArrowView(degrees: degrees)
-
-        Slider(value: $degrees, in: -360...360)
-            .padding()
-
-//        // Add the direction text
-//        Text("Pointing: \(getDirection(degrees: degrees))")
-//            .fontDesign(.rounded)
-//            .font(.title)
+//#Preview{
+//    @Previewable @State var degrees: Double = 0
+//    VStack{
+//        ArrowView(degrees: degrees)
+//
+//        Slider(value: $degrees, in: -360...360)
 //            .padding()
-    }
-    .padding()
-}
+//
+////        // Add the direction text
+////        Text("Pointing: \(getDirection(degrees: degrees))")
+////            .fontDesign(.rounded)
+////            .font(.title)
+////            .padding()
+//    }
+//    .padding()
+//}

@@ -32,7 +32,7 @@ struct ObjectSearchingView: View {
             // MARK: Arrow
             .overlay{
                 if let currentMeasurement = arCoordinator.currentMeasurement {
-                    ArrowView(degrees: Double(currentMeasurement.rotationDegrees))
+                    ArrowView(degrees: currentMeasurement.rotationDegrees)
                 }
             }
         
