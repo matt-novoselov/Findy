@@ -14,7 +14,7 @@ class ARSceneCoordinator {
     // Scene state properties
     private var sceneUpdateSubscription: Cancellable?
     private var activeRaycast: ARTrackedRaycast?
-    private var trackedAnchor: AnchorEntity?
+    var trackedAnchor: AnchorEntity?
     private(set) var currentMeasurement: SceneMeasurement?
     
     // Detection properties
@@ -309,6 +309,11 @@ extension ARSceneCoordinator {
             return
         }
         
+        #warning("reefine ar tracking")
+        if trackedAnchor != nil {
+            return
+        }
+        
         resetCurrentTracking()
         establishNewTracking(with: query)
     }
@@ -331,6 +336,9 @@ extension ARSceneCoordinator {
         let indicatorAnchor = createVisualIndicator()
         arView.scene.addAnchor(indicatorAnchor)
         trackedAnchor = indicatorAnchor
+        if let trackedAnchor {
+            metalDetector.setupBeepAudio(anchor: trackedAnchor)
+        }
         
 //        animateVisualIndicator(indicatorAnchor)
         maintainContinuousTracking(with: query, for: indicatorAnchor)

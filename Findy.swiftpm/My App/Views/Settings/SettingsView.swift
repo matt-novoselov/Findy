@@ -3,7 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(SpeechSynthesizer.self) private var speechSynthesizer
     @Environment(AppViewModel.self) private var appViewModel
-
+    
     var body: some View {
         @Bindable var speechSynthesizer = speechSynthesizer
         @Bindable var appViewModel = appViewModel
@@ -28,6 +28,20 @@ struct SettingsView: View {
                     SpeechSpeedSliderView()
                 }
                 .fontDesign(.rounded)
+                
+                Section(
+                    header: Label("Proximity Ping Sound", systemImage: "speaker.wave.2.fill")
+                        .accentColor(.green),
+                    footer: Text("Play a ping sound when an object comes close.")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                ) {
+                    Toggle(
+                        "Play Alert Sound",
+                        isOn: $appViewModel.isMetalDetectionSoundEnabled
+                    )
+                    .accessibilityLabel("Toggle sound alerts for nearby objects")
+                }
                 
                 // Developer Options Section
                 Section(
