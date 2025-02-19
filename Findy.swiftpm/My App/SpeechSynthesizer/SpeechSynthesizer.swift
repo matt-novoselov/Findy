@@ -14,7 +14,15 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
     private var utteranceQueue: [QueuedUtterance] = []
     var speechSynthesizerPlaybackSpeed: Float =
         AVSpeechUtteranceDefaultSpeechRate
-    var isSpeechSynthesizerEnabled: Bool = true
+    var isSpeechSynthesizerEnabled: Bool = true {
+        didSet {
+            if !isSpeechSynthesizerEnabled {
+                muteCurrentUtterance()
+            }
+        }
+    }
+    
+    private var isMuted: Bool = false
 
     override init() {
         super.init()
@@ -64,10 +72,22 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
     private func speakNext() {
         guard !utteranceQueue.isEmpty else { return }
         guard isSpeechSynthesizerEnabled else { return }
+        
         let nextInQueue = utteranceQueue.removeFirst()
         // Apply the latest speed setting just before speaking.
         nextInQueue.utterance.rate = speechSynthesizerPlaybackSpeed
-        synthesizer.speak(nextInQueue.utterance)
+        
+        if !isMuted {
+            synthesizer.speak(nextInQueue.utterance)
+        }
+    }
+
+    /// Mutes the current utterance if it is being spoken.
+    private func muteCurrentUtterance() {
+        if synthesizer.isSpeaking {
+            synthesizer.stopSpeaking(at: .immediate)
+            isMuted = true
+        }
     }
 
     // MARK: - AVSpeechSynthesizerDelegate
@@ -76,6 +96,7 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
         _ synthesizer: AVSpeechSynthesizer,
         didFinish utterance: AVSpeechUtterance
     ) {
+        isMuted = false // Reset mute state after finishing an utterance
         speakNext()
     }
     
@@ -83,7 +104,7 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
         _ synthesizer: AVSpeechSynthesizer,
         didCancel utterance: AVSpeechUtterance
     ) {
-        // If an utterance was cancelled, simply move on to the next one.
+        isMuted = false // Reset mute state after cancellation
         speakNext()
     }
 }
