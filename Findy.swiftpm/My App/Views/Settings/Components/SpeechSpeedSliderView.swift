@@ -100,6 +100,7 @@ struct CustomSliderView: View {
                         dragInitialThumbPosition = currentThumbX
                     }
                     // Compute the new thumb position by adding the drag translation.
+                    #warning("")
                     let newPosition = (dragInitialThumbPosition! + drag.translation.width)
                         .clamped(to: minX...maxX)
 

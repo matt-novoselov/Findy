@@ -9,11 +9,15 @@ struct AnimatedImageCell: View {
     @State private var initialBlur: CGFloat = 100
     @State private var hasGradientOverlay = false
     @State private var animationTask: Task<Void, Never>?
+    @State private var animationRotationDegrees: Double = 0
     
     private var capturedPhotos: [CapturedPhoto] { appViewModel.savedObject.takenPhotos }
     
     var body: some View {
-        Image(decorative: capturedPhotos[currentImageIndex ?? randomImageIndex].photo, scale: 20)
+        let cgImage = capturedPhotos[currentImageIndex ?? randomImageIndex].photo
+        let uiImage = UIImage(cgImage: cgImage)
+        
+        Image(uiImage: uiImage)
             .resizable()
             .brightness(isScaled ? 0.5 : 0)
             .scaleEffect(isScaled ? 1.2 : 1.0)
@@ -22,10 +26,16 @@ struct AnimatedImageCell: View {
             .frame(width: 100, height: 100)
             .blur(radius: isScaled ? 5 : 0)
             .clipShape(.rect(cornerRadius: 10))
+            .rotationEffect(.degrees(animationRotationDegrees))
             .offset(x: initialOffsetX, y: initialOffsetY)
             .blur(radius: initialBlur)
             .onAppear(perform: setupInitialAnimation)
             .onDisappear { animationTask?.cancel() }
+            .onAppear{
+                withAnimation(.linear(duration: 15)){
+                    animationRotationDegrees = -90
+                }
+            }
     }
     
     private var gradientOverlay: some View {

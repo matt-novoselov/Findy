@@ -12,6 +12,7 @@ struct ModelTrainingView: View {
     @State private var isAnimationFinishedFinal: Bool = false
     @State private var isViewActive: Bool = true
     @State private var circleRadius: CGFloat = 90
+    @State private var animationRotationDegrees: Double = 0
     
     // Animation tracking requirements.
     @State private var hasBaseAnimationFinished = false
@@ -210,11 +211,17 @@ struct ModelTrainingView: View {
                             y: circleRadius * CGFloat(sin(angle))
                         )
                         .zIndex(Double(index) + 10)
+                        .onAppear{
+                            withAnimation(.linear(duration: 15)){
+                                animationRotationDegrees = 90
+                            }
+                        }
                 }
             }
         }
         .scaleEffect(scaleOverTime ? 1.5 : 1)
         .scaleEffect(showCheckmark ? 0 : 1)
+        .rotationEffect(.degrees(animationRotationDegrees))
         .brightness(isProcessingComplete ? 1 : 0)
         .contrast(isProcessingComplete ? 2 : 1)
         .shadow(color: .white, radius: isProcessingComplete ? 100 : 0)
