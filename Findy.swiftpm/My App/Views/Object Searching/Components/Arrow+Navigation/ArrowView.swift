@@ -15,7 +15,7 @@ struct ArrowView: View {
                 perspective: 0
             )
             .rotation3DEffect(
-                .init(degrees: (-pitchDegrees + 90).clamped(to: -45...45)),
+                .init(degrees: (-pitchDegrees + 90).clamped(to: -60...60)),
                 axis: (x: 1, y: 0, z: 0),
                 perspective: 0
             )
