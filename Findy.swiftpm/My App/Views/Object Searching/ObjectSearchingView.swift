@@ -56,7 +56,6 @@ struct ObjectSearchingView: View {
                             isOnboardingActive = false
                             arCoordinator.shouldSearchForTargetObject = true
                             arCoordinator.coachingOverlayView?.setActive(true, animated: true)
-                            speechSynthesizer.speak(text: SSPrompts.searching)
                         }).card)
                         .ignoresSafeArea()
                         .transition(.opacity)
@@ -79,6 +78,12 @@ struct ObjectSearchingView: View {
                     let givenObjectName = appViewModel.savedObject.userGivenObjectName
                     let itemName = givenObjectName.isEmpty ? "Your item" : givenObjectName
                     speechSynthesizer.speak(text: "\(itemName) is \(distance) \(direction)", cancellable: true, urgent: true)
+                }
+            }
+        
+            .onChange(of: isOnboardingActive){
+                if !isOnboardingActive{
+                    speechSynthesizer.speak(text: SSPrompts.searching)
                 }
             }
 

@@ -66,7 +66,6 @@ struct ObjectScanningView: View {
                     if isOnboardingActive{
                         OnboardingAlertView(card: ObjectScanViewModel(action: {
                             isOnboardingActive = false
-                            speechSynthesizer.speak(text: SSPrompts.captureFirstItem)
                         }).card)
                         .ignoresSafeArea()
                         .transition(.opacity)
@@ -81,6 +80,12 @@ struct ObjectScanningView: View {
                     speechSynthesizer.speak(text: SSPrompts.trainAI)
                 } else if newValue == AppMetrics.maxPhotoArrayCapacity / 2 {
                     speechSynthesizer.speak(text: SSPrompts.halfway)
+                }
+            }
+        
+            .onChange(of: isOnboardingActive){
+                if !isOnboardingActive{
+                    speechSynthesizer.speak(text: SSPrompts.captureFirstItem)
                 }
             }
     }
