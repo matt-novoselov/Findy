@@ -99,14 +99,16 @@ struct CustomSliderView: View {
                     if dragInitialThumbPosition == nil {
                         dragInitialThumbPosition = currentThumbX
                     }
+                    
+                    // Safely unwrap dragInitialThumbPosition
+                    guard let initialThumbX = dragInitialThumbPosition else { return }
+                    
                     // Compute the new thumb position by adding the drag translation.
-                    #warning("")
-                    let newPosition = (dragInitialThumbPosition! + drag.translation.width)
+                    let newPosition = (initialThumbX + drag.translation.width)
                         .clamped(to: minX...maxX)
-
+                    
                     // Convert the x coordinate back into a slider value.
-                    let newValue = Double((newPosition - minX) / stepWidth) +
-                        sliderRange.lowerBound
+                    let newValue = Double((newPosition - minX) / stepWidth) + sliderRange.lowerBound
                     value = newValue
                 }
                 .onEnded { drag in
