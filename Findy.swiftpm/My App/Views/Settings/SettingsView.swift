@@ -38,7 +38,7 @@ struct SettingsView: View {
                 ) {
                     Toggle(
                         "Play Alert Sound",
-                        isOn: $appViewModel.isMetalDetectionSoundEnabled
+                        isOn: $appViewModel.isPingSoundEnabled
                     )
                     .accessibilityLabel("Toggle sound alerts for nearby objects")
                 }

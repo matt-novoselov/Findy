@@ -1,13 +1,13 @@
 import AVFoundation
 import RealityKit
 
-class MetalDetector {
+class PingSoundManager {
     // Configuration for beep timing based on distance
     private let minDistance: Double = 0.0
     private let maxDistance: Double = 10.0
-    private let minTimeInterval: TimeInterval = 0.05
+    private let minTimeInterval: TimeInterval = 0.5
     private let maxTimeInterval: TimeInterval = 2.0
-    private let checkTimeInterval: TimeInterval = 0.05
+    private let checkTimeInterval: TimeInterval = 0.5
     
     private var timer: Timer?
     private var lastBeepTime: Date?
@@ -81,7 +81,7 @@ class MetalDetector {
         guard let currentDistance = arCoordinator?.currentMeasurement?.meterDistance else {
             return
         }
-        guard arCoordinator?.appViewModel?.isMetalDetectionSoundEnabled == true else {
+        guard arCoordinator?.appViewModel?.isPingSoundEnabled == true else {
             return
         }
         

@@ -32,14 +32,17 @@ struct OnboardingCardView: View {
                     Group {
                         if currentIndex >= index {
                             HStack(spacing: 15) {
-                                Image(systemName: "xmark")
-                                    .foregroundStyle(.clear)
-                                    .overlay {
-                                        Image(systemName: infoCard.icon)
-                                            .accessibilityHidden(true)
-                                    }
-                                    .font(.body)
-                                    .foregroundStyle(.primary)
+                                Group{
+                                    Image(systemName: "xmark")
+                                        .foregroundStyle(.clear)
+                                        .overlay {
+                                            Image(systemName: infoCard.icon)
+                                                .accessibilityHidden(true)
+                                        }
+                                        .font(.body)
+                                        .foregroundStyle(.primary)
+                                }
+                                .accessibility(hidden: true)
                                 
                                 Text(.init(infoCard.description))
                                     .fontDesign(.rounded)

@@ -9,7 +9,7 @@ import Combine
 class ARSceneCoordinator {
     private weak var arView: ARView?
     private let objectDetector: ObjectDetection
-    private let metalDetector: MetalDetector = .init()
+    private let pingManager: PingSoundManager = .init()
     
     // Scene state properties
     private var sceneUpdateSubscription: Cancellable?
@@ -35,7 +35,7 @@ class ARSceneCoordinator {
     
     init(objectDetection: ObjectDetection) {
         self.objectDetector = objectDetection
-        self.metalDetector.arCoordinator = self
+        self.pingManager.arCoordinator = self
     }
     
     deinit { releaseResources() }
@@ -348,7 +348,7 @@ extension ARSceneCoordinator {
         arView.scene.addAnchor(indicatorAnchor)
         trackedAnchor = indicatorAnchor
         if let trackedAnchor {
-            metalDetector.setupBeepAudio(anchor: trackedAnchor)
+            pingManager.setupBeepAudio(anchor: trackedAnchor)
         }
         
         maintainContinuousTracking(with: query, for: indicatorAnchor)
