@@ -3,7 +3,6 @@ import RealityKit
 import SwiftUI
 import Combine
 
-
 // MARK: - AR Scene Coordinator
 @Observable
 class ARSceneCoordinator {
@@ -43,12 +42,14 @@ class ARSceneCoordinator {
 
 // MARK: - AR Configuration
 extension ARSceneCoordinator {
+    // Initializes the AR scene with the provided ARView.
     func initializeARScene(with view: ARView) {
         arView = view
         configureWorldTracking()
         enableSceneUpdates()
     }
     
+    // Configures the AR world tracking.
     private func configureWorldTracking() {
         let configuration = ARWorldTrackingConfiguration()
         configuration.isLightEstimationEnabled = true
@@ -58,6 +59,7 @@ extension ARSceneCoordinator {
 
 // MARK: - Scene Update Handling
 extension ARSceneCoordinator {
+    // Enables scene updates to process each frame.
     private func enableSceneUpdates() {
         sceneUpdateSubscription = arView?.scene.subscribe(
             to: SceneEvents.Update.self,
@@ -65,8 +67,11 @@ extension ARSceneCoordinator {
         )
     }
     
+    // Processes each frame to update the scene.
     private func processFrame() {
+        // Exit early if the AR container is not visible.
         guard isARContainerVisible else { print("No update"); return }
+        // Exit early if the app is in the onboarding state.
         guard appViewModel?.state != .onboarding else { print("No update"); return }
         
         updateDistanceMeasurement()
@@ -99,6 +104,7 @@ extension ARView: @retroactive ARCoachingOverlayViewDelegate {
 
 // MARK: - Measurement System
 extension ARSceneCoordinator {
+    // Updates the distance measurement based on the camera and tracked anchor positions.
     private func updateDistanceMeasurement() {
         guard let arView,
               let frame = arView.session.currentFrame,
@@ -122,6 +128,7 @@ extension ARSceneCoordinator {
         )
     }
     
+    // Calculates the yaw, pitch, and roll angles between the camera and a target position.
     private func calculateAngles(
         cameraTransform: simd_float4x4,
         targetPosition: SIMD3<Float>
@@ -196,6 +203,7 @@ extension ARSceneCoordinator {
 
 // MARK: - Object Detection
 extension ARSceneCoordinator {
+    // Performs frame analysis to detect objects.
     private func performFrameAnalysis() {
         guard let frame = arView?.session.currentFrame else {
             detectedObjects = []
@@ -205,6 +213,7 @@ extension ARSceneCoordinator {
         processCameraImage(from: frame)
     }
     
+    // Processes the camera image to detect objects.
     private func processCameraImage(from frame: ARFrame) {
         guard let interfaceOrientation = arView?.window?.windowScene?.interfaceOrientation else {
             detectedObjects = []
@@ -236,10 +245,12 @@ extension ARSceneCoordinator {
 
 // MARK: - Raycast Management
 extension ARSceneCoordinator {
+    // Handles new detection results.
     public func handleNewDetectionResults() {
         Task { await processDetectionResults() }
     }
     
+    // Processes the detection results to initiate a raycast.
     @MainActor
     private func processDetectionResults() {
         if let dominantObservation = getDominantObservation() {
@@ -248,6 +259,7 @@ extension ARSceneCoordinator {
         }
     }
     
+    // Gets the dominant observation from the detected objects.
     private func getDominantObservation() -> ProcessedObservation? {
         guard let targetObject = appViewModel?.savedObject.targetDetectionObject else { return nil }
         
@@ -266,6 +278,7 @@ extension ARSceneCoordinator {
         return dominantObservation
     }
     
+    // Provides detection feedback to the user.
     @MainActor
     private func provideDetectionFeedback(for object: String, at position: CGPoint) {
         guard hasTargetObjectBeenDetected?.wrappedValue == false else { return }
@@ -279,6 +292,7 @@ extension ARSceneCoordinator {
 
 // MARK: - Raycast Implementation
 extension ARSceneCoordinator {
+    // Initiates a raycast at the specified screen point.
     func initiateRaycast(at screenPoint: CGPoint) {
         guard let arView,
               let query = arView.makeRaycastQuery(
@@ -293,6 +307,7 @@ extension ARSceneCoordinator {
         handleRaycastResults(for: query)
     }
     
+    // Handles the results of a raycast query.
     private func handleRaycastResults(for query: ARRaycastQuery) {
         guard let arView else { return }
         
@@ -332,6 +347,7 @@ extension ARSceneCoordinator {
 
 // MARK: - Visual Feedback
 extension ARSceneCoordinator {
+    // Establishes new tracking with visual feedback.
     private func establishNewTracking(with query: ARRaycastQuery) {
         guard let arView else { return }
         
@@ -354,6 +370,7 @@ extension ARSceneCoordinator {
         maintainContinuousTracking(with: query, for: indicatorAnchor)
     }
     
+    // Creates a visual indicator (arrow) for the tracked object.
     private func createVisualIndicator() -> AnchorEntity {
         let anchor = AnchorEntity()
         let indicatorModel = arrowEntity()
@@ -364,6 +381,7 @@ extension ARSceneCoordinator {
 
 // MARK: - Tracking Management
 extension ARSceneCoordinator {
+    // Maintains continuous tracking of the detected object.
     private func maintainContinuousTracking(with query: ARRaycastQuery, for anchor: AnchorEntity) {
         activeRaycast = arView?.session.trackedRaycast(query) { [weak self] results in
             guard let self, let anchor = self.trackedAnchor else { return }
@@ -375,6 +393,7 @@ extension ARSceneCoordinator {
         }
     }
     
+    // Resets the current tracking.
     private func resetCurrentTracking() {
         activeRaycast?.stopTracking()
         activeRaycast = nil
@@ -385,6 +404,7 @@ extension ARSceneCoordinator {
         }
     }
     
+    // Releases resources used by the AR scene coordinator.
     private func releaseResources() {
         sceneUpdateSubscription?.cancel()
         resetCurrentTracking()

@@ -77,6 +77,7 @@ struct ObjectScanningView: View {
         
             .onChange(of: appViewModel.savedObject.takenPhotos.count){
                 let newValue = appViewModel.savedObject.takenPhotos.count
+                // Provide feedback to the user as they take photos.
                 if newValue == 1 {
                     speechSynthesizer.speak(text: SSPrompts.trainAI)
                 } else if newValue == AppMetrics.maxPhotoArrayCapacity / 2 {

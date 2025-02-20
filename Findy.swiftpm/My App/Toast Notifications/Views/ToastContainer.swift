@@ -11,8 +11,10 @@ struct ToastContainer<Content: View>: View {
         content()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay(alignment: .top) {
+                // Determine if the toast is visible.
                 let isVisible: Bool = toastManager.currentNotification != nil
                 
+                // Conditionally display the toast view.
                 Group {
                     if isVisible, let notification = displayedNotification {
                         ToastView(notification: notification, onDismiss: {
@@ -25,6 +27,8 @@ struct ToastContainer<Content: View>: View {
                     }
                 }
                 .animation(.spring, value: isVisible)
+                
+                // Update the displayed notification when the current notification changes.
                 .onChange(of: toastManager.currentNotification?.id) {
                     withAnimation {
                         displayedNotification = toastManager.currentNotification

@@ -39,7 +39,9 @@ class SpeechSynthesizer: NSObject, AVSpeechSynthesizerDelegate {
     func speak(text: String,
                cancellable: Bool = false,
                urgent: Bool = false) {
+        // Create an AVSpeechUtterance with the given text.
         let utterance = AVSpeechUtterance(string: text)
+        // Set the voice for the utterance.
         if let voice = AVSpeechSynthesisVoice(
             identifier: AppMetrics.speechVoiceIdentifier
         ) {

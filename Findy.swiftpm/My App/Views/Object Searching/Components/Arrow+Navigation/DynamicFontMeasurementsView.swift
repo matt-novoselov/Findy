@@ -1,6 +1,9 @@
 import SwiftUI
 
+// This struct is responsible for displaying the value and unit and the reference text.
 struct DynamicFontMeasurementsView: View {
+    //
+    // The code below is responsible for measuring the width of the text and it's used to calculate the optimal font size.
     @State private var secondaryTextWidth: CGFloat = 0
     @State private var primaryTextWidth: CGFloat = 0
     
@@ -17,6 +20,7 @@ struct DynamicFontMeasurementsView: View {
         .accessibilityLabel("Distance to the object: \(numericValue) \(unitSymbol) \(referenceText)")
     }
     
+    // This is the display for the value and unit
     private var valueAndUnitDisplay: some View {
         HStack(spacing: 0) {
             let formattedValue = String(format: "%.2f", numericValue)
@@ -41,6 +45,7 @@ struct DynamicFontMeasurementsView: View {
         }
     }
     
+    // This is the display for the reference text
     private var referenceTextDisplay: some View {
         Text(referenceText.lowercased())
             .font(.title)
@@ -52,14 +57,17 @@ struct DynamicFontMeasurementsView: View {
             }
     }
     
+    // This function resolves the font for the value
     private func resolvedValueFont(combinedText: String) -> Font {
         fontForTargetWidth(targetWidth: secondaryTextWidth, text: combinedText)
     }
     
+    // This function resolves the font for the unit
     private func resolvedUnitFont(combinedText: String) -> Font {
         fontForTargetWidth(targetWidth: secondaryTextWidth, text: combinedText)
     }
     
+    // This function calculates the font for the target width
     private func fontForTargetWidth(targetWidth: CGFloat, text: String) -> Font {
         let baseFont = UIFont.preferredFont(forTextStyle: .largeTitle)
         let optimalWidth = calculateOptimalFontWidth(
@@ -75,6 +83,7 @@ struct DynamicFontMeasurementsView: View {
         ))
     }
     
+    // This function calculates the optimal font width
     private func calculateOptimalFontWidth(
         for text: String,
         targetWidth: CGFloat,
@@ -106,6 +115,7 @@ struct DynamicFontMeasurementsView: View {
         return UIFont.Width(currentWidth)
     }
     
+    // This function calculates the width of the text
     private func textWidth(for text: String, font: UIFont) -> CGFloat {
         let attributes = [NSAttributedString.Key.font: font]
         return (text as NSString).size(withAttributes: attributes).width

@@ -3,7 +3,8 @@ import SwiftUI
 struct CustomSliderView: View {
     @Binding var value: Double
     var sliderRange: ClosedRange<Double> = 1...100
-    var majorStepCount: Int = 10  // Number of markers to display
+    // Number of markers to display
+    var majorStepCount: Int = 10
 
     // This variable “locks in” the thumb’s starting coordinate when a drag starts.
     @State private var dragInitialThumbPosition: CGFloat? = nil

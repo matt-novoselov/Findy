@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 struct OnboardingStartButtonView: View {
     let action: () -> Void
     var body: some View {

@@ -1,5 +1,6 @@
 import Foundation
 
+// Static array of blacklisted object identifiers that will be excluded from the object detection results
 enum BlacklistObservation {
     static let items: [String] = [
         "person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat",

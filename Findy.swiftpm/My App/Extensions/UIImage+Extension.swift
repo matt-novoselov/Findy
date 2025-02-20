@@ -9,6 +9,7 @@ extension UIImage {
         let squareSide = max(size.width, size.height)
         let squareSize = CGSize(width: squareSide, height: squareSide)
         
+        // Begin an image context for drawing
         UIGraphicsBeginImageContextWithOptions(squareSize, true, scale)
         defer { UIGraphicsEndImageContext() }
         

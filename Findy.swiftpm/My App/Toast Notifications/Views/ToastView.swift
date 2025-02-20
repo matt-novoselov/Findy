@@ -9,26 +9,28 @@ struct ToastView: View {
     
     var body: some View {
         HStack(spacing: 16) {
+            // Display the notification icon.
             Image(systemName: notification.iconName)
                 .font(.largeTitle)
                 .bold()
                 .foregroundColor(.secondary)
                 .accessibilityHidden(true) // Marking the icon to be ignored by accessibility
             
+            // Display the notification title and message.
             VStack(alignment: .leading, spacing: 2) {
                 Text(notification.title)
                     .font(.body)
                     .fontDesign(.rounded)
                     .bold()
                     .accessibilityLabel("Notification Title")
-                    .accessibilityHint(notification.title) // Provide the title as a hint
+                    .accessibilityHint(notification.title)
                 
                 Text(notification.message)
                     .font(.subheadline)
                     .fontDesign(.rounded)
                     .foregroundColor(.secondary)
                     .accessibilityLabel("Notification Message")
-                    .accessibilityHint(notification.message) // Provide the message as a hint
+                    .accessibilityHint(notification.message)
             }
             .foregroundColor(.white)
         }

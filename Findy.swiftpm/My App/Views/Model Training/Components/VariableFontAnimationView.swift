@@ -20,6 +20,7 @@ struct VariableFontAnimationView: View {
             playAnimation()
         }
         .onChange(of: appViewModel.savedObject.userGivenObjectName){
+            // Update the text based on the user-given object name.
             let newName = appViewModel.savedObject.userGivenObjectName
             if !newName.isEmpty{
                 self.text = "My \(newName)"
@@ -32,6 +33,7 @@ struct VariableFontAnimationView: View {
     }
     
     func playAnimation() {
+        // Animate the font weight to create the effect.
         withAnimation(.bouncy(duration: Double(text.count) * delayPerSymbol)) {
             fontWeight = 0.7
         }

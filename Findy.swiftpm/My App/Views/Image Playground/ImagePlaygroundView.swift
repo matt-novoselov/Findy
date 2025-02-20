@@ -26,28 +26,35 @@ struct ImagePlaygroundView: View {
                 ImagePlaygroundButtonLabel()
             }
             .clipShape(.capsule)
+            
+            // Present the Image Playground sheet.
             .imagePlaygroundSheet(isPresented: $showImagePlayground, concepts: concepts, sourceImage: sourceImage) { url in
                 appViewModel.savedObject.appleIntelligencePreviewImage = url
             }
         }
     }
     
+    // Opens the Image Playground sheet.
     func openImagePlaygrounds() {
         self.concepts = []
+        // Add the user-picked classifications as text concepts.
         let visionClassifications = appViewModel.savedObject.userPickedClassifications
         for classification in visionClassifications {
             self.concepts.append(.text(classification.description))
         }
         
+        // Add the user-given object name as a text concept.
         if !appViewModel.savedObject.userGivenObjectName.isEmpty {
             self.concepts.append(.text(appViewModel.savedObject.userGivenObjectName))
         }
         
+        // Prepare the source image for the Image Playground.
         if let cutOutImage = appViewModel.savedObject.objectCutOutImage {
             let imageWithWhiteBG = cutOutImage.imageWithWhiteBackgroundSquare()
             self.sourceImage = Image(uiImage: imageWithWhiteBG)
         }
         
+        // Show the Image Playground sheet.
         showImagePlayground = true
     }
 }

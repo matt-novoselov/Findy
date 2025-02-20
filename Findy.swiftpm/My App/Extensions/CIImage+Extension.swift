@@ -1,5 +1,6 @@
 import CoreImage
 
+// Converts a CIImage to a CGImage.
 extension CIImage {
     func toCGImage() -> CGImage? {
         let context = CIContext()

@@ -1,6 +1,7 @@
 import SwiftUICore
 
 extension Color {
+    // Initializes a Color from a hex
     init(hex: UInt, alpha: Double = 1) {
         self.init(
             .sRGB,

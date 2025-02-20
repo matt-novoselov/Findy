@@ -127,9 +127,11 @@ struct ModelTrainingView: View {
         // Start the training sequence.
         Task {
             do {
+                // Run the model training using the coordinator.
                 let result = try await coordinator.runTraining(
                     with: appViewModel.savedObject.takenPhotos)
                 
+                // Update the app view model
                 await MainActor.run {
                     appViewModel.savedObject.objectCutOutImage = result.objectCutOutImage
                     appViewModel.savedObject.targetDetectionObject = result.averageLabel
@@ -139,6 +141,7 @@ struct ModelTrainingView: View {
 #endif
                 }
             } catch {
+                // Handle any errors during training.
                 print("Training failed: \(error)")
             }
         }

@@ -3,6 +3,7 @@ import UIKit
 import CreateML
 #endif
 
+// Structure to hold the results of the model training.
 struct ModelTrainingResult {
     var objectCutOutImage: UIImage
     var averageLabel: String?
@@ -14,6 +15,7 @@ struct ModelTrainingResult {
     #endif
 }
 
+// Enum to represent errors that can occur during training.
 enum TrainingError: Error {
     case noBeautifulImage
 }

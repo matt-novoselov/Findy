@@ -7,7 +7,9 @@ struct DebugCaptureView: View {
     let cornerRadius: CGFloat = 10
     
     var body: some View {
+        // Display the captured image if available.
         if let captureImage = arCoordinator.processedFrameImage, let cgImage = captureImage.toCGImage() {
+            // Display the captured image.
             Image(decorative: cgImage, scale: 7)
                 .clipShape(.rect(cornerRadius: cornerRadius))
                 .padding(.all, 4)

@@ -28,6 +28,7 @@ class PingSoundManager {
     
     /// Loads the beep audio file and creates an entity with spatial audio component
     public func setupBeepAudio(anchor: AnchorEntity) {
+        // Load the beep audio file from the bundle.
         guard let soundURL = Bundle.main.url(forResource: "beep", withExtension: "mp3")
         else {
             print("Unable to find beep.mp3 in the bundle.")
@@ -50,9 +51,9 @@ class PingSoundManager {
             
             // Configure spatial audio component
             entity.spatialAudio = SpatialAudioComponent(
-                gain: -5, // Adjust gain as needed (-5 dB reduction from nominal level)
-                directivity: .beam(focus: 0.8), // Focused directional sound
-                distanceAttenuation: .rolloff(factor: 1.5) // Sound attenuation with distance
+                gain: -5,
+                directivity: .beam(focus: 0.8),
+                distanceAttenuation: .rolloff(factor: 1.5)
             )
             
             entity.spatialAudio?.reverbLevel = -12
@@ -66,6 +67,7 @@ class PingSoundManager {
     }
     
     private func startDetection() {
+        // Start a timer to periodically check for beeps.
         timer = Timer.scheduledTimer(withTimeInterval: checkTimeInterval,
                                    repeats: true) { [weak self] _ in
             self?.checkForBeep()
@@ -73,11 +75,13 @@ class PingSoundManager {
     }
     
     private func stopDetection() {
+        // Stop the timer when the object is deinit
         timer?.invalidate()
         timer = nil
     }
     
     private func checkForBeep() {
+        // Check if a beep should be played based on the current distance.
         guard let currentDistance = arCoordinator?.currentMeasurement?.meterDistance else {
             return
         }
@@ -96,6 +100,7 @@ class PingSoundManager {
     }
     
     private func calculateCurrentInterval(for currentDistance: Double) -> TimeInterval {
+        // Calculate the time interval between beeps based on the distance.
         let clampedDistance = max(minDistance, min(currentDistance, maxDistance))
         let normalized = (clampedDistance - minDistance) /
         (maxDistance - minDistance)
@@ -103,6 +108,7 @@ class PingSoundManager {
     }
     
     private func playBeep() {
+        // Play the beep sound.
         guard let resource = beepAudioResource, let beepEntity = beepEntity else {
             return
         }

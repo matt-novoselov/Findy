@@ -11,6 +11,7 @@ struct FindyApp: App {
     @State private var toastManager: ToastManager?
     
     init() {
+        // Configure and reset TipKit for the app
         try? Tips.configure()
         try? Tips.resetDatastore()
     }
@@ -18,7 +19,9 @@ struct FindyApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
+                // Check if the app is running on macOS or the simulator
                 if ProcessInfo.processInfo.isMacCatalystApp || isMacOS || isSimulator {
+                    // Display a content unavailable view if running on macOS or the simulator
                     ContentUnavailableView {
                         Text("Findy App")
                             .font(.title)
@@ -32,6 +35,7 @@ struct FindyApp: App {
                             .accessibilityHint("Information about app availability.")
                     }
                 } else {
+                    // If all dependencies are initialized, show the main app content
                     if appViewModel != nil,
                        arCoordinator != nil,
                        speechSynthesizer != nil,
@@ -42,6 +46,7 @@ struct FindyApp: App {
                             .environment(speechSynthesizer)
                             .environment(toastManager)
                     } else {
+                        // Show a loading view while the app is initializing
                         VStack {
                             ProgressView()
                                 .accessibilityLabel("Loading")
@@ -70,6 +75,7 @@ struct FindyApp: App {
         }
     }
     
+    // Helper function to check if the app is running in the simulator
     private var isSimulator: Bool {
         #if targetEnvironment(simulator)
         return true
@@ -78,6 +84,7 @@ struct FindyApp: App {
         #endif
     }
     
+    // Helper function to check if the app is running on macOS
     private var isMacOS: Bool {
         #if os(macOS)
         return true

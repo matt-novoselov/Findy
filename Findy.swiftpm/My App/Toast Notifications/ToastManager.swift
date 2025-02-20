@@ -24,7 +24,9 @@ final class ToastManager {
     
     /// Hides the toast using an outward animation.
     func hideToast() {
+        // Cancel any existing dismissal work item.
         dismissWorkItem?.cancel()
+        // Animate the hiding of the toast.
         withAnimation(.spring(duration: 1.8)) {
             self.currentNotification = nil
         }
@@ -32,6 +34,7 @@ final class ToastManager {
     
     /// Schedules dismissal unless the combined text is long or an action is present.
     private func scheduleDismissal(for notification: ToastNotification) {
+        // Combine the title and message text.
         let combinedText = notification.title + " " + notification.message
         
         // Calculate a display duration based on word count (minimum 5 seconds).
@@ -40,12 +43,14 @@ final class ToastManager {
             .count
         let timeout = max(5.0, Double(wordCount) * 0.5)
         
+        // Create a work item to dismiss the toast after the timeout.
         let workItem = DispatchWorkItem { [weak self] in
             withAnimation(.easeOut(duration: 1.8)) {
                 self?.currentNotification = nil
             }
         }
         dismissWorkItem = workItem
+        // Schedule the work item to execute after the calculated timeout.
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout,
                                       execute: workItem)
     }

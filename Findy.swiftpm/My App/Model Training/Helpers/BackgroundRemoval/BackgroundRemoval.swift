@@ -2,6 +2,7 @@ import Vision
 import UIKit
 import CoreImage.CIFilterBuiltins
 
+// Function to remove the background from a UIImage.
 func removeBackground(from image: UIImage) async -> UIImage {
     do {
         // Perform the background removal work in a detached task.
@@ -16,6 +17,7 @@ func removeBackground(from image: UIImage) async -> UIImage {
             let handler = VNImageRequestHandler(ciImage: ciImage)
             try handler.perform([request])
             
+            // Get the mask generation result.
             guard let result = request.results?.first else {
                 throw BackgroundRemovalError.maskGenerationFailed
             }

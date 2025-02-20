@@ -1,5 +1,6 @@
 import SwiftUI
 
+// This view creates a liquid-like effect using circles and a mask.
 struct LiquidCirclesView: View {
     var degrees: Double
     
@@ -7,10 +8,12 @@ struct LiquidCirclesView: View {
         Color.white
             .mask {
                 Canvas { context, size in
+                    // Apply filters to create the liquid effect.
                     context.addFilter(.alphaThreshold(min: 0.8, color: .black))
                     context.addFilter(.blur(radius: 10))
                     
                     context.drawLayer { ctx in
+                        // Draw the symbols on the canvas.
                         if let resolvedOne = context.resolveSymbol(id: 1) {
                             ctx.draw(resolvedOne, at: CGPoint(x: size.width/2, y: size.height/2))
                         }
@@ -22,6 +25,7 @@ struct LiquidCirclesView: View {
                         }
                     }
                 } symbols: {
+                    // Define the symbols to be drawn.
                     Circle()
                         .frame(height: 50)
                         .offset(y: -160)
