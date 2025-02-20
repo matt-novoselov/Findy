@@ -13,6 +13,8 @@ struct DynamicFontMeasurementsView: View {
             valueAndUnitDisplay
             referenceTextDisplay
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Distance to the object: \(numericValue) \(unitSymbol) \(referenceText)")
     }
     
     private var valueAndUnitDisplay: some View {
@@ -30,8 +32,6 @@ struct DynamicFontMeasurementsView: View {
                     .font(resolvedUnitFont(combinedText: combinedText))
                     .foregroundStyle(.secondary)
             }
-            .accessibilityLabel("Distance to the object")
-            .accessibilityValue("\(formattedValue) \(unitSymbol)")
         }
         
         .onGeometryChange(for: CGSize.self) { proxy in

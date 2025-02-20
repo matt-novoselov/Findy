@@ -14,7 +14,6 @@ struct VariableFontAnimationView: View {
                     .font(Font(UIFont.systemFont(ofSize: 30, weight: .init(fontWeight), width: .init(fontWeight))))
                     .padding(.horizontal, fontWeight)
                     .animation(.bouncy(duration: animationDuration).delay(Double(index) * delayPerSymbol), value: fontWeight)
-                    .accessibilityHidden(true)
             }
         }
         .onAppear {
@@ -28,6 +27,7 @@ struct VariableFontAnimationView: View {
                 self.text = "Model Training Done"
             }
         }
+        .accessibilityElement(children: .combine)
         .accessibilityLabel(text)
     }
     
