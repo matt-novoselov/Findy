@@ -309,14 +309,34 @@ extension ARSceneCoordinator {
             return
         }
         
-        #warning("reefine ar tracking")
-        if trackedAnchor != nil {
-            return
+        // Get the first raycast result's position
+        let newPosition = SIMD3<Float>(
+            initialResults[0].worldTransform.columns.3.x,
+            initialResults[0].worldTransform.columns.3.y,
+            initialResults[0].worldTransform.columns.3.z
+        )
+        
+        // If we have a current tracked anchor, check the distance
+        if let currentAnchor = trackedAnchor {
+            let currentPosition = currentAnchor.transform.translation
+            let distance = simd_distance(newPosition, currentPosition)
+            
+            // Convert 5cm to meters (0.05m)
+            let minimumDistance: Float = 0.05
+            
+            // Only proceed if the distance is greater than 5cm
+            guard distance > minimumDistance else {
+                print("New detection too close to current anchor (\(distance)m)")
+                return
+            }
         }
         
+        // If we reach here, either there was no previous anchor
+        // or the new position is far enough away
         resetCurrentTracking()
         establishNewTracking(with: query)
     }
+
 }
 
 // MARK: - Visual Feedback
