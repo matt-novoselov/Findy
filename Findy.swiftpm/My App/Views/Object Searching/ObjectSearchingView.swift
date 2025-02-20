@@ -14,12 +14,14 @@ struct ObjectSearchingView: View {
                 RippleEffectView(objectDetected: hasTargetObjectBeenDetected)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .ignoresSafeArea()
+                    .accessibilityHidden(true)
             }
         
             // MARK: Glowing effect
             .background{
                 GlowingEdgesView(objectDetected: hasTargetObjectBeenDetected)
                     .ignoresSafeArea()
+                    .accessibilityHidden(true)
             }
         
             .overlay(alignment: .topLeading){
@@ -33,6 +35,7 @@ struct ObjectSearchingView: View {
             .overlay{
                 if let currentMeasurement = arCoordinator.currentMeasurement {
                     ArrowView(degrees: currentMeasurement.rotationDegrees)
+                        .accessibilityHidden(true)
                 }
             }
         

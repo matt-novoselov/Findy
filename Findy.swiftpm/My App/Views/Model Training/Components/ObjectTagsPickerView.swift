@@ -27,11 +27,14 @@ struct ObjectTagsPickerView: View {
     }
     
     var body: some View {
-        VStack (alignment: .leading){
-            HStack{
-                Group{
+        VStack(alignment: .leading) {
+            HStack {
+                Group {
                     Image(systemName: "sparkles")
+                        .accessibility(hidden: true)
                     Text("AI generated tags: select all that are relevant")
+                        .accessibilityLabel("AI generated tags")
+                        .accessibilityHint("Select all relevant tags.")
                 }
                 .font(.body)
                 .foregroundStyle(Color.primary)
@@ -39,7 +42,7 @@ struct ObjectTagsPickerView: View {
                 .fontDesign(.rounded)
             }
             
-            HStack(spacing: 4){
+            HStack(spacing: 4) {
                 AISphereView()
                     .frame(width: 36, height: 36)
                     .padding(.trailing, 4)
@@ -63,14 +66,15 @@ struct CapsuleButton: View {
     
     var body: some View {
         Button(action: action) {
-            HStack{
-                HStack(spacing: 4){
+            HStack {
+                HStack(spacing: 4) {
                     if let customSFSymbolName {
                         Image(systemName: customSFSymbolName)
                             .fontDesign(.rounded)
                             .font(.subheadline)
                             .fontWeight(.bold)
                             .foregroundStyle(.primary)
+                            .accessibilityHidden(true)
                     }
                     
                     Text(title)
@@ -83,12 +87,13 @@ struct CapsuleButton: View {
                         .animation(.none, value: isSelected)
                 }
                 
-                if isSelected{
+                if isSelected {
                     Image(systemName: "checkmark.circle.fill")
                         .fontDesign(.rounded)
                         .font(.subheadline)
                         .foregroundStyle(buttonAccentColor)
                         .transition(.scale(scale: 0, anchor: .leading))
+                        .accessibilityHidden(true)
                 }
             }
             .padding(.horizontal, 16)
@@ -97,6 +102,8 @@ struct CapsuleButton: View {
             .animation(.bouncy, value: isSelected)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Tag: \(title)") 
+        .accessibilityHint(isSelected ? "Deselect this tag." : "Select this tag.")
     }
 }
 
@@ -114,7 +121,7 @@ extension String {
     @Previewable @State var appViewModel: AppViewModel = .init()
     ObjectTagsPickerView()
         .environment(appViewModel)
-        .onAppear{
+        .onAppear {
             appViewModel.savedObject.visionClassifications = ["Cat", "Dog", "Bird"]
         }
 }

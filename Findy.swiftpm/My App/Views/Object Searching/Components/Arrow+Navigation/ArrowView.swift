@@ -60,5 +60,6 @@ struct CircularProgressView: View {
         )
         .stroke(.white, style: StrokeStyle(lineWidth: 40, lineCap: .round, dash: [0.1, 50]))
         .rotationEffect(.degrees(-90))
+        .accessibilityHidden(true)
     }
 }

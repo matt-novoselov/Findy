@@ -6,6 +6,7 @@ struct OnboardingTapToContinueView: View {
     var body: some View {
         HStack {
             Image(systemName: "hand.tap.fill")
+                .accessibilityHidden(true)
             Text("Tap to Continue")
         }
         .foregroundStyle(.secondary)

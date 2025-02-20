@@ -10,7 +10,7 @@ struct ToastContainer<Content: View>: View {
     var body: some View {
         content()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .overlay(alignment: .top){
+            .overlay(alignment: .top) {
                 let isVisible: Bool = toastManager.currentNotification != nil
                 
                 Group {
@@ -20,11 +20,13 @@ struct ToastContainer<Content: View>: View {
                         })
                         .zIndex(1)
                         .transition(.move(edge: .top).combined(with: .blurReplace))
+                        .accessibilityLabel("Toast Notification")
+                        .accessibilityHint(notification.message)
                     }
                 }
                 .animation(.spring, value: isVisible)
-                .onChange(of: toastManager.currentNotification?.id){
-                    withAnimation{
+                .onChange(of: toastManager.currentNotification?.id) {
+                    withAnimation {
                         displayedNotification = toastManager.currentNotification
                     }
                 }

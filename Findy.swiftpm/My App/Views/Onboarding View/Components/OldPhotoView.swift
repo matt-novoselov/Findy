@@ -9,6 +9,7 @@ struct OldPhotoView: View {
             .rotationEffect(!didAppear ? Angle(degrees: -180) : .zero, anchor: .bottomLeading)
             .frame(width: 350)
             .padding()
+            .accessibilityHidden(true)
             .onAppear {
                 withAnimation(.bouncy(duration: 3)) {
                     didAppear = true

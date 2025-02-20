@@ -29,6 +29,7 @@ struct AnimatedImageCell: View {
             .rotationEffect(.degrees(animationRotationDegrees))
             .offset(x: initialOffsetX, y: initialOffsetY)
             .blur(radius: initialBlur)
+            .accessibilityHidden(true)
             .onAppear(perform: setupInitialAnimation)
             .onDisappear { animationTask?.cancel() }
             .onAppear{

@@ -20,15 +20,20 @@ struct DynamicFontMeasurementsView: View {
             let formattedValue = String(format: "%.2f", numericValue)
             let combinedText = "\(formattedValue) \(unitSymbol)"
             
-            Text(formattedValue)
-                .font(resolvedValueFont(combinedText: combinedText))
-                .contentTransition(.numericText(value: numericValue))
-                .animation(.spring, value: numericValue)
-            
-            Text(" \(unitSymbol)")
-                .font(resolvedUnitFont(combinedText: combinedText))
-                .foregroundStyle(.secondary)
+            Group{
+                Text(formattedValue)
+                    .font(resolvedValueFont(combinedText: combinedText))
+                    .contentTransition(.numericText(value: numericValue))
+                    .animation(.spring, value: numericValue)
+                
+                Text(" \(unitSymbol)")
+                    .font(resolvedUnitFont(combinedText: combinedText))
+                    .foregroundStyle(.secondary)
+            }
+            .accessibilityLabel("Distance to the object")
+            .accessibilityValue("\(formattedValue) \(unitSymbol)")
         }
+        
         .onGeometryChange(for: CGSize.self) { proxy in
             proxy.size
         } action: {

@@ -8,8 +8,7 @@ struct VariableFontAnimationView: View {
     let animationDuration: Double = 0.25
     
     var body: some View {
-        
-        HStack(spacing: 0){
+        HStack(spacing: 0) {
             ForEach(Array(text.enumerated()), id: \.offset) { index, character in
                 Text(String(character))
                     .font(Font(UIFont.systemFont(ofSize: 30, weight: .init(fontWeight), width: .init(fontWeight))))
@@ -17,7 +16,7 @@ struct VariableFontAnimationView: View {
                     .animation(.bouncy(duration: animationDuration).delay(Double(index) * delayPerSymbol), value: fontWeight)
             }
         }
-        .onAppear{
+        .onAppear {
             playAnimation()
         }
         .onChange(of: appViewModel.savedObject.userGivenObjectName){
@@ -28,12 +27,12 @@ struct VariableFontAnimationView: View {
                 self.text = "Model Training Done"
             }
         }
+        .accessibilityLabel(text)
     }
     
-    func playAnimation(){
+    func playAnimation() {
         withAnimation(.bouncy(duration: Double(text.count) * delayPerSymbol)) {
             fontWeight = 0.7
         }
     }
 }
-

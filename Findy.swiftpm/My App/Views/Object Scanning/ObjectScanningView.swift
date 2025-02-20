@@ -57,6 +57,7 @@ struct ObjectScanningView: View {
         
             .overlay(alignment: .trailing){
                 CameraTipView(isOnboardingActive: isOnboardingActive)
+                    .accessibilityHidden(true)
             }
         
             .toolbar((!isOnboardingActive && amountOfPhotos > 0) ? .visible : .hidden, for: .tabBar)

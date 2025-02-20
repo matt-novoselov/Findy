@@ -1,49 +1,5 @@
 import SwiftUI
 
-struct SpeechSpeedSliderView: View {
-    @Environment(SpeechSynthesizer.self) private var speechSynthesizer
-    
-    var body: some View {
-        @Bindable var speechSynthesizer = speechSynthesizer
-        let bindingValue: Binding<Double> = Binding(
-            get: { Double(speechSynthesizer.speechSynthesizerPlaybackSpeed) },
-            set: { newValue in
-                // Snap to 0.1 increments
-                speechSynthesizer.speechSynthesizerPlaybackSpeed = Float((newValue * 10).rounded() / 10)
-            }
-        )
-        
-        HStack {
-            Text("Speech Rate")
-                .fontDesign(.rounded)
-            
-            // Divider
-            RoundedRectangle(cornerRadius: 100)
-                .frame(width: 1)
-                .foregroundStyle(.tertiary)
-                .padding(.horizontal, 15)
-                .padding(.vertical, 5)
-            
-            Image(systemName: "tortoise.fill")
-                .symbolEffect(
-                    .bounce,
-                    value: speechSynthesizer.speechSynthesizerPlaybackSpeed == 0.1
-                )
-            
-            CustomSliderView(value: bindingValue, sliderRange: 0.1...1)
-                .frame(height: 24)
-            
-            Image(systemName: "hare.fill")
-                .symbolEffect(
-                    .bounce,
-                    value: speechSynthesizer.speechSynthesizerPlaybackSpeed == 1.0
-                )
-        }
-    }
-}
-
-import SwiftUI
-
 struct CustomSliderView: View {
     @Binding var value: Double
     var sliderRange: ClosedRange<Double> = 1...100
@@ -128,7 +84,7 @@ struct CustomSliderView: View {
                 RecessedRectangleView(cornerRadius: .infinity)
                     .frame(height: trackHeight)
                     .position(x: width / 2, y: centerY)
-                    .background{
+                    .background {
                         Circle()
                             .fill(.white.opacity(0.4))
                             .blur(radius: 10)
@@ -154,19 +110,10 @@ struct CustomSliderView: View {
                     .shadow(color: .white, radius: 10)
                     .position(x: currentThumbX, y: centerY)
                     .gesture(dragGesture)
+                    .accessibilityLabel("Slider thumb") // Provide accessibility label for the thumb
             }
             .animation(.bouncy(duration: 0.5), value: currentThumbX)
         }
         .clipShape(.capsule)
     }
-}
-
-
-
-
-#Preview{
-    SpeechSpeedSliderView()
-        .environment(SpeechSynthesizer())
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(uiColor: UIColor.systemGray4))
 }

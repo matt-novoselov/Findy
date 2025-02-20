@@ -9,6 +9,7 @@ struct NameInputFieldView: View {
             HStack{
                 Group{
                     Image(systemName: "tag.fill")
+                        .accessibilityHidden(true)
                     Text("Name your object")
                 }
                 .font(.body)

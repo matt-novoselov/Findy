@@ -5,18 +5,21 @@ struct ProgressBarView: View {
     private let maxCapacity = AppMetrics.maxPhotoArrayCapacity
     
     var body: some View {
-        HStack{
+        HStack {
             // Photo count display
             let amountOfPhotos = appViewModel.savedObject.takenPhotos.count
             Text("\(amountOfPhotos) / \(maxCapacity)")
                 .fontDesign(.rounded)
                 .contentTransition(.numericText(value: Double(amountOfPhotos)))
                 .animation(.spring, value: amountOfPhotos)
+                .accessibilityLabel("Photo count")
+                .accessibilityValue("\(amountOfPhotos) out of \(maxCapacity) photos taken")
             
             // Progress capsules
             HStack(spacing: 4) {
                 ForEach(0..<maxCapacity, id: \.self) { index in
                     ProgressCapsuleView(amountOfPhotos: amountOfPhotos, index: index)
+                        .accessibilityHidden(true) // Ignore accessibility for capsules
                 }
             }
         }

@@ -23,9 +23,13 @@ struct FindyApp: App {
                         Text("Findy App")
                             .font(.title)
                             .fontDesign(.rounded)
+                            .accessibilityLabel("Findy App")
+                            .accessibilityHint("The title of the application.")
                     } description: {
                         Text("This app isn't available on macOS or the simulator.\nFor the best experience, please use **Swift Playground 4.6 on iPad.**")
                             .fontDesign(.rounded)
+                            .accessibilityLabel("App Availability")
+                            .accessibilityHint("Information about app availability.")
                     }
                 } else {
                     if appViewModel != nil,
@@ -38,8 +42,10 @@ struct FindyApp: App {
                             .environment(speechSynthesizer)
                             .environment(toastManager)
                     } else {
-                        VStack{
+                        VStack {
                             ProgressView()
+                                .accessibilityLabel("Loading")
+                                .accessibilityHint("The app is currently loading.")
                             Text("Almost there! Loading soon...")
                                 .fontDesign(.rounded)
                                 .font(.title3)
@@ -47,7 +53,7 @@ struct FindyApp: App {
                     }
                 }
             }
-            .task{
+            .task {
                 // Initialize classes
                 self.objectDetection = .init()
                 self.appViewModel = AppViewModel()
@@ -81,9 +87,9 @@ struct FindyApp: App {
     }
 }
 
-struct ProxyBootstrapView: View {    
+struct ProxyBootstrapView: View {
     var body: some View {
-        ToastContainer{
+        ToastContainer {
             ContentView()
         }
         .colorScheme(.dark)

@@ -9,10 +9,11 @@ struct ImagePlaygroundView: View {
     @State private var sourceImage: Image?
     
     var body: some View {
-        VStack (alignment: .leading){
-            HStack{
-                Group{
+        VStack(alignment: .leading) {
+            HStack {
+                Group {
                     Image(systemName: "photo")
+                        .accessibilityHidden(true)
                     Text("AI Preview Image")
                 }
                 .font(.body)
@@ -21,7 +22,7 @@ struct ImagePlaygroundView: View {
                 .fontDesign(.rounded)
             }
             
-            Button(action: {openImagePlaygrounds()}) {
+            Button(action: { openImagePlaygrounds() }) {
                 ImagePlaygroundButtonLabel()
             }
             .clipShape(.capsule)
@@ -31,7 +32,7 @@ struct ImagePlaygroundView: View {
         }
     }
     
-    func openImagePlaygrounds(){
+    func openImagePlaygrounds() {
         self.concepts = []
         let visionClassifications = appViewModel.savedObject.userPickedClassifications
         for classification in visionClassifications {
@@ -53,8 +54,8 @@ struct ImagePlaygroundView: View {
 
 struct ImagePlaygroundButtonLabel: View {
     var body: some View {
-        HStack(spacing: 8){
-            Group{
+        HStack(spacing: 8) {
+            Group {
                 Image(systemName: "apple.intelligence")
                     .foregroundStyle(.white)
                     .overlay(
@@ -63,6 +64,7 @@ struct ImagePlaygroundButtonLabel: View {
                             .rotationEffect(.init(degrees: 180))
                             .mask(Image(systemName: "apple.intelligence"))
                     )
+                    .accessibilityHidden(true)
                 
                 Text("Open Image Playground")
             }
@@ -75,8 +77,11 @@ struct ImagePlaygroundButtonLabel: View {
         .padding(.vertical, 8)
         .clipShape(.capsule)
         .background(RecessedRectangleView())
+        .accessibilityLabel("Open Image Playground Button")
+        .accessibilityHint("Tap to open the image playground.")
     }
 }
+
 
 struct ImagePlaygroundLabelGradient: View {
     var body: some View {

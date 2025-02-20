@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 struct OnboardingView: View {
     @Environment(AppViewModel.self) private var appViewModel
     let content = OnboardingContent()
@@ -16,16 +15,19 @@ struct OnboardingView: View {
                     OldPhotoView()
                         .transition(.move(edge: .leading).combined(with: .blurReplace))
                         .animation(.bouncy, value: isLastIndex)
+                        .accessibilityHidden(true) // Ignore accessibility for OldPhotoView
                 }
             }
         
         // Main text overlay
             .overlay {
-                Group{
+                Group {
                     if currentIndex >= 0 && currentIndex != 4 {
                         OnboardingTextView(text: content.texts[currentIndex])
                             .padding(.all, 40)
                             .transition(.opacity)
+                            .accessibilityLabel("Onboarding text")
+                            .accessibilityValue(content.texts[currentIndex])
                     }
                 }
                 .animation(.spring(duration: 2), value: currentIndex >= 0)
@@ -33,9 +35,10 @@ struct OnboardingView: View {
         
         // Welcome to Findy overlay
             .overlay {
-                Group{
+                Group {
                     if currentIndex == 4 {
                         WelcomeToFindyView()
+                            .accessibilityLabel("Welcome to Findy")
                     }
                 }
                 .animation(.spring(duration: 2), value: currentIndex >= 0)
@@ -46,6 +49,7 @@ struct OnboardingView: View {
                 if !isLastIndex {
                     OnboardingTapToContinueView()
                         .animation(.spring(duration: 1.5), value: currentIndex == -1)
+                        .accessibilityLabel("Tap to continue")
                 }
             }
         
@@ -83,7 +87,7 @@ struct OnboardingView: View {
         
             .toolbar(.hidden, for: .tabBar)
         
-            .onChange(of: self.currentIndex){
+            .onChange(of: self.currentIndex) {
                 if currentIndex == 1 {
                     appViewModel.shouldBlurScreenOnboarding = true
                 }
@@ -94,7 +98,7 @@ struct OnboardingView: View {
             }
     }
     
-    private func finishOnboarding(){
+    private func finishOnboarding() {
         appViewModel.state = .scanning
         appViewModel.shouldBlurScreenOnboarding = false
     }

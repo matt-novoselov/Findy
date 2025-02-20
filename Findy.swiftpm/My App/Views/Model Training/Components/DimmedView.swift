@@ -6,5 +6,6 @@ struct DimmedView: View {
             .toolbar(.hidden, for: .tabBar)
             .ignoresSafeArea()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .accessibilityHidden(true)
     }
 }

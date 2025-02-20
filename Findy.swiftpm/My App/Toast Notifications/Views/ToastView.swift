@@ -13,17 +13,22 @@ struct ToastView: View {
                 .font(.largeTitle)
                 .bold()
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true) // Marking the icon to be ignored by accessibility
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(notification.title)
                     .font(.body)
                     .fontDesign(.rounded)
                     .bold()
+                    .accessibilityLabel("Notification Title")
+                    .accessibilityHint(notification.title) // Provide the title as a hint
                 
                 Text(notification.message)
                     .font(.subheadline)
                     .fontDesign(.rounded)
                     .foregroundColor(.secondary)
+                    .accessibilityLabel("Notification Message")
+                    .accessibilityHint(notification.message) // Provide the message as a hint
             }
             .foregroundColor(.white)
         }
@@ -52,14 +57,16 @@ struct ToastView: View {
             withAnimation(.spring(duration: 0.4)) { }
         }
         
-        .onChange(of: notification.id){
-            withAnimation{
+        .onChange(of: notification.id) {
+            withAnimation {
                 self.isBlurred = true
             } completion: {
-                withAnimation{
+                withAnimation {
                     self.isBlurred = false
                 }
             }
         }
+        .accessibilityLabel("Toast Notification")
+        .accessibilityHint("A notification with title: \(notification.title) and message: \(notification.message). Tap or swipe up to dismiss.")
     }
 }

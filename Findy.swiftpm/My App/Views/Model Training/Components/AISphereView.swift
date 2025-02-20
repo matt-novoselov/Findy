@@ -48,6 +48,7 @@ struct AISphereView: View {
                     animationTimer?.invalidate()
                 }
         }
+        .accessibilityHidden(true)
     }
     
     private func initiateAnimationCycle() {

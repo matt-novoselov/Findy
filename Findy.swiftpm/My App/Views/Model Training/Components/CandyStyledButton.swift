@@ -4,18 +4,21 @@ struct CandyStyledButton: View {
     var title: String
     var symbol: String
     var action: () -> Void = {}
+    
     var body: some View {
-        Button(action: {action()}){
-            HStack(spacing: 5){
+        Button(action: { action() }) {
+            HStack(spacing: 5) {
                 let foregroundColor = Color(hex: 0xA80ED0)
-                Group{
+                Group {
                     Image(systemName: symbol)
                         .fontWeight(.black)
                         .font(.title3)
+                        .accessibilityHidden(true)
                     
                     Text(title)
                         .fontWeight(.bold)
                         .fontDesign(.rounded)
+                        .accessibilityLabel(title)
                 }
                 .fontDesign(.rounded)
                 .foregroundStyle(foregroundColor)
@@ -24,8 +27,8 @@ struct CandyStyledButton: View {
             }
             .padding(.vertical, 12)
             .padding(.horizontal, 20)
-            .background{
-                ZStack{
+            .background {
+                ZStack {
                     capsuleBackground
                         .blur(radius: 6)
                         .opacity(0.8)
@@ -33,7 +36,6 @@ struct CandyStyledButton: View {
                     capsuleBackground
                 }
             }
-            
         }
         .buttonStyle(.plain)
     }
@@ -45,7 +47,7 @@ struct CandyStyledButton: View {
                 .shadow(.inner(color: Color(hex: 0xA80ED0).opacity(0.4), radius: 3, y: -1))
             )
             .foregroundStyle(Color(hex: 0xF6BFF9))
-            .overlay{
+            .overlay {
                 Capsule()
                     .foregroundStyle(RadialGradient(colors: [Color(hex: 0xFCDDFF), .clear], center: .top, startRadius: 0, endRadius: 60))
                 
@@ -53,9 +55,4 @@ struct CandyStyledButton: View {
                     .strokeBorder(Color(hex: 0xDFA4EE).opacity(0.55), style: .init(lineWidth: 2))
             }
     }
-    
-}
-
-#Preview {
-    CandyStyledButton(title: "Test", symbol: "xmark", action: {})
 }

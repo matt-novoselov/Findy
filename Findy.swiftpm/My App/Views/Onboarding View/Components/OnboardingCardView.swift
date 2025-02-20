@@ -7,8 +7,9 @@ struct OnboardingCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 25) {
             AppIconView()
+                .accessibilityHidden(true) // Ignore accessibility for AppIconView
             
-            VStack(alignment: .leading, spacing: 2){
+            VStack(alignment: .leading, spacing: 2) {
                 Text(card.mainTitle)
                     .font(.title)
                     .fontDesign(.rounded)
@@ -28,13 +29,14 @@ struct OnboardingCardView: View {
             
             VStack(alignment: .leading, spacing: 12) {
                 ForEach(Array(card.infoCards.enumerated()), id: \.offset) { index, infoCard in
-                    Group{
+                    Group {
                         if currentIndex >= index {
                             HStack(spacing: 15) {
                                 Image(systemName: "xmark")
                                     .foregroundStyle(.clear)
                                     .overlay {
                                         Image(systemName: infoCard.icon)
+                                            .accessibilityHidden(true)
                                     }
                                     .font(.body)
                                     .foregroundStyle(.primary)
@@ -50,11 +52,10 @@ struct OnboardingCardView: View {
                     .animation(.spring, value: currentIndex)
                 }
             }
-
             
             let isLast = currentIndex == card.infoCards.count - 1
             Button(action: {
-                if isLast{
+                if isLast {
                     card.buttonAction()
                 } else {
                     if currentIndex < card.infoCards.count {
@@ -69,7 +70,7 @@ struct OnboardingCardView: View {
                     .foregroundStyle(Color.primary)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background{
+                    .background {
                         Color(hex: 0xD6D6D6).opacity(0.45)
                             .blendMode(.colorBurn)
                         Color.black.opacity(0.08)
@@ -77,6 +78,7 @@ struct OnboardingCardView: View {
                     }
                     .cornerRadius(16)
                     .animation(.none, value: isLast)
+                    .accessibilityLabel(isLast ? "Finish" : "Continue") // Provide accessibility label for button
             }
         }
         .padding(.all, 25)
@@ -89,8 +91,9 @@ struct OnboardingCardView: View {
 struct OnboardingAlertView: View {
     var card: OnboardingCardModel
     var body: some View {
-        ZStack{
+        ZStack {
             Color.black.opacity(0.5)
+                .accessibilityHidden(true)
             OnboardingCardView(card: card)
         }
     }
@@ -98,7 +101,7 @@ struct OnboardingAlertView: View {
 
 #Preview {
     Color.green
-        .overlay{
+        .overlay {
             OnboardingAlertView(card: ObjectSearchViewModel(action: {}).card)
         }
 }

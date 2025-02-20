@@ -25,7 +25,7 @@ struct ModelTrainingView: View {
     
     var body: some View {
         VStack {
-            ZStack{
+            ZStack {
                 // MARK: Variable font animation
                 if isAnimationFinishedFinal {
                     VariableFontAnimationView()
@@ -38,12 +38,13 @@ struct ModelTrainingView: View {
             Spacer()
             
             // MARK: Image cut out
-            Group{
+            Group {
                 if appViewModel.savedObject.appleIntelligencePreviewImage != nil {
                     if let url = appViewModel.savedObject.appleIntelligencePreviewImage {
                         AsyncImage(url: url) { image in
                             image.resizable()
                                 .clipShape(.rect(cornerRadius: 20))
+                                .accessibilityHidden(true)
                         } placeholder: {
                             ProgressView()
                         }
@@ -60,16 +61,16 @@ struct ModelTrainingView: View {
             
             Spacer()
             
-            VStack{
+            VStack {
                 // MARK: Scroll View
                 if isAnimationFinishedFinal {
-                    Group{
-                        Group{
+                    Group {
+                        Group {
                             NameInputFieldView()
-                            
+
                             ObjectTagsPickerView()
                             
-                            if supportsImagePlayground{
+                            if supportsImagePlayground {
                                 ImagePlaygroundView()
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
@@ -88,6 +89,8 @@ struct ModelTrainingView: View {
                         })
                         .padding(.vertical)
                         .animation(.spring, value: isAnimationFinishedFinal)
+                        .accessibilityLabel("Search Button")
+                        .accessibilityHint("Search for the specified item.")
                     }
                     .transition(.blurReplace)
                 }
@@ -96,9 +99,9 @@ struct ModelTrainingView: View {
         }
         .padding(.all, 20)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .glassBackground(cornerRadius: getDeviceBasedCornerRadius()-10)
-        .overlay{
-            if isViewActive{
+        .glassBackground(cornerRadius: getDeviceBasedCornerRadius() - 10)
+        .overlay {
+            if isViewActive {
                 imageCircleView
             }
         }
@@ -106,6 +109,8 @@ struct ModelTrainingView: View {
             if !shouldAnimate {
                 CandyStyledButton(title: "Train AI Model", symbol: "sparkles", action: startModelTraining)
                     .animation(.spring, value: shouldAnimate)
+                    .accessibilityLabel("Train AI Model Button")
+                    .accessibilityHint("Tap to start training the AI model.")
             }
         }
         .onChange(of: isWrappingUpAnimations) {
@@ -156,7 +161,7 @@ struct ModelTrainingView: View {
     }
     
     private func wrapUpAnimations() {
-        withAnimation(.easeIn(duration: 3)){
+        withAnimation(.easeIn(duration: 3)) {
             circleRadius = 50
         }
         withAnimation(.easeOut(duration: 3)) {
@@ -191,6 +196,7 @@ struct ModelTrainingView: View {
                     .brightness(animateCheckmark ? 0 : 1)
                     .contrast(animateCheckmark ? 1 : 10)
                     .shadow(color: .white.opacity(0.8), radius: animateCheckmark ? 0 : 30)
+                    .accessibilityHidden(true)
             }
         }
     }
@@ -211,8 +217,8 @@ struct ModelTrainingView: View {
                             y: circleRadius * CGFloat(sin(angle))
                         )
                         .zIndex(Double(index) + 10)
-                        .onAppear{
-                            withAnimation(.linear(duration: 15)){
+                        .onAppear {
+                            withAnimation(.linear(duration: 15)) {
                                 animationRotationDegrees = 90
                             }
                         }
@@ -227,5 +233,4 @@ struct ModelTrainingView: View {
         .shadow(color: .white, radius: isProcessingComplete ? 100 : 0)
         .opacity(showCheckmark ? 0 : 1)
     }
-
 }

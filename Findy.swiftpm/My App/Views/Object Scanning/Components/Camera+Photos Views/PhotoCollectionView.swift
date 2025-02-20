@@ -10,6 +10,7 @@ struct PhotoCollectionView: View {
             }
         }
         .ignoresSafeArea()
+        .accessibilityHidden(true)
     }
 }
 

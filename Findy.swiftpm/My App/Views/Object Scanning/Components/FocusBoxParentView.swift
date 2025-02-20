@@ -18,6 +18,7 @@ struct FocusBoxParentView: View {
         if let selectedResult = mostProminentResult {
             FocusBoxView(result: selectedResult)
                 .allowsHitTesting(false)
+                .accessibilityHidden(true)
                 .aspectRatio(
                     appViewModel.cameraImageDimensions.width /
                     appViewModel.cameraImageDimensions.height,

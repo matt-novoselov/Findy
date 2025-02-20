@@ -14,6 +14,7 @@ struct CameraFlashlightView: View {
                     opacity = 0
                 }
             }
+            .accessibilityHidden(true)
     }
 }
 

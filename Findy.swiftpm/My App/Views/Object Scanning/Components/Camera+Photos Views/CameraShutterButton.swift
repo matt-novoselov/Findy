@@ -12,7 +12,7 @@ struct CameraShutterButton: View {
     var body: some View {
         Button(action: {
             tip.invalidate(reason: .actionPerformed)
-            if isObjectFocused{
+            if isObjectFocused {
                 takePhoto()
             } else {
                 toastManager.showToast(ToastTemplates.objectNotDetected)
@@ -23,16 +23,18 @@ struct CameraShutterButton: View {
                 .frame(width: 55, height: 55)
         }
         .buttonStyle(ShutterButtonStyle())
+        .accessibilityLabel("Camera shutter button")
+        .accessibilityHint(isObjectFocused ? "Double tap to take a photo" : "Object not detected")
         
         // Outer ring
-        .overlay{
+        .overlay {
             Circle()
                 .stroke(.white.opacity(isObjectFocused ? 1 : 0.2), lineWidth: 5)
                 .frame(width: 70, height: 70)
         }
     }
     
-    func takePhoto(){
+    func takePhoto() {
         // Play shutter sound
         let shutterSoundID: SystemSoundID = 1108
         AudioServicesPlaySystemSound(shutterSoundID)
@@ -42,7 +44,7 @@ struct CameraShutterButton: View {
             if let capturedImage = arCoordinator.processedFrameImage?.toCGImage() {
                 let detectedObjects = arCoordinator.detectedObjects
                 
-                guard let mostProminentResult = selectDominantObservation(from: detectedObjects) else {return}
+                guard let mostProminentResult = selectDominantObservation(from: detectedObjects) else { return }
                 
                 let capturedPhoto = CapturedPhoto(
                     photo: capturedImage,
@@ -72,26 +74,26 @@ struct ShutterButtonStyle: ButtonStyle {
     }
 }
 
-struct CameraShutterButtonContainerView: View{
+struct CameraShutterButtonContainerView: View {
     @Environment(AppViewModel.self) private var appViewModel
     var isCameraButtonActive: Bool
     @Binding var cameraShutterToggle: Bool
     @Binding var isObjectFocused: Bool
     
-    var body: some View{
-        Group{
+    var body: some View {
+        Group {
             if isCameraButtonActive {
                 CameraShutterButton(cameraShutterToggle: $cameraShutterToggle, isObjectFocused: isObjectFocused)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
                     .padding()
                     .ignoresSafeArea()
                     .transition(.move(edge: .trailing))
+                    .accessibilityHidden(false)
             }
         }
         .animation(.spring, value: isCameraButtonActive)
-        
-        .onChange(of: isCameraButtonActive){
-            if isCameraButtonActive == false{
+        .onChange(of: isCameraButtonActive) {
+            if isCameraButtonActive == false {
                 appViewModel.isTrainingCoverPresented = true
             }
         }
