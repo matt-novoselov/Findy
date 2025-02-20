@@ -41,7 +41,7 @@ struct OnboardingView: View {
                 .animation(.spring(duration: 2), value: currentIndex >= 0)
             }
         
-        // Tap to continue overlay (only when not last)
+        // Tap to continue overlay
             .overlay(alignment: currentIndex == -1 ? .center : .bottom) {
                 if !isLastIndex {
                     OnboardingTapToContinueView()

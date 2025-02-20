@@ -62,20 +62,3 @@ struct CircularProgressView: View {
         .rotationEffect(.degrees(-90))
     }
 }
-
-//#Preview{
-//    @Previewable @State var degrees: Double = 0
-//    VStack{
-//        ArrowView(degrees: degrees)
-//
-//        Slider(value: $degrees, in: -360...360)
-//            .padding()
-//
-////        // Add the direction text
-////        Text("Pointing: \(getDirection(degrees: degrees))")
-////            .fontDesign(.rounded)
-////            .font(.title)
-////            .padding()
-//    }
-//    .padding()
-//}

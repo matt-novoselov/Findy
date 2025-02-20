@@ -18,7 +18,6 @@ struct WelcomeToFindyView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .fontDesign(.rounded)
-                // Use a mask that starts at 0 width and expands to the full width.
                 .mask {
                     GeometryReader { geo in
                         Rectangle()
@@ -41,7 +40,7 @@ struct WelcomeToFindyView: View {
         }
         .frame(width: 500)
         .padding(40)
-        .glassBackground(cornerRadius: 60) // Assuming you have a glassBackground modifier.
+        .glassBackground(cornerRadius: 60)
         .transition(.opacity)
         .onAppear {
             // 1. Animate AppIconView bounce (scale 1 -> 1.5 -> 1)
@@ -54,14 +53,14 @@ struct WelcomeToFindyView: View {
                 }
             }
 
-            // 2. After bounce, animate the title reveal with a left-to-right mask.
+            // 2. Animate the title reveal with a left-to-right mask.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 withAnimation(.easeInOut(duration: 3.0)) {
                     titleReveal = 1.0
                 }
             }
 
-            // 3. Finally, animate the description text’s opacity.
+            // 3. Animate the description text’s opacity.
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.8) {
                 withAnimation(.easeIn(duration: 1.0)) {
                     showDescription = true

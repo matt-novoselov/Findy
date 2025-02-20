@@ -1,7 +1,7 @@
 import SwiftUI
 import RealityKit
 
-// Function to load game table
+// Function to load debug sphere
 func debugSphere(color: Color) -> Entity {
     let entity = Entity()
     let simpleMaterial = SimpleMaterial(

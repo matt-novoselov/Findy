@@ -1,7 +1,7 @@
 import SwiftUI
 import RealityKit
 
-// Function to load game table
+// Function to load game arrow
 func arrowEntity() -> Entity {
     let modelName = "arrow"
     let modelEntity = try! Entity.loadModel(named: modelName)

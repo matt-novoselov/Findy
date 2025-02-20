@@ -23,7 +23,7 @@ struct ImageCollectionView: View {
 
     var body: some View {
         ZStack(alignment: alignment) {
-            Color.clear  // Fills the space
+            Color.clear
             Image(decorative: photo, scale: 20)
                 .resizable()
                 .scaledToFill()

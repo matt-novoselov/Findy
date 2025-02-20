@@ -5,7 +5,7 @@ import CreateML
 extension ARSceneCoordinator{
     public func analyzeImageWithML() {
         #if canImport(CreateML)
-        // Ensure we have the necessary appViewModel.
+        // Ensure we have appViewModel
         guard let appViewModel = self.appViewModel else {
             return
         }
@@ -42,7 +42,6 @@ extension ARSceneCoordinator{
                 self.handleNewDetectionResults()
             }
         } catch {
-            // Optionally log the error.
             return
         }
         #endif

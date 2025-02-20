@@ -17,7 +17,6 @@ struct NameInputFieldView: View {
                 .fontDesign(.rounded)
             }
             
-            //
             TextField("My Object", text: $appViewModel.savedObject.userGivenObjectName)
                 .padding()
                 .background(RecessedRectangleView(cornerRadius: .infinity))

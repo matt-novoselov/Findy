@@ -3,8 +3,7 @@ import SwiftUI
 import SwiftUI
 
 extension UIImage {
-    /// Returns a new square image with a white background,
-    /// where the original image is centered and scaled to fit.
+    /// Returns a new square image with a white background, where the original image is centered and scaled to fit.
     func imageWithWhiteBackgroundSquare() -> UIImage {
         // Determine the final square side length
         let squareSide = max(size.width, size.height)

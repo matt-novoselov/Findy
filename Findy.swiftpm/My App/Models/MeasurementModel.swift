@@ -43,7 +43,7 @@ struct SceneMeasurement {
         return formatter.string(from: convertedMeasurement)
     }
     
-    // Add this function to calculate the direction
+    // Function to calculate the direction
     var getDirection: (String, String) {
         let normalizedDegrees = normalizedDegrees(Double(self.rotationDegrees.yaw))
         let angle = normalizedDegrees

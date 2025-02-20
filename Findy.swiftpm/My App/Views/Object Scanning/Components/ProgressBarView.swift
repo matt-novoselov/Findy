@@ -51,13 +51,3 @@ struct ProgressCapsuleView: View {
             )
     }
 }
-
-//#Preview {
-//    @Previewable @State var appViewModel = AppViewModel()
-//    @Previewable @State var amountOfPhotos: Int = 0
-//    ProgressBarView(amountOfPhotos: $amountOfPhotos)
-//        .environment(appViewModel)
-//    Button("amountOfPhotos"){
-//        amountOfPhotos += 1
-//    }
-//}

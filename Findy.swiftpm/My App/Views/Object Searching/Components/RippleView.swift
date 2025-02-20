@@ -1,7 +1,7 @@
 import SwiftUI
 import AVFoundation
 
-// A simple model to track each ripple's position.
+// Model to track each ripple's position.
 struct Ripple: Identifiable {
     let id = UUID()
     let position: CGPoint
@@ -47,7 +47,6 @@ struct RippleView: View {
     var body: some View {
         Circle()
             .fill(Color.green.opacity(0.7))
-            // Starting small.
             .frame(width: 20, height: 20)
             .overlay{
                 Circle()

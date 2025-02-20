@@ -133,7 +133,7 @@ extension ARSceneCoordinator {
             cameraTransform.columns.3.z
         )
 
-        // The camera’s forward vector is typically the negative of the third column.
+        // The camera’s forward vector
         let cameraForward = -SIMD3<Float>(
             cameraTransform.columns.2.x,
             cameraTransform.columns.2.y,
@@ -141,7 +141,6 @@ extension ARSceneCoordinator {
         )
         
         // --- Yaw Calculation ---
-        // For yaw we compare horizontal directions (projected on the xz-plane).
         let horizontalForward = simd_normalize(
             SIMD3<Float>(cameraForward.x, 0, cameraForward.z)
         )
@@ -157,7 +156,6 @@ extension ARSceneCoordinator {
         let yawDifference = (targetYaw - cameraYaw) * 180 / .pi
 
         // --- Pitch Calculation ---
-        // Compute the vertical (pitch) angle of the camera’s forward vector.
         let cameraPitch = atan2(
             cameraForward.y,
             simd_length(SIMD2<Float>(cameraForward.x, cameraForward.z))
@@ -170,9 +168,6 @@ extension ARSceneCoordinator {
         let pitchDifference = (targetPitch - cameraPitch) * 180 / .pi
 
         // --- Roll Calculation ---
-        // To measure roll relative to a “level” view, we compare the camera’s
-        // up vector to the ideal up vector (what the up vector would be if the camera
-        // were level with respect to a world-up direction, typically (0,1,0)).
         let cameraUp = simd_normalize(
             SIMD3<Float>(
                 cameraTransform.columns.1.x,
@@ -184,16 +179,14 @@ extension ARSceneCoordinator {
         let worldUp = SIMD3<Float>(0, 1, 0)
         // Compute the camera’s right vector from world up and camera forward.
         let cameraRight = simd_normalize(simd_cross(worldUp, cameraForward))
-        // The ideal up vector (if the camera were level) is:
         let idealUp = simd_cross(cameraForward, cameraRight)
-        // Calculate the roll (in radians) as the signed angle between the camera’s
-        // actual up vector and the ideal up vector. The sign is determined by
-        // measuring around the camera forward direction.
+        
+        // Calculate the roll (in radians)
         let rollAngle = atan2(
             simd_dot(simd_cross(idealUp, cameraUp), cameraForward),
             simd_dot(idealUp, cameraUp)
         )
-        // Assuming the desired (target) roll is 0 (level), return the difference.
+        
         let rollDifference = (-rollAngle) * 180 / .pi
 
         return (yaw: yawDifference, pitch: pitchDifference, roll: rollDifference)
@@ -331,8 +324,6 @@ extension ARSceneCoordinator {
             }
         }
         
-        // If we reach here, either there was no previous anchor
-        // or the new position is far enough away
         resetCurrentTracking()
         establishNewTracking(with: query)
     }
@@ -360,7 +351,6 @@ extension ARSceneCoordinator {
             metalDetector.setupBeepAudio(anchor: trackedAnchor)
         }
         
-//        animateVisualIndicator(indicatorAnchor)
         maintainContinuousTracking(with: query, for: indicatorAnchor)
     }
     
@@ -369,35 +359,6 @@ extension ARSceneCoordinator {
         let indicatorModel = arrowEntity()
         anchor.addChild(indicatorModel)
         return anchor
-    }
-    
-    private func animateVisualIndicator(_ entity: Entity) {
-        let floatHeight: Float = 0.05
-        let animationDuration: TimeInterval = 3.0
-        
-        let basePosition = entity.transform
-        var elevatedPosition = basePosition
-        elevatedPosition.translation.y += floatHeight
-        
-        entity.move(to: elevatedPosition, relativeTo: entity.parent,
-                    duration: animationDuration, timingFunction: .easeInOut)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) { [weak self] in
-            self?.queueReturnAnimation(for: entity,
-                                       originalPosition: basePosition,
-                                       duration: animationDuration)
-        }
-    }
-    
-    private func queueReturnAnimation(for entity: Entity,
-                                      originalPosition: Transform,
-                                      duration: TimeInterval) {
-        entity.move(to: originalPosition, relativeTo: entity.parent,
-                    duration: duration, timingFunction: .easeInOut)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + duration) { [weak self] in
-            self?.animateVisualIndicator(entity)
-        }
     }
 }
 

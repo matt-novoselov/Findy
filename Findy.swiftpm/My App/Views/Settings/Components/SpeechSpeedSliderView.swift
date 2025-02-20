@@ -17,7 +17,7 @@ struct SpeechSpeedSliderView: View {
             Text("Speech Rate")
                 .fontDesign(.rounded)
             
-            // Devdier
+            // Divider
             RoundedRectangle(cornerRadius: 100)
                 .frame(width: 1)
                 .foregroundStyle(.tertiary)

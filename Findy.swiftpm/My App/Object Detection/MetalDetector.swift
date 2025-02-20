@@ -55,8 +55,7 @@ class MetalDetector {
                 distanceAttenuation: .rolloff(factor: 1.5) // Sound attenuation with distance
             )
             
-            // Optional: Configure reverb level if needed
-            entity.spatialAudio?.reverbLevel = -12 // Less reverberant, more direct sound
+            entity.spatialAudio?.reverbLevel = -12
             
             self.beepEntity = entity
             anchor.addChild(entity)
