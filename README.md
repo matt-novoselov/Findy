@@ -1,11 +1,16 @@
 <p align="center">
+  <img align="center" src="Media/swift-challenge-distinguished-winner-light.png#gh-light-mode-only" width=275px>
+  <img align="center" src="Media/swift-challenge-distinguished-winner-dark.png#gh-dark-mode-only" width=275px>
+</p>
+
+<p align="center">
   <img src="Media/AppIcon.png" alt="Logo" width="110" height="110">
   <h2 align="center">
     Findy
   </h2>
 </p>
 
-<img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/AVFoundation.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/CoreML.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/RealityKit.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/SwiftUI.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/UIKit.svg" alt="" style="height: 30px"> 
+<img src="https://github.com/matt-novoselov/matt-novoselov/blob/fda0d85176e30230c06d6bc9e3178399440205d8/Files/SVGs/Badges/Platforms/ios18.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/43737e69c9b80e3fdcebcf497c033a061f51aea8/Files/SVGs/Badges/Frameworks/ARKit.svg" alt="" style="height: 30px">  <img src="https://github.com/matt-novoselov/matt-novoselov/blob/43737e69c9b80e3fdcebcf497c033a061f51aea8/Files/SVGs/Badges/Frameworks/Vision.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/RealityKit.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/43737e69c9b80e3fdcebcf497c033a061f51aea8/Files/SVGs/Badges/Frameworks/Image%20Playground.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/43737e69c9b80e3fdcebcf497c033a061f51aea8/Files/SVGs/Badges/Frameworks/Create%20ML.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/CoreML.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/AVFoundation.svg" alt="" style="height: 30px">  <img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/SwiftUI.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/58a1be3d03d2558b81e787a0a13927faf3465be2/Files/SVGs/Badges/Frameworks/UIKit.svg" alt="" style="height: 30px"> <img src="https://github.com/matt-novoselov/matt-novoselov/blob/43737e69c9b80e3fdcebcf497c033a061f51aea8/Files/SVGs/Badges/Frameworks/TipKit.svg" alt="" style="height: 30px">
 
 
 App Description
@@ -40,6 +45,17 @@ The app incorporates accessibility features to assist our users, including suppo
 <br>
 
 ## Credits
+Required attribution for YOLOv8:
+- Author: Ultralytics
+- License: GNU Affero General Public License v3.0 (AGPL-3.0)
+- Copyright: © Ultralytics
+- Source Code: https://github.com/ultralytics/ultralytics
+- License Text: https://github.com/ultralytics/ultralytics/blob/main/LICENSE
+
+For compliance, the full AGPL-3.0 license text along with the credits is included in the app’s legal section (settings).
+
+<br>
+
 Distributed under the MIT license. See **LICENSE** for more information.
 
 Developed with ❤️ by Matt Novoselov
