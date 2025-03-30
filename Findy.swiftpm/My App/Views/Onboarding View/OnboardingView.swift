@@ -10,14 +10,14 @@ struct OnboardingView: View {
     var body: some View {
         Color.clear
         // Old Photo overlay (only on last screen)
-            .overlay(alignment: .bottomLeading) {
-                if isLastIndex {
-                    OldPhotoView()
-                        .transition(.move(edge: .leading).combined(with: .blurReplace))
-                        .animation(.bouncy, value: isLastIndex)
-                        .accessibilityHidden(true) // Ignore accessibility for OldPhotoView
-                }
-            }
+//            .overlay(alignment: .bottomLeading) {
+//                if isLastIndex {
+//                    OldPhotoView()
+//                        .transition(.move(edge: .leading).combined(with: .blurReplace))
+//                        .animation(.bouncy, value: isLastIndex)
+//                        .accessibilityHidden(true) // Ignore accessibility for OldPhotoView
+//                }
+//            }
         
         // Main text overlay
             .overlay {
