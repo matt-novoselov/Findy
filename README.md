@@ -23,12 +23,30 @@ Findy helps people with low vision to independently locate everyday items (like 
 
 ## Features
 
-### Feature
-Mollit minim sint nostrud minim minim non occaecat ea aliquip quis magna ea. Voluptate velit commodo ullamco commodo qui cillum commodo cupidatat in aliquip mollit incididunt dolore laboris laboris anim.
+### Save and recognize objects  
+Findy allows users to save objects by taking six photos, providing a comprehensive view for accurate recognition.
+
+### On-device AI training  
+Using Create ML, Findy trains a custom AI model entirely on the user’s device, ensuring privacy and personalization.
+
+### Enhanced image processing  
+The Vision framework improves image data by separating backgrounds, isolating objects, and generating relevant tags for better AI training.
+
+### Live object detection  
+With CoreML, Findy analyzes the live camera feed to identify saved objects in real time.
+
+### 3D navigation assistance  
+ARKit converts 2D object coordinates into 3D spatial data, and RealityKit renders an arrow pointing to the item’s location.
+
+### Spatial audio guidance  
+Using AVFoundation and RealityKit, Findy provides voice instructions and spatial audio cues to guide users toward their objects.
+
+### AI-powered image enhancement  
+Users can leverage Apple Intelligence via Image Playground to generate high-quality preview images of saved objects.
 
 <br>
 
-The app incorporates accessibility features to assist our users, including support for VoiceOver.
+Findy incorporates accessibility features to assist our users, including support for VoiceOver.
 
 ## Requirements
 - iOS 18.2+
