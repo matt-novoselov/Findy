@@ -14,11 +14,11 @@
 
 Findy helps people with low vision to independently locate everyday items (like keys or TV remote) by training an on-device personalized AI model with photos of their belongings, and then guiding users with real-time voice directions and AR cues to the item’s real-time location through the device’s camera.
 
-<a href="https://example.com" target="_blank">
+<a href="https://youtu.be/2LPPNqYNvL0" target="_blank">
   <img src="https://i.ibb.co/3h3kWh9/image-processing20210830-21891-1313qn-ezgif-com-resize.gif" alt="GIF">
 </a>
 
-[![](https://github.com/matt-novoselov/matt-novoselov/blob/34555effedede5dd5aa24ae675218d989e976cf6/Files/YouTube_Badge.svg)](https://example.com)
+[![](https://github.com/matt-novoselov/matt-novoselov/blob/34555effedede5dd5aa24ae675218d989e976cf6/Files/YouTube_Badge.svg)](https://youtu.be/2LPPNqYNvL0)
 
 
 ## Features
