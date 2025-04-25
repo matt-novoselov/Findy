@@ -49,6 +49,8 @@ Users can leverage Apple Intelligence via Image Playground to generate high-qual
 
 Findy incorporates accessibility features to assist our users, including support for VoiceOver.
 
+![](Media/BentoGrid.png)
+
 ## Requirements
 - iOS 18.2+
 - Xcode 16.0+
